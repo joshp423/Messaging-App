@@ -12,7 +12,7 @@ datasource db {
   provider = "postgresql"
 }
 
-model User {
+model Users {
   id Int @id @default(autoincrement())
   password String
   username String
@@ -21,6 +21,7 @@ model User {
   blurb String?
   sentMessagesSolo MessagesSolo[] @relation("SentMessagesSolo")
   receivedMessagesSolo MessagesSolo[] @relation("ReceivedMessagesSolo")
+  groups Groups []
 }
 
 model MessagesSolo {
@@ -28,7 +29,27 @@ model MessagesSolo {
   senderId Int
   receiverId Int
   message String
-  timeSent DateTime
-  sender User @relation("SentMessagesSolo", fields: [senderId], references: [id])
-  receiver User @relation("ReceivedMessagesSolo", fields: [receiverId], references: [id])
+  imageUrl String?
+  timeSent DateTime @default(now())
+  sender Users @relation("SentMessagesSolo", fields: [senderId], references: [id])
+  receiver Users @relation("ReceivedMessagesSolo", fields: [receiverId], references: [id])
 }
+
+model MessagesGroup {
+  id Int @id @default(autoincrement())
+  senderID Int
+  groupId Int
+  group Groups @relation(fields: [groupId], references: [id])
+  message String
+  timeSent DateTime @default(now())
+  imageUrl String?
+}
+
+model Groups {
+  id Int @id @default(autoincrement())
+  usersIds Users []
+  messages MessagesGroup[]
+  name String
+}
+
+
