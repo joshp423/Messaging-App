@@ -28,6 +28,7 @@ const userSignUpSchema = z.object({
     .trim(),
 });
 
+
 const userLogInSchema = z.object({
   email: z.email(),
   password: z.string({ message: emailErr }),
@@ -43,6 +44,18 @@ const userEditProfileSchema = z.object({
   pfpUrl: z.string().trim(),
   blurb: z.string().trim(),
 });
+
+const userMessageSchema = z.object({
+  senderid: z.number(),
+  receiverid: z.number(),
+  message: z.string().trim(),
+  imageurl: z.string(),
+})
+
+const userGroupSchema = z.object({
+  userIds: z.array(z.number()),
+  name: z.string().trim().max(25, ({ message: `Group name: ${lengthErrShort}`}))
+})
 
 export async function signUp(req: Request, res: Response, next: NextFunction) {
   const user = {
@@ -157,5 +170,55 @@ export async function editProfile(req: Request, res: Response) {
     return res.status(201).json({ message: "successfully updated profile" });
   } catch (error) {
     return res.status(500).json({ error });
+  }
+}
+
+export async function sendMessageSingleRecipient(req: Request, res: Response, next: NextFunction) {
+  try {
+    const { senderid, receiverid, message, imageurl } = userMessageSchema.parse(
+      req.body,
+    );
+
+    await prisma.messagesSolo.create({
+      data: {
+        senderId: senderid,
+        receiverId: receiverid,
+        message,
+        imageUrl: imageurl,
+      },
+    });
+    return res.status(201).json({ message: "Message sent successfully" });
+  } catch (error) {
+    if (error instanceof ZodError) {
+      //if error is a zod error send back
+      return res.status(400).json({
+        errors: error.issues,
+      });
+    }
+    next(error);
+  }
+}
+
+export async function createNewGroup(req: Request, res: Response, next: NextFunction) {
+  try {
+    const { userIds, name } = userGroupSchema.parse(
+      req.body,
+    );
+
+    await prisma.groups.create({
+      data: {
+        userIds,
+        name
+      },
+    });
+    return res.status(201).json({ message: "Message sent successfully" });
+  } catch (error) {
+    if (error instanceof ZodError) {
+      //if error is a zod error send back
+      return res.status(400).json({
+        errors: error.issues,
+      });
+    }
+    next(error);
   }
 }

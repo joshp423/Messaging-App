@@ -5,5 +5,6 @@ const indexRouter = Router();
 indexRouter.post("/sign-up", indexController.signUp);
 indexRouter.post("/log-in", indexController.logIn);
 indexRouter.put("/edit-profile", indexController.editProfile);
+indexRouter.post("/send-message-solo", indexController.sendMessageSingleRecipient);
 
 export default indexRouter;
