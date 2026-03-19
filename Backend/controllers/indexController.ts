@@ -3,6 +3,7 @@ import { z, ZodError } from "zod";
 import jwt from "jsonwebtoken";
 import type { Request, Response, NextFunction } from "express";
 import { prisma } from "../lib/prisma.js";
+import { id } from "zod/locales";
 
 const emailLengthErr = "must be between 1 and 50 characters";
 const lengthErrShort = "must be between 1 and 25 characters";
@@ -45,9 +46,16 @@ const userEditProfileSchema = z.object({
   blurb: z.string().trim(),
 });
 
-const userMessageSchema = z.object({
-  senderid: z.number(),
-  receiverid: z.number(),
+const userMessageSingleSchema = z.object({
+  senderId: z.number(),
+  receiverId: z.number(),
+  message: z.string().trim(),
+  imageurl: z.string(),
+})
+
+const userMessageGroupSchema = z.object({
+  senderId: z.number(),
+  groupId: z.number(),
   message: z.string().trim(),
   imageurl: z.string(),
 })
@@ -56,6 +64,8 @@ const userGroupSchema = z.object({
   userIds: z.array(z.number()),
   name: z.string().trim().max(25, ({ message: `Group name: ${lengthErrShort}`}))
 })
+
+
 
 export async function signUp(req: Request, res: Response, next: NextFunction) {
   const user = {
@@ -175,14 +185,14 @@ export async function editProfile(req: Request, res: Response) {
 
 export async function sendMessageSingleRecipient(req: Request, res: Response, next: NextFunction) {
   try {
-    const { senderid, receiverid, message, imageurl } = userMessageSchema.parse(
+    const { senderId, receiverId, message, imageurl } = userMessageSingleSchema.parse(
       req.body,
     );
 
     await prisma.messagesSolo.create({
       data: {
-        senderId: senderid,
-        receiverId: receiverid,
+        senderId,
+        receiverId,
         message,
         imageUrl: imageurl,
       },
@@ -199,16 +209,18 @@ export async function sendMessageSingleRecipient(req: Request, res: Response, ne
   }
 }
 
-export async function createNewGroup(req: Request, res: Response, next: NextFunction) {
+export async function sendMessageGroupRecipient(req: Request, res: Response, next: NextFunction) {
   try {
-    const { userIds, name } = userGroupSchema.parse(
+    const { senderId, groupId, message, imageurl } = userMessageGroupSchema.parse(
       req.body,
     );
 
-    await prisma.groups.create({
+    await prisma.messagesGroup.create({
       data: {
-        userIds,
-        name
+        senderId,
+        groupId,
+        message,
+        imageUrl: imageurl,
       },
     });
     return res.status(201).json({ message: "Message sent successfully" });
@@ -222,3 +234,32 @@ export async function createNewGroup(req: Request, res: Response, next: NextFunc
     next(error);
   }
 }
+
+
+export async function createNewGroup(req: Request, res: Response, next: NextFunction) {
+  try {
+    const { userIds, name } = userGroupSchema.parse(
+      req.body,
+    );
+
+    await prisma.groups.create({ // create new group and link it to users by id
+      data: {
+        name,
+        users: {
+          connect: userIds.map((id: number) => ({ id })) // array becomes [{ id: number }] objects - go to users and find id =
+        },
+      },
+    });
+
+    return res.status(201).json({ message: "Message sent successfully" });
+  } catch (error) {
+    if (error instanceof ZodError) {
+      //if error is a zod error send back
+      return res.status(400).json({
+        errors: error.issues,
+      });
+    }
+    next(error);
+  }
+}
+

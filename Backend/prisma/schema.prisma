@@ -37,7 +37,7 @@ model MessagesSolo {
 
 model MessagesGroup {
   id Int @id @default(autoincrement())
-  senderID Int
+  senderId Int
   groupId Int
   group Groups @relation(fields: [groupId], references: [id])
   message String
@@ -47,7 +47,7 @@ model MessagesGroup {
 
 model Groups {
   id Int @id @default(autoincrement())
-  usersIds Users []
+  users Users []
   messages MessagesGroup[]
   name String
 }
