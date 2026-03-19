@@ -3,7 +3,6 @@ import { z, ZodError } from "zod";
 import jwt from "jsonwebtoken";
 import type { Request, Response, NextFunction } from "express";
 import { prisma } from "../lib/prisma.js";
-import { id } from "zod/locales";
 
 const emailLengthErr = "must be between 1 and 50 characters";
 const lengthErrShort = "must be between 1 and 25 characters";
@@ -29,7 +28,6 @@ const userSignUpSchema = z.object({
     .trim(),
 });
 
-
 const userLogInSchema = z.object({
   email: z.email(),
   password: z.string({ message: emailErr }),
@@ -50,19 +48,23 @@ const userMessageSingleSchema = z.object({
   senderId: z.number(),
   receiverId: z.number(),
   message: z.string().trim(),
-  imageurl: z.string(),
+  imageUrl: z.string(),
 })
 
 const userMessageGroupSchema = z.object({
   senderId: z.number(),
   groupId: z.number(),
   message: z.string().trim(),
-  imageurl: z.string(),
+  imageUrl: z.string(),
 })
 
 const userGroupSchema = z.object({
   userIds: z.array(z.number()),
   name: z.string().trim().max(25, ({ message: `Group name: ${lengthErrShort}`}))
+})
+
+const userIdSchema = z.object({
+  id: z.number()
 })
 
 
@@ -185,7 +187,7 @@ export async function editProfile(req: Request, res: Response) {
 
 export async function sendMessageSingleRecipient(req: Request, res: Response, next: NextFunction) {
   try {
-    const { senderId, receiverId, message, imageurl } = userMessageSingleSchema.parse(
+    const { senderId, receiverId, message, imageUrl } = userMessageSingleSchema.parse(
       req.body,
     );
 
@@ -194,7 +196,7 @@ export async function sendMessageSingleRecipient(req: Request, res: Response, ne
         senderId,
         receiverId,
         message,
-        imageUrl: imageurl,
+        imageUrl,
       },
     });
     return res.status(201).json({ message: "Message sent successfully" });
@@ -211,7 +213,7 @@ export async function sendMessageSingleRecipient(req: Request, res: Response, ne
 
 export async function sendMessageGroupRecipient(req: Request, res: Response, next: NextFunction) {
   try {
-    const { senderId, groupId, message, imageurl } = userMessageGroupSchema.parse(
+    const { senderId, groupId, message, imageUrl } = userMessageGroupSchema.parse(
       req.body,
     );
 
@@ -220,7 +222,7 @@ export async function sendMessageGroupRecipient(req: Request, res: Response, nex
         senderId,
         groupId,
         message,
-        imageUrl: imageurl,
+        imageUrl,
       },
     });
     return res.status(201).json({ message: "Message sent successfully" });
@@ -262,4 +264,63 @@ export async function createNewGroup(req: Request, res: Response, next: NextFunc
     next(error);
   }
 }
+
+interface AuthRequest extends Request {
+  token?: string;
+}
+
+export function verifyToken(
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction,
+) {
+  // Get auth header value
+  const bearerHeader = req.headers["authorization"];
+  // Check if bearer is undefined
+  if (typeof bearerHeader !== "undefined") {
+    // Split at the space
+    const bearer = bearerHeader.split(" ");
+    // Get token from array
+    const bearerToken = bearer[1];
+
+    if (!bearerToken) {
+      return res.status(403);
+    }
+    // Set the token
+    req.token = bearerToken;
+    // Next middleware
+    next();
+  } else {
+    // Forbidden
+    res.sendStatus(403);
+  }
+}
+
+export async function receiveMessages(req: Request, res: Response) {
+  try {
+    const { id } = userIdSchema.parse(
+      req.body,
+    );
+
+    const messagesSolo = await prisma.messagesSolo.findMany({
+      orderBy: {
+        timeSent: "asc"
+      }
+    });
+
+    const messagesGroup = await prisma.messagesGroup.findMany({
+      orderBy: {
+        timeSent: "asc"
+      }
+    });
+
+    return res.status(200).json({
+      messagesSolo, messagesGroup
+    })
+  } catch (error){
+    return res.status(500).json({ error });
+  }
+}
+
+
 
