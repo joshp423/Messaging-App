@@ -1,6 +1,7 @@
 import './App.css';
 import { useState } from 'react';
 import Nav from './components/Nav/nav';
+import Homepage from './components/Homepage/homepage';
 const App = () => {
 
   const [loginStatus, setLoginStatus] = useState<boolean>(() =>
@@ -13,6 +14,10 @@ const App = () => {
         setLoginStatus={setLoginStatus}
         loginStatus={loginStatus}
       />
+      <Homepage 
+        loginStatus={loginStatus}
+      />
+
     </>
   )
 }
