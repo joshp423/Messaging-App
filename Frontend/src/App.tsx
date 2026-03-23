@@ -15,7 +15,7 @@ const App = () => {
         setLoginStatus={setLoginStatus}
         loginStatus={loginStatus}
       />
-      <Outlet context={{ loginStatus: loginStatus }} />
+      <Outlet context={{ loginStatus: loginStatus, setLoginStatus: setLoginStatus }} />
     </>
   );
 };

@@ -93,7 +93,9 @@ export async function signUp(req: Request, res: Response, next: NextFunction) {
         password: hashedPassword,
       },
     });
+    
     return res.status(201).json({ message: "Successful Sign-Up" });
+
   } catch (error) {
     if (error instanceof ZodError) {
       //if error is a zod error send back
@@ -155,14 +157,15 @@ export async function logIn(req: Request, res: Response) {
       },
     );
   } catch (error) {
-    res.sendStatus(500);
     if (error instanceof ZodError) {
       //if error is a zod error send back
       return res.status(400).json({
         errors: error.issues,
       });
     }
-    return error;
+    return res.status(500).json({
+      message: error instanceof Error? error.message: String(error)
+    });
   }
 }
 
@@ -212,7 +215,7 @@ export async function sendMessageSingleRecipient(
         errors: error.issues,
       });
     }
-    next(error);
+    return(res.status(500).json({ message: error}))
   }
 }
 

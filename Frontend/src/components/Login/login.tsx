@@ -1,34 +1,70 @@
 import { useState } from "react";
 import { type SyntheticEvent } from "react";
 import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
+import { useOutletContext } from "react-router-dom";
+
+type JwtPayload = {
+  id: number;
+  username: string;
+  iat: number;
+  exp: number;
+};
+
+type LoginProps = {
+    setLoginStatus: (status: boolean) => void; //function that takes a boolean and doesnt return anything
+}
 
 function Login() {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
+    const { setLoginStatus } = useOutletContext<LoginProps>()
+
     const navigate = useNavigate();
 
     const login = async (e: SyntheticEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        const rsp = await fetch(
-            "https://localhost:3000/log-in",
-            {
-                headers: {
-                "Content-Type": "application/json",
+        try {
+
+            const rsp = await fetch(
+                "http://localhost:3000/log-in",
+                {
+                    headers: {
+                    "Content-Type": "application/json",
+                    },
+                    method: "POST",
+                    body: JSON.stringify({
+                        email,
+                        password,
+                    }),
                 },
-                method: "POST",
-                body: JSON.stringify({
-                    email,
-                    password,
-                }),
-            },
-        );
-        if (rsp.status != 201) {
-        return console.log(rsp.body);
+            );
+
+            if (!rsp.ok) {
+                const text = await rsp.text();
+                console.error(text);
+                return;
+            }
+
+            const data = await rsp.json();
+
+            if (data.message === "Successfully logged in") {
+                const decoded = jwtDecode<JwtPayload>(data.token);
+                sessionStorage.setItem("token", data.token);
+                sessionStorage.setItem("loggedUser", decoded.username);
+                setLoginStatus(true);
+            }
+
+            navigate("/");
+
+        } catch (err) {
+            console.error(err)
         }
-        navigate("/Leaderboard");
+            
+        
     };
 
     const backHome = () => {
