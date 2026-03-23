@@ -37,7 +37,7 @@ function Login() {
     
 
     return(
-        <div>
+        <div className="login">
             <form action="" onSubmit={login}>
                 <label htmlFor="email">Email: </label>
                 <input type="text" onChange={(e) => {setEmail(e.target.value)}}/>
@@ -45,6 +45,7 @@ function Login() {
                 <input type="password" onChange={(e) => {setPassword(e.target.value)}}/>
                 <button type="submit">Submit</button>
             </form>
+            <button onClick={backHome}>Back</button>
         </div>
     )
 }

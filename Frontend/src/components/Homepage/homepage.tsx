@@ -1,15 +1,16 @@
-import Login from "./Login/login"
+import { useOutletContext } from "react-router-dom";
 
 type homepageProps = {
     loginStatus: boolean
 }
 
-function Homepage( { loginStatus }: homepageProps ) {
+function Homepage() {
 
+    const { loginStatus } = useOutletContext<homepageProps>()
 
     if (loginStatus) {
         return (
-            <Login />
+            <></>
         )
     }
 

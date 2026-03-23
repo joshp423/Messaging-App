@@ -44,7 +44,7 @@ function Nav ({ loginStatus, setLoginStatus }:NavProps) {
                     <Link to="/Log-in">Log In</Link>
                 </h3>
                 <h3>
-                    <Link to="/Log-in">Sign Up</Link>
+                    <Link to="/Sign-up">Sign Up</Link>
                 </h3>
 
             </div>
