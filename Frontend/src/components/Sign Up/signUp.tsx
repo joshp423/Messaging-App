@@ -15,7 +15,7 @@ function SignUp() {
         e.preventDefault();
         // setLoading(true);
         const rsp = await fetch(
-        `https://blog-api-backend-jfv8.onrender.com/sign-up`,
+        "http://localhost:3000/sign-up",
         {
             headers: {
             "Content-Type": "application/json",
@@ -31,8 +31,9 @@ function SignUp() {
         // setLoading(false);
         navigate(0);
     }
-    
+
     return(
+
         <div>
             <form onSubmit={signupAPI}>
                 <label htmlFor="username">Username: </label>
@@ -55,6 +56,7 @@ function SignUp() {
                 />
             </form>
         </div>
+
     )
 }
 
