@@ -252,6 +252,7 @@ export const uploadPFP = [
 ];
 
 export async function sendMessageSingleRecipient(req: Request, res: Response) {
+ //check for existing conversation and add otherwise create new
   try {
     const { senderId, receiverId, message, imageUrl } =
       userMessageSingleSchema.parse(req.body);

@@ -27,11 +27,13 @@ model MessagesSolo {
   id Int @id @default(autoincrement())
   senderId Int
   receiverId Int
+  conversationId Int
   message String
   imageUrl String?
   timeSent DateTime @default(now())
   sender Users @relation("SentMessagesSolo", fields: [senderId], references: [id])
   receiver Users @relation("ReceivedMessagesSolo", fields: [receiverId], references: [id])
+  converation Conversations @relation(fields: [conversationId], references: [id])
 }
 
 model MessagesGroup {
@@ -49,6 +51,12 @@ model Groups {
   users Users []
   messages MessagesGroup[]
   name String
+}
+
+model Conversations {
+  id Int @id @default(autoincrement())
+  users Users[]
+  messages MessagesSolo[]
 }
 
 

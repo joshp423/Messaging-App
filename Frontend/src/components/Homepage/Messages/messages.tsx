@@ -40,7 +40,7 @@ function Messages() {
     return (
         <div className="messageLobby">
             <div className="soloMessages">
-
+                {soloMessages?.map((message) => ())}
             </div>
             <div className="groupMessages">
 
