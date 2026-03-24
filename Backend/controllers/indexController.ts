@@ -3,6 +3,9 @@ import { z, ZodError } from "zod";
 import jwt from "jsonwebtoken";
 import type { Request, Response, NextFunction } from "express";
 import prisma from "../lib/prisma.js";
+import multer from "multer";
+import cloudinary from "../lib/cloudinary.js";
+import { type UploadApiResponse } from "cloudinary";
 
 const emailLengthErr = "must be between 1 and 254 characters";
 const lengthErrShort = "must be between 1 and 25 characters";
@@ -73,8 +76,18 @@ const userIdSchema = z.object({
 const userInitialUpdateSchema = z.object({
   email: z.string(),
   pfpUrl: z.string(),
-  blurb: z.string()
-})
+  blurb: z.string(),
+});
+
+const storage = multer.memoryStorage();
+
+const upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: 5 * 1024 * 1024,
+    files: 1,
+  },
+});
 
 export async function signUp(req: Request, res: Response, next: NextFunction) {
   const user = {
@@ -99,9 +112,8 @@ export async function signUp(req: Request, res: Response, next: NextFunction) {
         password: hashedPassword,
       },
     });
-    
-    return res.status(201).json({ message: "Successful Sign-Up" });
 
+    return res.status(201).json({ message: "Successful Sign-Up" });
   } catch (error) {
     if (error instanceof ZodError) {
       //if error is a zod error send back
@@ -170,7 +182,7 @@ export async function logIn(req: Request, res: Response) {
       });
     }
     return res.status(500).json({
-      message: error instanceof Error? error.message: String(error)
+      message: error instanceof Error ? error.message : String(error),
     });
   }
 }
@@ -197,14 +209,9 @@ export async function editProfile(req: Request, res: Response) {
   }
 }
 
-export async function initialProfileUpdate(
-  req: Request,
-  res: Response,
-) {
+export async function initialProfileUpdate(req: Request, res: Response) {
   try {
-   const { email, pfpUrl, blurb } = userInitialUpdateSchema.parse(
-      req.body,
-    );
+    const { email, pfpUrl, blurb } = userInitialUpdateSchema.parse(req.body);
 
     //use updatedProfile
     const updatedProfile = await prisma.users.update({
@@ -219,13 +226,32 @@ export async function initialProfileUpdate(
   } catch (error) {
     return res.status(500).json({ error });
   }
-  
 }
 
-export async function sendMessageSingleRecipient(
-  req: Request,
-  res: Response,
-) {
+export const uploadPFP = [
+  upload.single("uploaded_file"),
+  async (req: Request, res: Response) => {
+    try {
+      const uploadResult = await new Promise<UploadApiResponse>((resolve, reject) => {
+        //convert callback to promise because of async route handler
+        const stream = cloudinary.uploader.upload_stream(
+          { resource_type: "auto" },
+          (error, result) => {
+            if (error) return reject(error);
+            resolve(result as UploadApiResponse);
+          },
+        );
+        stream.end(req.file?.buffer);
+      });
+      
+      return res.status(201).json({ pfpUrl: uploadResult.secure_url})
+    } catch (error) {
+      return res.status(500).json({ message: error })
+    }
+  },
+];
+
+export async function sendMessageSingleRecipient(req: Request, res: Response) {
   try {
     const { senderId, receiverId, message, imageUrl } =
       userMessageSingleSchema.parse(req.body);
@@ -246,7 +272,7 @@ export async function sendMessageSingleRecipient(
         errors: error.issues,
       });
     }
-    return(res.status(500).json({ message: error}))
+    return res.status(500).json({ message: error });
   }
 }
 

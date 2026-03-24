@@ -29,5 +29,6 @@ indexRouter.put(
   indexController.verifyToken,
   indexController.createNewGroup,
 );
-indexRouter.put("/initialProfileUpdate", )
+indexRouter.put("/initialProfileUpdate", indexController.initialProfileUpdate);
+indexRouter.post("/uploadPFP", indexController.uploadPFP);
 export default indexRouter;

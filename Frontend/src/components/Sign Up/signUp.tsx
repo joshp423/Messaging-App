@@ -9,9 +9,37 @@ function SignUp() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [pfp, setPfp] = useState<File | null>(null);
-    const [pfpUrl, setPfpUrl] = useState("");
     const [blurb, setProfileBlurb] = useState("");
     // const [loading, setLoading] = useState(false);
+
+    async function uploadPFP() {
+        if (!pfp) return "";
+
+        const formData = new FormData();
+
+        formData.append("uploaded_file", pfp);
+
+        try {
+            const rsp = await fetch(
+            "http://localhost:3000/uploadPFP",
+            {
+                method: "POST",
+                body: formData
+            });
+
+            const data = await rsp.json();
+
+            if (rsp.status === 201) {
+            return data.pfpUrl;
+            }
+            else {
+                return ""
+            }
+        } catch (error) {
+            console.error("Upload error:", error);
+            return "";
+        } 
+    }
 
     async function signupAPI(e: SyntheticEvent<HTMLFormElement>) {
         e.preventDefault();
@@ -29,58 +57,37 @@ function SignUp() {
                     method: "POST",
                     body: JSON.stringify({ username, email, password }),
                 },
-            );
+            )
 
-            const data = await rsp.json();
 
-            if (data.status === 201) {
-
+            if (rsp.status === 201) {
+                const uploadedUrl = await uploadPFP(); //await other function
                 try {
 
                     const rsp = await fetch(
-                        "http://localhost:3000/edit-profile",
+                        "http://localhost:3000/initialProfileUpdate",
                         {
                             headers: {
                                 "Content-Type": "application/json",
                             },
                             method: "PUT",
-                            body: JSON.stringify({ username, email, password }),
+                            body: JSON.stringify({ email, pfpUrl: uploadedUrl, blurb }),
                         },
                     );
 
-                    const data = await rsp.json();
-
-                    if (data.status === 201) {
-                        uploadAdditionalProfileInfo();
-                        try {
-
-                            await fetch(
-                                "http://localhost:3000/initialProfileUpdate",
-                                {
-                                    headers: {
-                                        "Content-Type": "application/json",
-                                    },
-                                    method: "PUT",
-                                    body: JSON.stringify({ email, pfpUrl, blurb }),
-                                },
-                            );
-
-                        } catch (error) {
-                            console.error(error)
-                        };
+                    if (rsp.status === 201) {
+                        navigate("/");
                     }
 
                 } catch (error) {
                     console.error(error)
                 };
-
-                navigate(0);
-
             }
 
         } catch (error) {
             console.error(error)
         };
+
         // if (rsp.status != 201) {
         // // setLoading(false);
         
@@ -88,30 +95,6 @@ function SignUp() {
         // // setLoading(false);
         // navigate(0);
     }
-
-    async function uploadAdditionalProfileInfo() {
-        if (!pfp) return;
-
-        const formData = new FormData();
-
-        formData.append("uploaded_pfp", pfp);
-
-        const rsp = await fetch(
-            "http://localhost:3000/edit-profile",
-            {
-                method: "POST",
-                body: formData
-            });
-
-        const data = await rsp.json();
-
-        if (data.status === 201) {
-            setPfpUrl(String(data.pfpUrl));
-        }
-        
-        
-    }
-    
 
     return(
 
@@ -139,7 +122,7 @@ function SignUp() {
                 <input type="file" className="form-control-file" name="uploaded_file" id="fileInput" onChange={(e) => {setPfp(e.target.files?.[0] || null)}}/> 
                 <label htmlFor="profileBlurb">Profile Summary: </label>
                 <input type="text" name="profileBlurb" onChange={(e) => {setProfileBlurb(e.target.value)}}/>
-                <button type="submit"></button>
+                <button type="submit">Submit</button>
             </form>
         </div>
 
