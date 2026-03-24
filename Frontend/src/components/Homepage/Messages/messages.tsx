@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import type { messageGroup } from "../../../types/messageGroup"
 import type { messageSolo } from "../../../types/messageSolo"
+import Conversation from "./conversation/conversation"
 
 function Messages() {
 
@@ -40,7 +41,9 @@ function Messages() {
     return (
         <div className="messageLobby">
             <div className="soloMessages">
-                {soloMessages?.map((message) => ())}
+                {soloMessages?.map((conversation) => (
+                    <Conversation key={conversation.id} conversation={conversation}/>
+                ))}
             </div>
             <div className="groupMessages">
 

@@ -33,7 +33,7 @@ model MessagesSolo {
   timeSent DateTime @default(now())
   sender Users @relation("SentMessagesSolo", fields: [senderId], references: [id])
   receiver Users @relation("ReceivedMessagesSolo", fields: [receiverId], references: [id])
-  converation Conversations @relation(fields: [conversationId], references: [id])
+  conversation Conversations @relation(fields: [conversationId], references: [id])
 }
 
 model MessagesGroup {

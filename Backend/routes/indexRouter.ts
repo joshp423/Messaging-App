@@ -22,7 +22,7 @@ indexRouter.post(
 indexRouter.get(
   "/receive-messages",
   indexController.verifyToken,
-  indexController.receiveMessages,
+  indexController.getUserConversations,
 );
 indexRouter.put(
   "/create-group",

@@ -367,31 +367,47 @@ export function verifyToken(
   }
 }
 
-export async function receiveMessages(req: Request, res: Response) {
+export async function getUserConversations (req: Request, res: Response) {
   try {
     const { email } = userEmailSchema.parse(req.body);
 
-    const messagesSolo = await prisma.messagesSolo.findMany({
+    const conversationsSolo = await prisma.conversations.findMany({
       where: {
-        email: email
+        users: {
+          some: { //where at least one matches
+            email: email,
+          },
+        },
       },
-      orderBy: {
-        timeSent: "asc",
+      include: {
+        messages: {
+          orderBy: {
+            timeSent: "asc",
+          },
+        },
       },
     });
 
-    const messagesGroup = await prisma.messagesGroup.findMany({
+    const groups = await prisma.groups.findMany({
       where: {
-        email: email
+        users: {
+          some: { //where at least one matches
+            email: email,
+          },
+        },
       },
-      orderBy: {
-        timeSent: "asc",
+      include: {
+        messages: {
+          orderBy: {
+            timeSent: "asc",
+          },
+        },
       },
     });
 
     return res.status(200).json({
-      messagesSolo,
-      messagesGroup,
+      conversationsSolo,
+      groups,
     });
   } catch (error) {
     return res.status(500).json({ error });
