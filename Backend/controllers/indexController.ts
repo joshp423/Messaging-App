@@ -70,6 +70,12 @@ const userIdSchema = z.object({
   id: z.number(),
 });
 
+const userInitialUpdateSchema = z.object({
+  email: z.string(),
+  pfpUrl: z.string(),
+  blurb: z.string()
+})
+
 export async function signUp(req: Request, res: Response, next: NextFunction) {
   const user = {
     username: req.body["username"],
@@ -175,6 +181,7 @@ export async function editProfile(req: Request, res: Response) {
       req.body,
     );
 
+    //use updatedProfile
     const updatedProfile = await prisma.users.update({
       where: { id },
       data: {
@@ -190,10 +197,34 @@ export async function editProfile(req: Request, res: Response) {
   }
 }
 
+export async function initialProfileUpdate(
+  req: Request,
+  res: Response,
+) {
+  try {
+   const { email, pfpUrl, blurb } = userInitialUpdateSchema.parse(
+      req.body,
+    );
+
+    //use updatedProfile
+    const updatedProfile = await prisma.users.update({
+      where: { email },
+      data: {
+        pfpUrl,
+        blurb,
+      },
+    });
+
+    return res.status(201).json({ message: "successfully updated profile" });
+  } catch (error) {
+    return res.status(500).json({ error });
+  }
+  
+}
+
 export async function sendMessageSingleRecipient(
   req: Request,
   res: Response,
-  next: NextFunction,
 ) {
   try {
     const { senderId, receiverId, message, imageUrl } =

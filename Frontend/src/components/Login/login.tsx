@@ -43,12 +43,6 @@ function Login() {
                 },
             );
 
-            if (!rsp.ok) {
-                const text = await rsp.text();
-                console.error(text);
-                return;
-            }
-
             const data = await rsp.json();
 
             if (data.message === "Successfully logged in") {

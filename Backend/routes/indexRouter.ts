@@ -29,4 +29,5 @@ indexRouter.put(
   indexController.verifyToken,
   indexController.createNewGroup,
 );
+indexRouter.put("/initialProfileUpdate", )
 export default indexRouter;
