@@ -69,8 +69,8 @@ const userGroupSchema = z.object({
     .max(25, { message: `Group name: ${lengthErrShort}` }),
 });
 
-const userIdSchema = z.object({
-  id: z.number(),
+const userEmailSchema = z.object({
+  email: z.string(),
 });
 
 const userInitialUpdateSchema = z.object({
@@ -159,7 +159,7 @@ export async function logIn(req: Request, res: Response) {
     }
 
     jwt.sign(
-      { id: userCheck.id, username: userCheck.username },
+      { id: userCheck.id, email: userCheck.email },
       secret,
       { expiresIn: "1w" },
       function (err, token) {
@@ -170,7 +170,7 @@ export async function logIn(req: Request, res: Response) {
         return res.json({
           message: "Successfully logged in",
           token,
-          username: userCheck.username,
+          email: userCheck.email,
         });
       },
     );
@@ -368,15 +368,21 @@ export function verifyToken(
 
 export async function receiveMessages(req: Request, res: Response) {
   try {
-    const { id } = userIdSchema.parse(req.body);
+    const { email } = userEmailSchema.parse(req.body);
 
     const messagesSolo = await prisma.messagesSolo.findMany({
+      where: {
+        email: email
+      },
       orderBy: {
         timeSent: "asc",
       },
     });
 
     const messagesGroup = await prisma.messagesGroup.findMany({
+      where: {
+        email: email
+      },
       orderBy: {
         timeSent: "asc",
       },
