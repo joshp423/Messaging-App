@@ -2,28 +2,17 @@ import { useOutletContext } from "react-router-dom";
 import Messages from "./Messages/messages";
 
 type homepageProps = {
-    loginStatus: boolean
-}
+  loginStatus: boolean;
+};
 
 function Homepage() {
+  const { loginStatus } = useOutletContext<homepageProps>();
 
-    const { loginStatus } = useOutletContext<homepageProps>()
+  if (loginStatus) {
+    return <Messages />;
+  }
 
-    if (loginStatus) {
-
-        return (
-            <Messages />
-        )
-    }
-
-    return (
-        <div className='hpMain'>
-            
-        </div>
-    )
-    
+  return <div className="hpMain"></div>;
 }
 
-export default Homepage
-
-    
+export default Homepage;

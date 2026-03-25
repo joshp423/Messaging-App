@@ -9,8 +9,8 @@ const routes = [
     element: <App />,
     children: [
       { index: true, element: <Homepage /> },
-      { path: "/Log-in", element: <Login />},
-      { path: "/Sign-up", element: <SignUp />},
+      { path: "/Log-in", element: <Login /> },
+      { path: "/Sign-up", element: <SignUp /> },
     ],
   },
 ];

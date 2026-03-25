@@ -413,3 +413,23 @@ export async function getUserConversations (req: Request, res: Response) {
     return res.status(500).json({ error });
   }
 }
+
+export async function getSoloUsernames(
+  req: Request,
+  res: Response,
+) {
+  try {
+    const { senderId, receiverId } =
+      userMessageSingleSchema.parse(req.body);
+
+    const users = await prisma.users.findMany({
+      where: { id: senderId || receiverId }
+    });
+    return res.status(200).json({
+      users
+    });
+
+  } catch (error) {
+    return res.status(500).json({ error });
+  }
+}
