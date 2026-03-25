@@ -32,7 +32,7 @@ function Messages() {
     }
     getMessages();
   }, []);
-
+  // think about if we need userids in groups and conversations might be able to pull usernames anyway with prisma
   return (
     <div className="messageLobby">
       <div className="soloMessages">
@@ -40,7 +40,9 @@ function Messages() {
           <Conversation key={conversation.id} conversation={conversation} />
         ))}
       </div>
-      <div className="groupMessages"></div>
+      <div className="groupMessages">
+        
+      </div>
     </div>
   );
 }
