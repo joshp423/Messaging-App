@@ -384,6 +384,13 @@ export async function getUserConversations (req: Request, res: Response) {
           orderBy: {
             timeSent: "asc",
           },
+          include: {
+            sender: {
+              select: {
+                username: true,
+              }
+            }
+          }
         },
       },
     });
@@ -402,7 +409,7 @@ export async function getUserConversations (req: Request, res: Response) {
             timeSent: "asc",
           },
           include: {
-            sender: {
+            users: {
               select: {
                 username: true,
               }

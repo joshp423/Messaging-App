@@ -19,7 +19,7 @@ indexRouter.post(
   indexController.verifyToken,
   indexController.sendMessageGroupRecipient,
 );
-indexRouter.get(
+indexRouter.post(
   "/receive-messages",
   indexController.verifyToken,
   indexController.getUserConversations,

@@ -21,6 +21,7 @@ model Users {
   sentMessagesSolo MessagesSolo[] @relation("SentMessagesSolo")
   receivedMessagesSolo MessagesSolo[] @relation("ReceivedMessagesSolo")
   groups Groups []
+  conversations Conversations[]
 }
 
 model MessagesSolo {
@@ -41,6 +42,7 @@ model MessagesGroup {
   senderId Int
   groupId Int
   group Groups @relation(fields: [groupId], references: [id])
+  sender
   message String
   timeSent DateTime @default(now())
   imageUrl String?
