@@ -1,7 +1,7 @@
 import type { conversation } from "../../../../types/conversation";
 import { useEffect, useState } from "react";
 import Message from "./Message/message";
-
+import NewMessage from "./NewMessage/newMessage";
 
 type conversationProps = {
   conversation: conversation;
@@ -9,7 +9,14 @@ type conversationProps = {
 
 function Conversation({ conversation }: conversationProps) {
 
-  const [usernames, setUsernames] = useState([])
+  const [usernames, setUsernames] = useState([]);
+  const oppositeUser = ""
+  for (user in usernames) {
+    if (user === sessionStorage.getItem("loggedUser")) {
+      oppositeUser = user
+    }
+  }
+
   useEffect(() => {
     async function getUsernames() {
       try {
@@ -41,6 +48,7 @@ function Conversation({ conversation }: conversationProps) {
       {conversation?.messages.map((message) => (
         <Message key={message.id} message={message} usernames={usernames}/>
       ))}
+      <NewMessage />
     </div>
   );
 }
