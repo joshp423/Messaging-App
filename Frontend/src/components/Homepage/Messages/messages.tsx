@@ -15,16 +15,16 @@ function Messages() {
             "Content-Type": "application/json",
             Authorization: `Bearer ${sessionStorage.getItem("token")}`,
           },
-          method: "GET",
+          method: "POST",
           body: JSON.stringify({
-            id: sessionStorage.getItem("loggedUser"),
+            email: sessionStorage.getItem("loggedUser"),
           }),
         });
         if (rsp.status === 200) {
           const data = await rsp.json();
           setSoloMessages(data.messagesSolo);
           setGroupMessages(data.messagesGroup);
-          console.log(soloMessages, groupMessages);
+          console.log(data.messagesSolo, data.messagesGroup);
         }
       } catch (error) {
         console.error(error);
@@ -33,6 +33,7 @@ function Messages() {
     getMessages();
   }, []);
   // think about if we need userids in groups and conversations might be able to pull usernames anyway with prisma
+  
   return (
     <div className="messageLobby">
       <div className="soloMessages">

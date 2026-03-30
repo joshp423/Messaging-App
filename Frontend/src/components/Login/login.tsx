@@ -6,6 +6,7 @@ import { useOutletContext } from "react-router-dom";
 
 type JwtPayload = {
   id: number;
+  email: string;
   username: string;
   iat: number;
   exp: number;
@@ -44,6 +45,7 @@ function Login() {
         const decoded = jwtDecode<JwtPayload>(data.token);
         sessionStorage.setItem("token", data.token);
         sessionStorage.setItem("loggedUser", decoded.email);
+        console.log(sessionStorage.getItem("loggedUser"))
         setLoginStatus(true);
       }
 

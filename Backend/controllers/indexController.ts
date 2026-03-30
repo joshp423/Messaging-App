@@ -52,6 +52,7 @@ const userMessageSingleSchema = z.object({
   receiverId: z.number(),
   message: z.string().trim(),
   imageUrl: z.string(),
+  conversationId: z.number()
 });
 
 const userMessageGroupSchema = z.object({
@@ -254,7 +255,7 @@ export const uploadPFP = [
 export async function sendMessageSingleRecipient(req: Request, res: Response) {
  //check for existing conversation and add otherwise create new
   try {
-    const { senderId, receiverId, message, imageUrl } =
+    const { senderId, receiverId, message, imageUrl, conversationId } =
       userMessageSingleSchema.parse(req.body);
 
     await prisma.messagesSolo.create({
@@ -263,6 +264,7 @@ export async function sendMessageSingleRecipient(req: Request, res: Response) {
         receiverId,
         message,
         imageUrl,
+        conversationId
       },
     });
     return res.status(201).json({ message: "Message sent successfully" });
@@ -381,6 +383,7 @@ export async function getUserConversations (req: Request, res: Response) {
       },
       include: {
         messages: {
+          take: 1,
           orderBy: {
             timeSent: "asc",
           },
@@ -405,11 +408,12 @@ export async function getUserConversations (req: Request, res: Response) {
       },
       include: {
         messages: {
+          take: 1,
           orderBy: {
             timeSent: "asc",
           },
           include: {
-            users: {
+            sender: {
               select: {
                 username: true,
               }
@@ -424,6 +428,7 @@ export async function getUserConversations (req: Request, res: Response) {
       groups,
     });
   } catch (error) {
+    console.error("getUserConversations error:", error);
     return res.status(500).json({ error });
   }
 }
