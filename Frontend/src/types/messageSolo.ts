@@ -5,6 +5,9 @@ interface messageSolo {
   message: string;
   imageUrl: string;
   timeSent: string;
+  sender: {
+    username: string;
+  }
 }
 
 export type { messageSolo };

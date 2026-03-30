@@ -70,8 +70,8 @@ const userGroupSchema = z.object({
     .max(25, { message: `Group name: ${lengthErrShort}` }),
 });
 
-const userEmailSchema = z.object({
-  email: z.string(),
+const userIDSchema = z.object({
+  id: z.number(),
 });
 
 const userInitialUpdateSchema = z.object({
@@ -258,6 +258,8 @@ export async function sendMessageSingleRecipient(req: Request, res: Response) {
     const { senderId, receiverId, message, imageUrl, conversationId } =
       userMessageSingleSchema.parse(req.body);
 
+    
+
     await prisma.messagesSolo.create({
       data: {
         senderId,
@@ -371,38 +373,33 @@ export function verifyToken(
 
 export async function getUserConversations (req: Request, res: Response) {
   try {
-    const { email } = userEmailSchema.parse(req.body);
+    const { id } = userIDSchema.parse(req.body);
 
-    const conversationsSolo = await prisma.conversations.findMany({
+    const conversationsSolo = await prisma.conversationsSolo.findMany({
       where: {
-        users: {
-          some: { //where at least one matches
-            email: email,
-          },
-        },
+        OR: [
+          { userA: id },
+          { userB: id },
+        ],
       },
       include: {
         messages: {
-          take: 1,
-          orderBy: {
-            timeSent: "asc",
-          },
+          take: 1, //just one message for preview
+          orderBy: { timeSent: "desc" }, // latest message first
           include: {
             sender: {
-              select: {
-                username: true,
-              }
-            }
-          }
+              select: { username: true },
+            },
+          },
         },
-      },
-    });
+      }
+  });
 
     const groups = await prisma.groups.findMany({
       where: {
         users: {
-          some: { //where at least one matches
-            email: email,
+          some: { 
+            id,
           },
         },
       },

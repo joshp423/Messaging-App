@@ -20,9 +20,10 @@ model Users {
   blurb String?
   sentMessagesSolo MessagesSolo[] @relation("SentMessagesSolo")
   receivedMessagesSolo MessagesSolo[] @relation("ReceivedMessagesSolo")
-  groups Groups []
-  conversations Conversations[]
-  sender MessagesGroup[]
+  groups Groups[] @relation("groups")
+  conversationsA ConversationsSolo[] @relation("userA") //must combine A and B in queries
+  conversationsB ConversationsSolo[] @relation("userB")
+  sender MessagesGroup[] @relation("sender")
 }
 
 model MessagesSolo {
@@ -35,7 +36,7 @@ model MessagesSolo {
   timeSent DateTime @default(now())
   sender Users @relation("SentMessagesSolo", fields: [senderId], references: [id])
   receiver Users @relation("ReceivedMessagesSolo", fields: [receiverId], references: [id])
-  conversation Conversations @relation(fields: [conversationId], references: [id])
+  conversation ConversationsSolo @relation("messages",fields: [conversationId], references: [id])
 }
 
 model MessagesGroup {
@@ -43,7 +44,7 @@ model MessagesGroup {
   senderId Int
   groupId Int
   group Groups @relation(fields: [groupId], references: [id])
-  sender Users @relation(fields: [senderId], references: [id])
+  sender Users @relation("sender", fields: [senderId], references: [id])
   message String
   timeSent DateTime @default(now())
   imageUrl String?
@@ -51,15 +52,16 @@ model MessagesGroup {
 
 model Groups {
   id Int @id @default(autoincrement())
-  users Users []
+  users Users[] @relation("groups")
   messages MessagesGroup[]
   name String
 }
 
-model Conversations {
+model ConversationsSolo {
   id Int @id @default(autoincrement())
-  users Users[]
-  messages MessagesSolo[]
+  userA Int //Limit to 2
+  userB Int
+  user1 Users @relation("userA", fields: [userA], references: [id])
+  user2 Users @relation("userB", fields: [userB], references: [id])
+  messages MessagesSolo[] @relation("messages")
 }
-
-

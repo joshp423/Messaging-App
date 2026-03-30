@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import type { messageGroup } from "../../../types/messageGroup";
-import type { conversation } from "../../../types/conversation";
-import Conversation from "./Conversation/conversation";
+import ConversationPreview from "./Conversation/conversationPreview";
+import type { conversationPreview } from "../../../types/conversationPreview";
 
 function Messages() {
-  const [soloMessages, setSoloMessages] = useState<conversation[]>([]);
+  const [soloMessages, setSoloMessages] = useState<conversationPreview[]>([]);
   const [groupMessages, setGroupMessages] = useState<messageGroup[]>([]);
 
   useEffect(() => {
@@ -17,13 +17,13 @@ function Messages() {
           },
           method: "POST",
           body: JSON.stringify({
-            email: sessionStorage.getItem("loggedUser"),
+            id: Number(sessionStorage.getItem("loggedUserID")),
           }),
         });
         if (rsp.status === 200) {
           const data = await rsp.json();
-          setSoloMessages(data.messagesSolo);
-          setGroupMessages(data.messagesGroup);
+          setSoloMessages(data.conversationsSolo);
+          setGroupMessages(data.groups);
           console.log(data.messagesSolo, data.messagesGroup);
         }
       } catch (error) {
@@ -37,8 +37,8 @@ function Messages() {
   return (
     <div className="messageLobby">
       <div className="soloMessages">
-        {soloMessages?.map((conversation) => (
-          <Conversation key={conversation.id} conversation={conversation} />
+        {soloMessages.map((conversation) => (
+          <ConversationPreview key={conversation.id} conversationMessage={conversation} />
         ))}
       </div>
       <div className="groupMessages">

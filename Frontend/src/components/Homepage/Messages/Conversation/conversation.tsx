@@ -10,8 +10,8 @@ type conversationProps = {
 function Conversation({ conversation }: conversationProps) {
 
   const [usernames, setUsernames] = useState([]);
-  const oppositeUser = ""
-  for (user in usernames) {
+  let oppositeUser = ""
+  for (const user in usernames) {
     if (user === sessionStorage.getItem("loggedUser")) {
       oppositeUser = user
     }
@@ -46,7 +46,7 @@ function Conversation({ conversation }: conversationProps) {
   return (
     <div className="conversation">
       {conversation?.messages.map((message) => (
-        <Message key={message.id} message={message} usernames={usernames}/>
+        <Message key={message.id} message={message} sentUser={oppositeUser}/>
       ))}
       <NewMessage />
     </div>
