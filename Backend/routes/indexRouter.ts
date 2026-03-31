@@ -35,8 +35,8 @@ indexRouter.get("/get-usernames", indexController.verifyToken,
 indexController.getSoloUsernames);
 indexRouter.post("/uploadPFP", indexController.uploadPFP);
 
-indexRouter.get("/conversation/:id", indexController.verifyToken, indexController.getSoloConversation);
-indexRouter.get("/groupConversation/:id", indexController.verifyToken, indexController.getGroupConversation);
+indexRouter.get("/users/:userId/conversations/:conversationId", indexController.verifyToken, indexController.getSoloConversation);
+indexRouter.get("/users/:userId/groupConversations/:conversationId", indexController.verifyToken, indexController.getGroupConversation);
 
 
 export default indexRouter;

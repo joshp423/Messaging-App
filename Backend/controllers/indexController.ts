@@ -460,7 +460,10 @@ export async function getSoloUsernames(
 export async function getSoloConversation (req: Request, res: Response) {
 
   try {
-    const { userId, conversationId } = userConversationSchema.parse(req.body);
+    const { userId, conversationId } = userConversationSchema.parse({
+      userId: Number(req.params.userId),
+      conversationId: Number(req.params.conversationId)
+    });
 
     const conversation = await prisma.conversationsSolo.findMany({
       where: {
@@ -497,30 +500,7 @@ export async function getSoloConversation (req: Request, res: Response) {
 
 export async function getGroupConversation (req: Request, res: Response) {
   try {
-    const { id } = userIdSchema.parse(req.params.userId);
-
-    const conversationsSolo = await prisma.conversationsSolo.findMany({
-      where: {
-        OR: [
-          { userA: id },
-          { userB: id },
-        ],
-      },
-      include: {
-        messages: {
-          take: 1, //just one message for preview
-          orderBy: { timeSent: "desc" }, // latest message first
-          include: {
-            sender: {
-              select: { username: true },
-            },
-            receiver: {
-              select: { username: true },
-            }
-          },
-        },
-      }
-  });
+    const { id } = userIdSchema.parse({id: Number(req.params.conversationId)});
 
     const groups = await prisma.groups.findMany({
       where: {
@@ -532,7 +512,6 @@ export async function getGroupConversation (req: Request, res: Response) {
       },
       include: {
         messages: {
-          take: 1,
           orderBy: {
             timeSent: "asc",
           },
@@ -548,8 +527,7 @@ export async function getGroupConversation (req: Request, res: Response) {
     });
 
     return res.status(200).json({
-      conversationsSolo,
-      groups,
+      groups
     });
   } catch (error) {
     console.error("getUserConversations error:", error);
