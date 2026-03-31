@@ -19,8 +19,8 @@ indexRouter.post(
   indexController.verifyToken,
   indexController.sendMessageGroupRecipient,
 );
-indexRouter.post(
-  "/receive-message-previews",
+indexRouter.get(
+  "/users/:userId/conversations",
   indexController.verifyToken,
   indexController.getUserConversations,
 );
@@ -35,8 +35,8 @@ indexRouter.get("/get-usernames", indexController.verifyToken,
 indexController.getSoloUsernames);
 indexRouter.post("/uploadPFP", indexController.uploadPFP);
 
-indexRouter.post("/conversation/:id", indexController.verifyToken, indexController.getSoloConversation);
-indexRouter.post("/groupConversation/:id", indexController.verifyToken, indexController.getGroupConversation);
+indexRouter.get("/conversation/:id", indexController.verifyToken, indexController.getSoloConversation);
+indexRouter.get("/groupConversation/:id", indexController.verifyToken, indexController.getGroupConversation);
 
 
 export default indexRouter;

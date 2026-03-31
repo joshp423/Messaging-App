@@ -14,7 +14,7 @@ function Conversation() {
   useEffect (() => {
     async function getConversation() {
      try {
-        const rsp = await fetch(`http://localhost:3000/conversation/${conversationId}`, {
+        const rsp = await fetch(`http://localhost:3000/view-conversation`, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${sessionStorage.getItem("token")}`,

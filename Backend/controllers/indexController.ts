@@ -70,7 +70,7 @@ const userGroupSchema = z.object({
     .max(25, { message: `Group name: ${lengthErrShort}` }),
 });
 
-const userIDSchema = z.object({
+const userIdSchema = z.object({
   id: z.number(),
 });
 
@@ -377,7 +377,7 @@ export function verifyToken(
 
 export async function getUserConversations (req: Request, res: Response) {
   try {
-    const { id } = userIDSchema.parse(req.body);
+    const { id } = userIdSchema.parse({id: Number(req.params.userId)});
 
     const conversationsSolo = await prisma.conversationsSolo.findMany({
       where: {
@@ -497,7 +497,7 @@ export async function getSoloConversation (req: Request, res: Response) {
 
 export async function getGroupConversation (req: Request, res: Response) {
   try {
-    const { id } = userIDSchema.parse(req.body);
+    const { id } = userIdSchema.parse(req.params.userId);
 
     const conversationsSolo = await prisma.conversationsSolo.findMany({
       where: {

@@ -11,15 +11,12 @@ function Messages() {
   useEffect(() => {
     async function getMessages() {
       try {
-        const rsp = await fetch("http://localhost:3000/receive-message-previews", {
+        const rsp = await fetch(`http://localhost:3000/users/${sessionStorage.getItem("loggedUserId")}/conversations`, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${sessionStorage.getItem("token")}`,
           },
-          method: "POST",
-          body: JSON.stringify({
-            id: Number(sessionStorage.getItem("loggedUserID")),
-          }),
+          method: "GET",
         });
         if (rsp.status === 200) {
           const data = await rsp.json();
