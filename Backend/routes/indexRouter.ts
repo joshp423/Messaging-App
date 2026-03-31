@@ -31,12 +31,22 @@ indexRouter.put(
 );
 indexRouter.put("/initialProfileUpdate", indexController.initialProfileUpdate);
 indexRouter.post("/uploadPFP", indexController.uploadPFP);
-indexRouter.get("/get-usernames", indexController.verifyToken,
-indexController.getSoloUsernames);
+indexRouter.get(
+  "/get-usernames",
+  indexController.verifyToken,
+  indexController.getSoloUsernames,
+);
 indexRouter.post("/uploadPFP", indexController.uploadPFP);
 
-indexRouter.get("/users/:userId/conversations/:conversationId", indexController.verifyToken, indexController.getSoloConversation);
-indexRouter.get("/users/:userId/groupConversations/:conversationId", indexController.verifyToken, indexController.getGroupConversation);
-
+indexRouter.get(
+  "/users/:userId/conversations/:conversationId",
+  indexController.verifyToken,
+  indexController.getSoloConversation,
+);
+indexRouter.get(
+  "/users/:userId/groupConversations/:conversationId",
+  indexController.verifyToken,
+  indexController.getGroupConversation,
+);
 
 export default indexRouter;

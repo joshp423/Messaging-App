@@ -1,7 +1,7 @@
-import type { messageSolo } from "../../../../../types/messageSolo";
+import type { MessageSolo } from "../../../../../types/messageSolo";
 
 type messageProps = {
-  message: messageSolo;
+  message: MessageSolo;
 };
 
 function Message({ message }: messageProps) {
@@ -9,19 +9,19 @@ function Message({ message }: messageProps) {
     return (
       <div className="message">
         <h3>
-          `${message.sender.username}: ${message.message}`
+          {message.sender.username}: {message.message}
         </h3>
         <img src={message.imageUrl} alt="message image" />
-        <p>`${message.timeSent}`</p>
+        <p>{message.timeSent}</p>
       </div>
     );
   }
   return (
     <div className="message">
       <h3>
-        `${message.sender.username}: ${message.message}`
+        {message.sender.username}: {message.message}
       </h3>
-      <p>`${message.timeSent}`</p>
+      <p>{message.timeSent}</p>
     </div>
   );
 }

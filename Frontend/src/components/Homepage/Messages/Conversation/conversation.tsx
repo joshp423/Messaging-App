@@ -12,6 +12,8 @@ function Conversation() {
 
   const userId = sessionStorage.getItem("loggedUserId");
 
+  const username = sessionStorage.getItem("loggedUsername");
+
   useEffect(() => {
     async function getConversation() {
       try {
@@ -27,7 +29,7 @@ function Conversation() {
         );
         if (rsp.status === 200) {
           const data = await rsp.json();
-          setSelectedConversation(data.conversation);
+          setSelectedConversation(data.conversation[0]);
           console.log(data.conversation);
         }
       } catch (error) {
@@ -42,7 +44,13 @@ function Conversation() {
       {selectedConversation?.messages.map((message) => (
         <Message key={message.id} message={message} />
       ))}
-      <NewMessage />
+      <NewMessage
+        conversationPartner={
+          selectedConversation?.messages[0].receiver.username === username
+            ? username
+            : selectedConversation?.messages[0].receiver.username || ""
+        }
+      />
     </div>
   );
 }

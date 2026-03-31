@@ -52,7 +52,7 @@ const userMessageSingleSchema = z.object({
   receiverId: z.number(),
   message: z.string().trim(),
   imageUrl: z.string(),
-  conversationId: z.number()
+  conversationId: z.number(),
 });
 
 const userMessageGroupSchema = z.object({
@@ -82,7 +82,7 @@ const userInitialUpdateSchema = z.object({
 
 const userConversationSchema = z.object({
   userId: z.number(),
-  conversationId: z.number()
+  conversationId: z.number(),
 });
 
 const storage = multer.memoryStorage();
@@ -237,32 +237,32 @@ export const uploadPFP = [
   upload.single("uploaded_file"),
   async (req: Request, res: Response) => {
     try {
-      const uploadResult = await new Promise<UploadApiResponse>((resolve, reject) => {
-        //convert callback to promise because of async route handler
-        const stream = cloudinary.uploader.upload_stream(
-          { resource_type: "auto" },
-          (error, result) => {
-            if (error) return reject(error);
-            resolve(result as UploadApiResponse);
-          },
-        );
-        stream.end(req.file?.buffer);
-      });
-      
-      return res.status(201).json({ pfpUrl: uploadResult.secure_url})
+      const uploadResult = await new Promise<UploadApiResponse>(
+        (resolve, reject) => {
+          //convert callback to promise because of async route handler
+          const stream = cloudinary.uploader.upload_stream(
+            { resource_type: "auto" },
+            (error, result) => {
+              if (error) return reject(error);
+              resolve(result as UploadApiResponse);
+            },
+          );
+          stream.end(req.file?.buffer);
+        },
+      );
+
+      return res.status(201).json({ pfpUrl: uploadResult.secure_url });
     } catch (error) {
-      return res.status(500).json({ message: error })
+      return res.status(500).json({ message: error });
     }
   },
 ];
 
 export async function sendMessageSingleRecipient(req: Request, res: Response) {
- //check for existing conversation and add otherwise create new
+  //check for existing conversation and add otherwise create new
   try {
     const { senderId, receiverId, message, imageUrl, conversationId } =
       userMessageSingleSchema.parse(req.body);
-
-    
 
     await prisma.messagesSolo.create({
       data: {
@@ -270,7 +270,7 @@ export async function sendMessageSingleRecipient(req: Request, res: Response) {
         receiverId,
         message,
         imageUrl,
-        conversationId
+        conversationId,
       },
     });
     return res.status(201).json({ message: "Message sent successfully" });
@@ -375,16 +375,13 @@ export function verifyToken(
   }
 }
 
-export async function getUserConversations (req: Request, res: Response) {
+export async function getUserConversations(req: Request, res: Response) {
   try {
-    const { id } = userIdSchema.parse({id: Number(req.params.userId)});
+    const { id } = userIdSchema.parse({ id: Number(req.params.userId) });
 
     const conversationsSolo = await prisma.conversationsSolo.findMany({
       where: {
-        OR: [
-          { userA: id },
-          { userB: id },
-        ],
+        OR: [{ userA: id }, { userB: id }],
       },
       include: {
         messages: {
@@ -396,16 +393,16 @@ export async function getUserConversations (req: Request, res: Response) {
             },
             receiver: {
               select: { username: true },
-            }
+            },
           },
         },
-      }
-  });
+      },
+    });
 
     const groups = await prisma.groups.findMany({
       where: {
         users: {
-          some: { 
+          some: {
             id,
           },
         },
@@ -420,9 +417,9 @@ export async function getUserConversations (req: Request, res: Response) {
             sender: {
               select: {
                 username: true,
-              }
-            }
-          }
+              },
+            },
+          },
         },
       },
     });
@@ -437,41 +434,32 @@ export async function getUserConversations (req: Request, res: Response) {
   }
 }
 
-export async function getSoloUsernames(
-  req: Request,
-  res: Response,
-) {
+export async function getSoloUsernames(req: Request, res: Response) {
   try {
-    const { senderId, receiverId } =
-      userMessageSingleSchema.parse(req.body);
+    const { senderId, receiverId } = userMessageSingleSchema.parse(req.body);
 
     const users = await prisma.users.findMany({
-      where: { id: senderId || receiverId }
+      where: { id: senderId || receiverId },
     });
     return res.status(200).json({
-      users
+      users,
     });
-
   } catch (error) {
     return res.status(500).json({ error });
   }
 }
 
-export async function getSoloConversation (req: Request, res: Response) {
-
+export async function getSoloConversation(req: Request, res: Response) {
   try {
     const { userId, conversationId } = userConversationSchema.parse({
       userId: Number(req.params.userId),
-      conversationId: Number(req.params.conversationId)
+      conversationId: Number(req.params.conversationId),
     });
 
     const conversation = await prisma.conversationsSolo.findMany({
       where: {
-        OR: [
-          { userA: userId },
-          { userB: userId },
-        ],
-        AND: { id: conversationId }
+        OR: [{ userA: userId }, { userB: userId }],
+        AND: { id: conversationId },
       },
       include: {
         messages: {
@@ -482,11 +470,11 @@ export async function getSoloConversation (req: Request, res: Response) {
             },
             receiver: {
               select: { username: true },
-            }
+            },
           },
         },
-      }
-  });
+      },
+    });
 
     return res.status(200).json({
       conversation,
@@ -497,15 +485,16 @@ export async function getSoloConversation (req: Request, res: Response) {
   }
 }
 
-
-export async function getGroupConversation (req: Request, res: Response) {
+export async function getGroupConversation(req: Request, res: Response) {
   try {
-    const { id } = userIdSchema.parse({id: Number(req.params.conversationId)});
+    const { id } = userIdSchema.parse({
+      id: Number(req.params.conversationId),
+    });
 
     const groups = await prisma.groups.findMany({
       where: {
         users: {
-          some: { 
+          some: {
             id,
           },
         },
@@ -519,15 +508,15 @@ export async function getGroupConversation (req: Request, res: Response) {
             sender: {
               select: {
                 username: true,
-              }
-            }
-          }
+              },
+            },
+          },
         },
       },
     });
 
     return res.status(200).json({
-      groups
+      groups,
     });
   } catch (error) {
     console.error("getUserConversations error:", error);
