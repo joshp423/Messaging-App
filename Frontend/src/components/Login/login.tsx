@@ -45,8 +45,8 @@ function Login() {
         const decoded = jwtDecode<JwtPayload>(data.token);
         sessionStorage.setItem("token", data.token);
         sessionStorage.setItem("loggedUsername", decoded.username);
-        sessionStorage.setItem("loggedUserID", String(decoded.id));
-        console.log(sessionStorage.getItem("loggedUserID"))
+        sessionStorage.setItem("loggedUserId", String(decoded.id));
+        console.log(sessionStorage.getItem("loggedUserId"))
         setLoginStatus(true);
       }
 

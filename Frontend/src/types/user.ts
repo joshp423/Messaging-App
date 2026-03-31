@@ -1,5 +1,5 @@
 
-interface user {
+interface User {
     id: number;
     password: string;
     username: string;
@@ -8,4 +8,4 @@ interface user {
     blurb: string;
 }
 
-export type { user }
+export type { User }

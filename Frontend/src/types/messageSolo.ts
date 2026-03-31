@@ -1,4 +1,4 @@
-interface messageSolo {
+interface MessageSolo {
   id: number;
   senderId: number;
   receiverId: number;
@@ -13,4 +13,4 @@ interface messageSolo {
   }
 }
 
-export type { messageSolo };
+export type { MessageSolo };

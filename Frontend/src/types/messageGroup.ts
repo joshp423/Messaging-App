@@ -1,4 +1,4 @@
-interface messageGroup {
+interface MessageGroup {
   id: number;
   senderId: number;
   groupId: number;
@@ -10,4 +10,4 @@ interface messageGroup {
   },
 }
 
-export type { messageGroup };
+export type { MessageGroup };

@@ -12,7 +12,7 @@ const routes = [
       { index: true, element: <Homepage /> },
       { path: "/Log-in", element: <Login /> },
       { path: "/Sign-up", element: <SignUp /> },
-      { path: "/conversation/:id", element: <Conversation /> },
+      { path: "/user/:userId/conversation/:id", element: <Conversation /> },
     ],
   },
 ];

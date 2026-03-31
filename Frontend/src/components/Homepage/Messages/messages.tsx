@@ -1,22 +1,23 @@
 import { useEffect, useState } from "react";
 import ConversationPreview from "./Conversation/conversationPreview";
-import type { conversationPreview } from "../../../types/conversationPreview";
+import type { ConversationPreviewObject } from "../../../types/conversationPreviewObject";
 import GroupPreview from "./Conversation/groupPreview";
-import type { groupPreview } from "../../../types/groupPreview";
+import type { GroupPreviewObject } from "../../../types/groupPreviewObject";
 
 function Messages() {
-  const [soloMessages, setSoloMessages] = useState<conversationPreview[]>([]);
-  const [groupMessages, setGroupMessages] = useState<groupPreview[]>([]);
-
+  const [soloMessages, setSoloMessages] = useState<ConversationPreviewObject[]>([]);
+  const [groupMessages, setGroupMessages] = useState<GroupPreviewObject[]>([]);
+  const userId = sessionStorage.getItem("loggedUserId")
+  
   useEffect(() => {
     async function getMessages() {
       try {
-        const rsp = await fetch(`http://localhost:3000/users/${sessionStorage.getItem("loggedUserId")}/conversations`, {
+        const rsp = await fetch(`http://localhost:3000/users/${userId}/conversations`, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${sessionStorage.getItem("token")}`,
           },
-          method: "GET",
+          method: "GET"
         });
         if (rsp.status === 200) {
           const data = await rsp.json();

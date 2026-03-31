@@ -1,8 +1,8 @@
-import { type groupPreview } from "../../../../types/groupPreview";
+import { type GroupPreviewObject } from "../../../../types/groupPreviewObject";
 import { useNavigate } from "react-router";
 
 type groupPreviewProps = {
-  conversationMessage: groupPreview;
+  conversationMessage: GroupPreviewObject;
 };
 
 function GroupPreview( {conversationMessage}: groupPreviewProps) {
