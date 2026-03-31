@@ -80,6 +80,11 @@ const userInitialUpdateSchema = z.object({
   blurb: z.string(),
 });
 
+const userConversationSchema = z.object({
+  userId: z.number(),
+  conversationid: z.number()
+});
+
 const storage = multer.memoryStorage();
 
 const upload = multer({
@@ -160,7 +165,7 @@ export async function logIn(req: Request, res: Response) {
     }
 
     jwt.sign(
-      { id: userCheck.id, email: userCheck.email },
+      { id: userCheck.id, username: userCheck.username },
       secret,
       { expiresIn: "1w" },
       function (err, token) {
@@ -171,7 +176,6 @@ export async function logIn(req: Request, res: Response) {
         return res.json({
           message: "Successfully logged in",
           token,
-          email: userCheck.email,
         });
       },
     );
@@ -449,6 +453,106 @@ export async function getSoloUsernames(
     });
 
   } catch (error) {
+    return res.status(500).json({ error });
+  }
+}
+
+export async function getSoloConversation (req: Request, res: Response) {
+
+  try {
+    const { userId, conversationid } = userConversationSchema.parse(req.body);
+
+    const conversation = await prisma.conversationsSolo.findMany({
+      where: {
+        OR: [
+          { userA: userId },
+          { userB: userId },
+        ],
+        AND: { id: conversationid }
+      },
+      include: {
+        messages: {
+          orderBy: { timeSent: "desc" }, // latest message first
+          include: {
+            sender: {
+              select: { username: true },
+            },
+            receiver: {
+              select: { username: true },
+            }
+          },
+        },
+      }
+  });
+
+    return res.status(200).json({
+      conversation,
+    });
+  } catch (error) {
+    console.error("getUserConversations error:", error);
+    return res.status(500).json({ error });
+  }
+}
+
+
+export async function getGroupConversation (req: Request, res: Response) {
+  try {
+    const { id } = userIDSchema.parse(req.body);
+
+    const conversationsSolo = await prisma.conversationsSolo.findMany({
+      where: {
+        OR: [
+          { userA: id },
+          { userB: id },
+        ],
+      },
+      include: {
+        messages: {
+          take: 1, //just one message for preview
+          orderBy: { timeSent: "desc" }, // latest message first
+          include: {
+            sender: {
+              select: { username: true },
+            },
+            receiver: {
+              select: { username: true },
+            }
+          },
+        },
+      }
+  });
+
+    const groups = await prisma.groups.findMany({
+      where: {
+        users: {
+          some: { 
+            id,
+          },
+        },
+      },
+      include: {
+        messages: {
+          take: 1,
+          orderBy: {
+            timeSent: "asc",
+          },
+          include: {
+            sender: {
+              select: {
+                username: true,
+              }
+            }
+          }
+        },
+      },
+    });
+
+    return res.status(200).json({
+      conversationsSolo,
+      groups,
+    });
+  } catch (error) {
+    console.error("getUserConversations error:", error);
     return res.status(500).json({ error });
   }
 }

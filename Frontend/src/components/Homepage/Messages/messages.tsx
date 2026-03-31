@@ -11,7 +11,7 @@ function Messages() {
   useEffect(() => {
     async function getMessages() {
       try {
-        const rsp = await fetch("http://localhost:3000/receive-messages", {
+        const rsp = await fetch("http://localhost:3000/receive-message-previews", {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${sessionStorage.getItem("token")}`,
