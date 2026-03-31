@@ -82,7 +82,7 @@ const userInitialUpdateSchema = z.object({
 
 const userConversationSchema = z.object({
   userId: z.number(),
-  conversationid: z.number()
+  conversationId: z.number()
 });
 
 const storage = multer.memoryStorage();
@@ -460,7 +460,7 @@ export async function getSoloUsernames(
 export async function getSoloConversation (req: Request, res: Response) {
 
   try {
-    const { userId, conversationid } = userConversationSchema.parse(req.body);
+    const { userId, conversationId } = userConversationSchema.parse(req.body);
 
     const conversation = await prisma.conversationsSolo.findMany({
       where: {
@@ -468,7 +468,7 @@ export async function getSoloConversation (req: Request, res: Response) {
           { userA: userId },
           { userB: userId },
         ],
-        AND: { id: conversationid }
+        AND: { id: conversationId }
       },
       include: {
         messages: {

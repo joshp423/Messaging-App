@@ -5,7 +5,7 @@ interface conversationPreview {
   id: number;
   userA: number;
   userB: number;
-  messages: messageSolo [] ;
+  messages: messageSolo[] ;
 }
 
 export type { conversationPreview };

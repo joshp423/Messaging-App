@@ -34,7 +34,7 @@ function Messages() {
     getMessages();
   }, []);
   // think about if we need userids in groups and conversations might be able to pull usernames anyway with prisma
-  
+  // dont think we need to use map here with just one message
   return (
     <div className="messageLobby">
       <h1>Your Messages</h1>

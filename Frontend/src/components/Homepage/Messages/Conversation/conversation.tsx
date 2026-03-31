@@ -1,52 +1,44 @@
-import type { conversation } from "../../../../types/conversation";
 import { useEffect, useState } from "react";
+import type { conversation } from "../../../../types/conversation";
 import Message from "./Message/message";
 import NewMessage from "./NewMessage/newMessage";
 
-type conversationProps = {
-  conversation: conversation;
-};
 
-function Conversation({ conversation }: conversationProps) {
 
-  const [usernames, setUsernames] = useState([]);
-  let oppositeUser = ""
-  for (const user in usernames) {
-    if (user === sessionStorage.getItem("loggedUser")) {
-      oppositeUser = user
-    }
-  }
+function Conversation() {
 
-  useEffect(() => {
-    async function getUsernames() {
-      try {
-        const rsp = await fetch("http//localhost:3000/get-usernames", {
+  const [conversation, setConversation] = useState<conversation | null>(null)
+
+  useEffect (() => {
+    async function getConversation() {
+     try {
+        const rsp = await fetch(`http://localhost:3000/conversation/${sessionStorage.}`, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${sessionStorage.getItem("token")}`,
           },
-          method: "GET",
+          method: "POST",
           body: JSON.stringify({
-            senderId: conversation.messages[0].senderId,
-            reveiverId: conversation.messages[0].receiverId
+            id: Number(sessionStorage.getItem("loggedUserID")),
           }),
         });
         if (rsp.status === 200) {
           const data = await rsp.json();
-          setUsernames(data.users);
-          console.log(data.users);
+          setSoloMessages(data.conversationsSolo);
+          setGroupMessages(data.groups);
+          console.log(data.conversationsSolo, data.groups);
         }
       } catch (error) {
         console.error(error);
       }
     }
-    getUsernames();
-  }, []);
+    getConversation();
+  },[])
 
   return (
     <div className="conversation">
       {conversation?.messages.map((message) => (
-        <Message key={message.id} message={message} sentUser={oppositeUser}/>
+        <Message key={message.id} message={message} />
       ))}
       <NewMessage />
     </div>
