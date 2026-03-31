@@ -7,10 +7,10 @@ interface MessageSolo {
   timeSent: string;
   sender: {
     username: string;
-  },
+  };
   receiver: {
     username: string;
-  }
+  };
 }
 
 export type { MessageSolo };

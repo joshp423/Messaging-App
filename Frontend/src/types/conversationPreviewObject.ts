@@ -5,7 +5,7 @@ interface ConversationPreviewObject {
   id: number;
   userA: number;
   userB: number;
-  messages: MessageSolo[] ;
+  messages: MessageSolo[];
 }
 
 export type { ConversationPreviewObject };

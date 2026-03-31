@@ -46,7 +46,7 @@ function Login() {
         sessionStorage.setItem("token", data.token);
         sessionStorage.setItem("loggedUsername", decoded.username);
         sessionStorage.setItem("loggedUserId", String(decoded.id));
-        console.log(sessionStorage.getItem("loggedUserId"))
+        console.log(sessionStorage.getItem("loggedUserId"));
         setLoginStatus(true);
       }
 

@@ -5,22 +5,27 @@ type groupPreviewProps = {
   conversationMessage: GroupPreviewObject;
 };
 
-function GroupPreview( {conversationMessage}: groupPreviewProps) {
+function GroupPreview({ conversationMessage }: groupPreviewProps) {
+  const navigate = useNavigate();
 
-    const navigate = useNavigate();
+  const viewConversation = () => {
+    navigate(`/groupConversation/${conversationMessage.id}`);
+  };
 
-    const viewConversation = () => {
-        navigate(`/groupConversation/${conversationMessage.id}`)
-    }
-
-    const latestMessage = conversationMessage.messages[0]
-    return (
-        <div className="conversationPreview">
-            <h3>{conversationMessage.name}</h3>
-            <p>{latestMessage.sender.username === sessionStorage.getItem("loggedUsername") ? "You" : latestMessage.sender.username}: {latestMessage.message}</p>
-            <button onClick={viewConversation}>View Conversation</button>
-        </div>
-    )
+  const latestMessage = conversationMessage.messages[0];
+  return (
+    <div className="conversationPreview">
+      <h3>{conversationMessage.name}</h3>
+      <p>
+        {latestMessage.sender.username ===
+        sessionStorage.getItem("loggedUsername")
+          ? "You"
+          : latestMessage.sender.username}
+        : {latestMessage.message}
+      </p>
+      <button onClick={viewConversation}>View Conversation</button>
+    </div>
+  );
 }
 
-export default GroupPreview
+export default GroupPreview;

@@ -4,7 +4,7 @@ import type { MessageGroup } from "./messageGroup";
 interface GroupPreviewObject {
   id: number;
   name: string;
-  messages: MessageGroup [];
+  messages: MessageGroup[];
 }
 
 export type { GroupPreviewObject };

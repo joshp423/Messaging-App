@@ -4,28 +4,30 @@ import Message from "./Message/message";
 import NewMessage from "./NewMessage/newMessage";
 import { useParams } from "react-router";
 
-
 function Conversation() {
-
-  const [selectedConversation, setSelectedConversation] = useState<ConversationObject | null>(null)
+  const [selectedConversation, setSelectedConversation] =
+    useState<ConversationObject | null>(null);
 
   const { conversationId } = useParams();
 
-  const userId = sessionStorage.getItem("loggedUserId")
+  const userId = sessionStorage.getItem("loggedUserId");
 
-  useEffect (() => {
+  useEffect(() => {
     async function getConversation() {
-     try {
-        const rsp = await fetch(`http://localhost:3000/users/${userId}/conversations/${conversationId}`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      try {
+        const rsp = await fetch(
+          `http://localhost:3000/users/${userId}/conversations/${conversationId}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+            },
+            method: "GET",
           },
-          method: "GET"
-        });
+        );
         if (rsp.status === 200) {
           const data = await rsp.json();
-          setSelectedConversation(data.conversation)
+          setSelectedConversation(data.conversation);
           console.log(data.conversation);
         }
       } catch (error) {
@@ -33,7 +35,7 @@ function Conversation() {
       }
     }
     getConversation();
-  },[conversationId, userId])
+  }, [conversationId, userId]);
 
   return (
     <div className="conversation">

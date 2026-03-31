@@ -7,7 +7,7 @@ interface MessageGroup {
   timeSent: string;
   sender: {
     username: string;
-  },
+  };
 }
 
 export type { MessageGroup };
