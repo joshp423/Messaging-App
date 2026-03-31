@@ -54,7 +54,7 @@ function SignUp() {
       if (rsp.status === 201) {
         const uploadedUrl = await uploadPFP(); //await other function
         try {
-          const rsp = await fetch(
+          await fetch(
             "http://localhost:3000/initialProfileUpdate",
             {
               headers: {
@@ -64,10 +64,8 @@ function SignUp() {
               body: JSON.stringify({ email, pfpUrl: uploadedUrl, blurb }),
             },
           );
+          navigate("/");
 
-          if (rsp.status === 201) {
-            navigate("/");
-          }
         } catch (error) {
           console.error(error);
         }

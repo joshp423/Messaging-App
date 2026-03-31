@@ -31,6 +31,7 @@ indexRouter.put(
 );
 indexRouter.put("/initialProfileUpdate", indexController.initialProfileUpdate);
 indexRouter.post("/uploadPFP", indexController.uploadPFP);
+indexRouter.post("/uploadMessageImage", indexController.verifyToken, indexController.uploadMessageImage);
 indexRouter.get(
   "/get-usernames",
   indexController.verifyToken,

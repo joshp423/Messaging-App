@@ -50,6 +50,13 @@ function Conversation() {
             ? username
             : selectedConversation?.messages[0].receiver.username || ""
         }
+        conversationPartnerId={
+          selectedConversation?.userA === Number(userId)
+          ? selectedConversation?.userB
+          : selectedConversation?.userA
+        }
+        conversationId={conversationId}
+        userId={userId}
       />
     </div>
   );

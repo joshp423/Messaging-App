@@ -258,6 +258,30 @@ export const uploadPFP = [
   },
 ];
 
+export const uploadMessageImage = [
+  upload.single("uploaded_file"),
+  async (req: Request, res: Response) => {
+    try {
+      const uploadResult = await new Promise<UploadApiResponse>(
+        (resolve, reject) => {
+          //convert callback to promise because of async route handler
+          const stream = cloudinary.uploader.upload_stream(
+            { resource_type: "auto" },
+            (error, result) => {
+              if (error) return reject(error);
+              resolve(result as UploadApiResponse);
+            },
+          );
+          stream.end(req.file?.buffer);
+        },
+      );
+      return res.status(201).json({ imageUrl: uploadResult.secure_url });
+    } catch (error) {
+      return res.status(500).json({ message: error });
+    }
+  },
+];
+
 export async function sendMessageSingleRecipient(req: Request, res: Response) {
   //check for existing conversation and add otherwise create new
   try {

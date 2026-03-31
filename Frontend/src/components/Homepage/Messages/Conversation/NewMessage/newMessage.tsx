@@ -1,19 +1,83 @@
-import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+import { useState, type SyntheticEvent } from "react";
 
 type newMessageProps = {
   conversationPartner: string;
+  conversationPartnerId: number | undefined;
+  conversationId: string | undefined;
+  userId: string | null;
 };
 
-function NewMessage({ conversationPartner }: newMessageProps) {
+function NewMessage({ conversationPartner, conversationPartnerId, conversationId, userId }: newMessageProps) {
+  const navigate = useNavigate();
+  
+  const [newMessageText, setNewMessageText] = useState("");
   const [newMessageImage, setNewMessageImage] = useState<File | null>(null);
 
   //function here
 
+  async function uploadImage() {
+    if (!newMessageImage) return "";
+
+    const formData = new FormData();
+
+    formData.append("uploaded_file", newMessageImage);
+
+    try {
+      const rsp = await fetch("http://localhost:3000/uploadMessageImage", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await rsp.json();
+
+      if (rsp.status === 201) {
+        return data.imageUrl;
+      } else {
+        return "";
+      }
+    } catch (error) {
+      console.error("Upload error:", error);
+      return "";
+    }
+  }
+  
+  async function newMessageAPI(e: SyntheticEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    try {
+      const uploadedUrl = await uploadImage();
+      const rsp = await fetch("http://localhost:3000/send-message-solo", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+        },
+        method: "POST",
+        body: JSON.stringify({
+          senderId: userId,
+          receiverId: conversationPartnerId,
+          message: newMessageText,
+          imageUrl: uploadedUrl,
+          conversationId
+        }),
+      });
+
+      if (rsp.status === 201) { 
+        navigate(`/user/${userId}/conversations/${conversationId}`)
+      }
+    } catch (error) {
+      console.error("Upload message error:", error);
+    }
+  }
+
   return (
     <div className="newMessage">
-      <form>
+      <form onSubmit={newMessageAPI}>
         <h3>New Message to {conversationPartner}: </h3>
-        <input type="text" />
+        <input type="text" onChange={(e) => {
+          setNewMessageText(e.target.value);
+        }}/>
         <label htmlFor="messageImage">Add Image</label>
         <input
           type="file"
