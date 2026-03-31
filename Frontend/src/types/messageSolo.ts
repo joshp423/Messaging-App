@@ -7,6 +7,9 @@ interface messageSolo {
   timeSent: string;
   sender: {
     username: string;
+  },
+  receiver: {
+    username: string;
   }
 }
 

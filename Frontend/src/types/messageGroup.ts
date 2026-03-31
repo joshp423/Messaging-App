@@ -5,6 +5,9 @@ interface messageGroup {
   message: string;
   imageUrl: string;
   timeSent: string;
+  sender: {
+    username: string;
+  },
 }
 
 export type { messageGroup };

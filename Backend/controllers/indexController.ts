@@ -390,6 +390,9 @@ export async function getUserConversations (req: Request, res: Response) {
             sender: {
               select: { username: true },
             },
+            receiver: {
+              select: { username: true },
+            }
           },
         },
       }

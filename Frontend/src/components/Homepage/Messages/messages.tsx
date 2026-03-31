@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import type { messageGroup } from "../../../types/messageGroup";
 import ConversationPreview from "./Conversation/conversationPreview";
 import type { conversationPreview } from "../../../types/conversationPreview";
+import GroupPreview from "./Conversation/groupPreview";
+import type { groupPreview } from "../../../types/groupPreview";
 
 function Messages() {
   const [soloMessages, setSoloMessages] = useState<conversationPreview[]>([]);
-  const [groupMessages, setGroupMessages] = useState<messageGroup[]>([]);
+  const [groupMessages, setGroupMessages] = useState<groupPreview[]>([]);
 
   useEffect(() => {
     async function getMessages() {
@@ -24,7 +25,7 @@ function Messages() {
           const data = await rsp.json();
           setSoloMessages(data.conversationsSolo);
           setGroupMessages(data.groups);
-          console.log(data.messagesSolo, data.messagesGroup);
+          console.log(data.conversationsSolo, data.groups);
         }
       } catch (error) {
         console.error(error);
@@ -36,13 +37,16 @@ function Messages() {
   
   return (
     <div className="messageLobby">
+      <h1>Your Messages</h1>
       <div className="soloMessages">
         {soloMessages.map((conversation) => (
           <ConversationPreview key={conversation.id} conversationMessage={conversation} />
         ))}
       </div>
       <div className="groupMessages">
-        
+        {groupMessages.map((conversation) => (
+          <GroupPreview key={conversation.id} conversationMessage={conversation} />
+        ))}
       </div>
     </div>
   );
