@@ -14,7 +14,7 @@ function Conversation() {
 
   const username = sessionStorage.getItem("loggedUsername");
 
-  const [newMessageStatus, setNewMessageStatus] = useState(false)
+  const [newMessageStatus, setNewMessageStatus] = useState(false);
 
   useEffect(() => {
     async function getConversation() {
@@ -54,8 +54,8 @@ function Conversation() {
         }
         conversationPartnerId={
           selectedConversation?.userA === Number(userId)
-          ? selectedConversation?.userB
-          : selectedConversation?.userA
+            ? selectedConversation?.userB
+            : selectedConversation?.userA
         }
         conversationId={Number(conversationId)}
         userId={Number(userId)}

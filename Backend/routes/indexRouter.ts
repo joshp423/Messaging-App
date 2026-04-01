@@ -31,11 +31,15 @@ indexRouter.put(
 );
 indexRouter.put("/initialProfileUpdate", indexController.initialProfileUpdate);
 indexRouter.post("/uploadPFP", indexController.uploadPFP);
-indexRouter.post("/uploadMessageImage", indexController.verifyToken, indexController.uploadMessageImage);
-indexRouter.get(
-  "/get-usernames",
+indexRouter.post(
+  "/uploadMessageImage",
   indexController.verifyToken,
-  indexController.getSoloUsernames,
+  indexController.uploadMessageImage,
+);
+indexRouter.get(
+  "/users/:userId",
+  indexController.verifyToken,
+  indexController.getUserProfile,
 );
 indexRouter.post("/uploadPFP", indexController.uploadPFP);
 

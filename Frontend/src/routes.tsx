@@ -3,7 +3,7 @@ import Homepage from "./components/Homepage/homepage";
 import Login from "./components/Login/login";
 import SignUp from "./components/Sign Up/signUp";
 import Conversation from "./components/Homepage/Messages/Conversation/conversation";
-
+import UserProfile from "./components/Homepage/Messages/Conversation/Users/userProfile";
 const routes = [
   {
     path: "/",
@@ -16,6 +16,7 @@ const routes = [
         path: "/user/:userId/conversation/:conversationId",
         element: <Conversation />,
       },
+      { path: "/user/:userId", element: <UserProfile /> },
     ],
   },
 ];

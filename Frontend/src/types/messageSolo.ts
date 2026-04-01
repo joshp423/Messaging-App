@@ -7,6 +7,7 @@ interface MessageSolo {
   timeSent: string;
   sender: {
     username: string;
+    pfpUrl: string;
   };
   receiver: {
     username: string;

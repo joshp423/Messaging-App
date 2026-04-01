@@ -54,18 +54,14 @@ function SignUp() {
       if (rsp.status === 201) {
         const uploadedUrl = await uploadPFP(); //await other function
         try {
-          await fetch(
-            "http://localhost:3000/initialProfileUpdate",
-            {
-              headers: {
-                "Content-Type": "application/json",
-              },
-              method: "PUT",
-              body: JSON.stringify({ email, pfpUrl: uploadedUrl, blurb }),
+          await fetch("http://localhost:3000/initialProfileUpdate", {
+            headers: {
+              "Content-Type": "application/json",
             },
-          );
+            method: "PUT",
+            body: JSON.stringify({ email, pfpUrl: uploadedUrl, blurb }),
+          });
           navigate("/");
-
         } catch (error) {
           console.error(error);
         }

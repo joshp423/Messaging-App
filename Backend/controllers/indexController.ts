@@ -413,10 +413,14 @@ export async function getUserConversations(req: Request, res: Response) {
           orderBy: { timeSent: "desc" }, // latest message first
           include: {
             sender: {
-              select: { username: true },
+              select: {
+                username: true,
+              },
             },
             receiver: {
-              select: { username: true },
+              select: {
+                username: true,
+              },
             },
           },
         },
@@ -435,7 +439,7 @@ export async function getUserConversations(req: Request, res: Response) {
         messages: {
           take: 1,
           orderBy: {
-            timeSent: "asc",
+            timeSent: "desc",
           },
           include: {
             sender: {
@@ -458,15 +462,16 @@ export async function getUserConversations(req: Request, res: Response) {
   }
 }
 
-export async function getSoloUsernames(req: Request, res: Response) {
+export async function getUserProfile(req: Request, res: Response) {
   try {
-    const { senderId, receiverId } = userMessageSingleSchema.parse(req.body);
+    const { id } = userIdSchema.parse({ id: Number(req.params.userId) });
 
-    const users = await prisma.users.findMany({
-      where: { id: senderId || receiverId },
+    const user = await prisma.users.findUnique({
+      where: { id: id },
+      //include less info
     });
     return res.status(200).json({
-      users,
+      user,
     });
   } catch (error) {
     return res.status(500).json({ error });
@@ -487,10 +492,13 @@ export async function getSoloConversation(req: Request, res: Response) {
       },
       include: {
         messages: {
-          orderBy: { timeSent: "asc" }, 
+          orderBy: { timeSent: "asc" },
           include: {
             sender: {
-              select: { username: true },
+              select: {
+                username: true,
+                pfpUrl: true,
+              },
             },
             receiver: {
               select: { username: true },

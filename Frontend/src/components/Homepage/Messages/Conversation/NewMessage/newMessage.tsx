@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 import React, { useState, type SyntheticEvent } from "react";
 
 type newMessageProps = {
@@ -6,12 +5,16 @@ type newMessageProps = {
   conversationPartnerId: number | undefined;
   conversationId: number | undefined;
   userId: number | null;
-  setNewMessageStatus: React.Dispatch<React.SetStateAction<boolean>>
+  setNewMessageStatus: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-function NewMessage({ conversationPartner, conversationPartnerId, conversationId, userId, setNewMessageStatus }: newMessageProps) {
-  const navigate = useNavigate();
-  
+function NewMessage({
+  conversationPartner,
+  conversationPartnerId,
+  conversationId,
+  userId,
+  setNewMessageStatus,
+}: newMessageProps) {
   const [newMessageText, setNewMessageText] = useState("");
   const [newMessageImage, setNewMessageImage] = useState<File | null>(null);
 
@@ -26,7 +29,7 @@ function NewMessage({ conversationPartner, conversationPartnerId, conversationId
 
     try {
       const rsp = await fetch("http://localhost:3000/uploadMessageImage", {
-         headers: {
+        headers: {
           Authorization: `Bearer ${sessionStorage.getItem("token")}`,
         },
         method: "POST",
@@ -45,12 +48,17 @@ function NewMessage({ conversationPartner, conversationPartnerId, conversationId
       return "";
     }
   }
-  
+
   async function newMessageAPI(e: SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
 
     try {
-      console.log(userId, conversationPartnerId, newMessageText, conversationId)
+      console.log(
+        userId,
+        conversationPartnerId,
+        newMessageText,
+        conversationId,
+      );
       const uploadedUrl = await uploadImage();
       const rsp = await fetch("http://localhost:3000/send-message-solo", {
         headers: {
@@ -63,13 +71,12 @@ function NewMessage({ conversationPartner, conversationPartnerId, conversationId
           receiverId: conversationPartnerId,
           message: newMessageText,
           imageUrl: uploadedUrl,
-          conversationId
+          conversationId,
         }),
       });
 
-      if (rsp.status === 201) { 
-        setNewMessageStatus(prev => !prev) //return not the previous or flip
-       
+      if (rsp.status === 201) {
+        setNewMessageStatus((prev) => !prev); //return not the previous or flip
       }
     } catch (error) {
       console.error("Upload message error:", error);
@@ -80,9 +87,12 @@ function NewMessage({ conversationPartner, conversationPartnerId, conversationId
     <div className="newMessage">
       <form onSubmit={newMessageAPI}>
         <h3>New Message to {conversationPartner}: </h3>
-        <input type="text" onChange={(e) => {
-          setNewMessageText(e.target.value);
-        }}/>
+        <input
+          type="text"
+          onChange={(e) => {
+            setNewMessageText(e.target.value);
+          }}
+        />
         <label htmlFor="messageImage">Add Image</label>
         <input
           type="file"
