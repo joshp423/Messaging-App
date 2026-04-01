@@ -14,6 +14,8 @@ function Conversation() {
 
   const username = sessionStorage.getItem("loggedUsername");
 
+  const [newMessageStatus, setNewMessageStatus] = useState(false)
+
   useEffect(() => {
     async function getConversation() {
       try {
@@ -37,7 +39,7 @@ function Conversation() {
       }
     }
     getConversation();
-  }, [conversationId, userId]);
+  }, [conversationId, userId, newMessageStatus]);
 
   return (
     <div className="conversation">
@@ -55,8 +57,9 @@ function Conversation() {
           ? selectedConversation?.userB
           : selectedConversation?.userA
         }
-        conversationId={conversationId}
-        userId={userId}
+        conversationId={Number(conversationId)}
+        userId={Number(userId)}
+        setNewMessageStatus={setNewMessageStatus}
       />
     </div>
   );

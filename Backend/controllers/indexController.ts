@@ -487,7 +487,7 @@ export async function getSoloConversation(req: Request, res: Response) {
       },
       include: {
         messages: {
-          orderBy: { timeSent: "desc" }, // latest message first
+          orderBy: { timeSent: "asc" }, 
           include: {
             sender: {
               select: { username: true },
