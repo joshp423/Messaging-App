@@ -8,13 +8,7 @@ type newMessageProps = {
   setNewMessageStatus: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-function NewMessage({
-  conversationPartner,
-  conversationPartnerId,
-  conversationId,
-  userId,
-  setNewMessageStatus,
-}: newMessageProps) {
+
   const [newMessageText, setNewMessageText] = useState("");
   const [newMessageImage, setNewMessageImage] = useState<File | null>(null);
 
@@ -84,9 +78,14 @@ function NewMessage({
   return (
     <div className="newMessage">
       <form onSubmit={newMessageAPI}>
-        <h3>New Message to {conversationPartner}: </h3>
+        <label htmlFor="newMessageRecipientUsername">Message Recipient: </label>
+        <input 
+            type="text" 
+            name="newMessageRecipientUsername"
+        />
         <input
           type="text"
+          name="newMessageText"
           onChange={(e) => {
             setNewMessageText(e.target.value);
           }}
@@ -107,4 +106,14 @@ function NewMessage({
   );
 }
 
-export default NewMessage;
+
+
+function NewConversation () {
+    return (
+        <div className="NewConversation">
+            
+        </div>
+    )
+}
+
+export default NewConversation
