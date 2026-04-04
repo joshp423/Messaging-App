@@ -14,7 +14,7 @@ datasource db {
 model Users {
   id Int @id @default(autoincrement())
   password String
-  username String
+  username String @unique
   email String @unique
   pfpUrl String?
   blurb String?

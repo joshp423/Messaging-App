@@ -1,17 +1,8 @@
 import React, { useState, type SyntheticEvent } from "react";
 
-type newMessageProps = {
-  conversationPartner: string;
-  conversationPartnerId: number | undefined;
-  conversationId: number | undefined;
-  userId: number | null;
-  setNewMessageStatus: React.Dispatch<React.SetStateAction<boolean>>;
-};
-
-
   const [newMessageText, setNewMessageText] = useState("");
   const [newMessageImage, setNewMessageImage] = useState<File | null>(null);
-
+  const [newMessageRecipient, setNewMessageRecipient] = useState("")
   async function uploadImage() {
     if (!newMessageImage) return "";
 
@@ -40,17 +31,11 @@ type newMessageProps = {
       return "";
     }
   }
-
+  // will need a new api with username
   async function newMessageAPI(e: SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
 
     try {
-      console.log(
-        userId,
-        conversationPartnerId,
-        newMessageText,
-        conversationId,
-      );
       const uploadedUrl = await uploadImage();
       const rsp = await fetch("http://localhost:3000/send-message-solo", {
         headers: {
