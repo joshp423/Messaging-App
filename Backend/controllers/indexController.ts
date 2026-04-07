@@ -292,6 +292,14 @@ export async function sendMessageSingleRecipient(req: Request, res: Response) {
     const { senderId, receiverId, message, imageUrl, conversationId } =
       userMessageSingleSchema.parse(req.body);
 
+      const existingCheck = await prisma.conversationsSolo.findUnique({
+        where: {
+          id: conversationId
+        }
+      })
+
+      if (existingCheck?)
+
     await prisma.messagesSolo.create({
       data: {
         senderId,

@@ -91,9 +91,10 @@ function NewConversation () {
   }
 
     return (
-        <div className="NewConversation">
+        <div className="NewConversation" >
+          <h2>New Message</h2>
             <form onSubmit={newMessageAPI}>
-              <label htmlFor="newMessageRecipientUsername">Message Recipient: </label>
+              <label htmlFor="newMessageRecipientUsername">Recipient Username: </label>
               <input 
                   type="text" 
                   name="newMessageRecipientUsername"
