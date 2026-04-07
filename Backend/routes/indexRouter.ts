@@ -54,4 +54,6 @@ indexRouter.get(
   indexController.getGroupConversation,
 );
 
+indexRouter.post("/getUserId", indexController.verifyToken, indexController.getUserId)
+
 export default indexRouter;

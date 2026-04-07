@@ -62,6 +62,10 @@ const userMessageGroupSchema = z.object({
   imageUrl: z.string(),
 });
 
+const userGetIdSchema = z.object({
+  selectedUsername: z.string()
+});
+
 const userGroupSchema = z.object({
   userIds: z.array(z.number()),
   name: z
@@ -298,6 +302,28 @@ export async function sendMessageSingleRecipient(req: Request, res: Response) {
       },
     });
     return res.status(201).json({ message: "Message sent successfully" });
+  } catch (error) {
+    if (error instanceof ZodError) {
+      //if error is a zod error send back
+      return res.status(400).json({
+        errors: error.issues,
+      });
+    }
+    return res.status(500).json({ message: error });
+  }
+}
+
+export async function getUserId(req: Request, res: Response) {
+  try {
+    const { selectedUsername } =
+      userGetIdSchema.parse(req.body);
+
+    const selectedUserId = await prisma.users.findUnique({
+      where: {
+        username: selectedUsername
+      },
+    });
+    return res.status(201).json({ selectedUserId });
   } catch (error) {
     if (error instanceof ZodError) {
       //if error is a zod error send back
