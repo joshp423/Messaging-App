@@ -3,6 +3,7 @@ import ConversationPreview from "./Conversation/conversationPreview";
 import type { ConversationPreviewObject } from "../../../types/conversationPreviewObject";
 import GroupPreview from "./Conversation/groupPreview";
 import type { GroupPreviewObject } from "../../../types/groupPreviewObject";
+import { Link } from "react-router";
 
 function Messages() {
   const [soloMessages, setSoloMessages] = useState<ConversationPreviewObject[]>(
@@ -35,12 +36,13 @@ function Messages() {
       }
     }
     getMessages();
-  }, []);
+  }, [userId]);
   // think about if we need userids in groups and conversations might be able to pull usernames anyway with prisma
   // dont think we need to use map here with just one message
   return (
     <div className="messageLobby">
       <h1>Your Messages</h1>
+      <Link to={`user/${userId}/new-message`}>New Message</Link>
       <div className="soloMessages">
         {soloMessages.map((conversation) => (
           <ConversationPreview

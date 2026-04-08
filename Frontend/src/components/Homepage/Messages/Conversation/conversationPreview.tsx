@@ -9,9 +9,9 @@ function ConversationPreview({
   conversationMessage,
 }: conversationPreviewProps) {
   const navigate = useNavigate();
-  console.log(conversationMessage.id);
 
-  const userId = sessionStorage.getItem("loggedUsername");
+  const userId = sessionStorage.getItem("loggedUserId");
+  const username = sessionStorage.getItem("loggedUsername");
 
   const viewConversation = () => {
     navigate(`user/${userId}/conversation/${conversationMessage.id}`);
@@ -21,12 +21,12 @@ function ConversationPreview({
   return (
     <div className="conversationPreview">
       <h3>
-        {latestMessage.sender.username === userId
+        {latestMessage.sender.username === username
           ? latestMessage.receiver.username
           : latestMessage.sender.username}
       </h3>
       <p>
-        {latestMessage.sender.username === userId
+        {latestMessage.sender.username === username
           ? "You"
           : latestMessage.sender.username}
         : {latestMessage.message}

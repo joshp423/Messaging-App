@@ -1,4 +1,5 @@
 import { useState, type SyntheticEvent } from "react";
+import { Link } from "react-router";
 
 function NewConversation () {
 
@@ -120,6 +121,7 @@ function NewConversation () {
               />
               <button>Send</button>
             </form>
+            <Link to="/">Back</Link>
         </div>
     )
 }

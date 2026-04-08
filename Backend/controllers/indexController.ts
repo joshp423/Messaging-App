@@ -1,6 +1,6 @@
 import bcrypt from "bcryptjs";
 import { z, ZodError } from "zod";
-import jwt from "jsonwebtoken";
+import jwt, { type JwtPayload } from "jsonwebtoken";
 import type { Request, Response, NextFunction } from "express";
 import prisma from "../lib/prisma.js";
 import multer from "multer";
@@ -413,6 +413,7 @@ export async function createNewGroup(
 
 interface AuthRequest extends Request {
   token?: string;
+  user?: JwtPayload;
 }
 
 export function verifyToken(
@@ -423,22 +424,29 @@ export function verifyToken(
   // Get auth header value
   const bearerHeader = req.headers["authorization"];
   // Check if bearer is undefined
-  if (typeof bearerHeader !== "undefined") {
+  if (bearerHeader) {
     // Split at the space
     const bearer = bearerHeader.split(" ");
     // Get token from array
     const bearerToken = bearer[1];
 
     if (!bearerToken) {
-      return res.status(403);
+      return res.sendStatus(401);
     }
-    // Set the token
-    req.token = bearerToken;
-    // Next middleware
-    next();
+
+    jwt.verify(bearerToken, process.env.JWT_SECRET as string, (err, decoded ) => { 
+      //decoded is the payload if successful verification
+      if (err) {
+        return res.sendStatus(403);
+      }
+      req.user = decoded as JwtPayload;
+      req.token = bearerToken;
+      next();
+    })
+    
   } else {
-    // Forbidden
-    res.sendStatus(403);
+    // unauthorised
+    res.sendStatus(401);
   }
 }
 

@@ -5,11 +5,11 @@ import NewMessage from "./NewMessage/newMessage";
 import { useParams } from "react-router";
 import { Link } from "react-router";
 
-function Conversation() {
+function GroupConversation() {
   const [selectedConversation, setSelectedConversation] =
     useState<ConversationObject | null>(null);
 
-  const { conversationId } = useParams();
+  const { groupConversationId } = useParams();
 
   const userId = sessionStorage.getItem("loggedUserId");
 
@@ -21,7 +21,7 @@ function Conversation() {
     async function getConversation() {
       try {
         const rsp = await fetch(
-          `http://localhost:3000/users/${userId}/conversations/${conversationId}`,
+          `http://localhost:3000/users/${userId}/groupConversations/${groupConversationId}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -67,4 +67,4 @@ function Conversation() {
   );
 }
 
-export default Conversation;
+export default GroupConversation;
