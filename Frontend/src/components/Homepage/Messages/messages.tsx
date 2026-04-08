@@ -11,6 +11,7 @@ function Messages() {
   );
   const [groupMessages, setGroupMessages] = useState<GroupPreviewObject[]>([]);
   const userId = sessionStorage.getItem("loggedUserId");
+  const [newMessageStatusTop, setNewMessageStatusTop] = useState(false);
 
   useEffect(() => {
     async function getMessages() {
@@ -36,13 +37,16 @@ function Messages() {
       }
     }
     getMessages();
-  }, [userId]);
+  }, [userId, newMessageStatusTop]);
   // think about if we need userids in groups and conversations might be able to pull usernames anyway with prisma
   // dont think we need to use map here with just one message
   return (
     <div className="messageLobby">
       <h1>Your Messages</h1>
-      <Link to={`/new-message`}>New Message</Link>
+      <div className="smallMenu">
+        <Link to={`/new-message`}>New Message</Link>
+        <button onClick={() => setNewMessageStatusTop((prev) => !prev)}>Check for new messages</button>
+      </div>
       <div className="soloMessages">
         {soloMessages.map((conversation) => (
           <ConversationPreview

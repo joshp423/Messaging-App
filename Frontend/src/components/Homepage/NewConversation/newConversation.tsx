@@ -59,7 +59,7 @@ function NewConversation () {
       });
 
       if (rsp.status === 201) {
-        return
+        return;
       }
     } catch (error) {
       console.error("Upload message error:", error);
