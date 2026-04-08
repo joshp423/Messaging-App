@@ -291,14 +291,23 @@ export async function sendMessageSingleRecipient(req: Request, res: Response) {
   try {
     const { senderId, receiverId, message, imageUrl, conversationId } =
       userMessageSingleSchema.parse(req.body);
-
+    
+      let newOrExistingConversation = conversationId;
       const existingCheck = await prisma.conversationsSolo.findUnique({
         where: {
           id: conversationId
         }
       })
 
-      if (existingCheck?)
+      if (!existingCheck) {
+        const newConversation = await prisma.conversationsSolo.create({
+          data: {
+            userA: senderId,
+            userB: receiverId,
+          }
+        })
+        newOrExistingConversation = newConversation.id;
+      }
 
     await prisma.messagesSolo.create({
       data: {
@@ -306,7 +315,7 @@ export async function sendMessageSingleRecipient(req: Request, res: Response) {
         receiverId,
         message,
         imageUrl,
-        conversationId,
+        conversationId: newOrExistingConversation,
       },
     });
     return res.status(201).json({ message: "Message sent successfully" });

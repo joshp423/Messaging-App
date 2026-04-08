@@ -35,7 +35,6 @@ function NewConversation () {
     }
   }
 
-  // will need a new api with username
   async function newMessageAPI(e: SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
 
@@ -54,7 +53,7 @@ function NewConversation () {
           receiverId,
           message: newMessageText,
           imageUrl: uploadedUrl,
-          conversationId: null
+          conversationId: 0
         }),
       });
 
