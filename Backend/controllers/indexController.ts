@@ -416,7 +416,7 @@ interface AuthRequest extends Request {
   user?: JwtPayload;
 }
 
-export function verifyToken(
+export function verifyToken( // REVIEW THIS
   req: AuthRequest,
   res: Response,
   next: NextFunction,
