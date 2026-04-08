@@ -40,7 +40,7 @@ function GroupConversation() {
       }
     }
     getConversation();
-  }, [conversationId, userId, newMessageStatus]);
+  }, [groupConversationId, userId, newMessageStatus]);
 
   return (
     <div className="conversation">
@@ -58,8 +58,7 @@ function GroupConversation() {
             ? selectedConversation?.userB
             : selectedConversation?.userA
         }
-        conversationId={Number(conversationId)}
-        userId={Number(userId)}
+        conversationId={Number(groupConversationId)}
         setNewMessageStatus={setNewMessageStatus}
       />
       <Link to="/">Back</Link>

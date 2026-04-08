@@ -15,15 +15,15 @@ const routes = [
       { path: "/Log-in", element: <Login /> },
       { path: "/Sign-up", element: <SignUp /> },
       {
-        path: "/user/:userId/conversation/:conversationId",
+        path: "/conversation/:conversationId",
         element: <Conversation />,
       },
       {
-        path: "user/:userId/groupConversation/:conversationId}",
+        path: "/groupConversation/:conversationId}",
         element: <GroupConversation />
       },
       { path: "/user/:userId", element: <UserProfile /> },
-      { path: "/user/:userId/new-message", element: <NewConversation/>}
+      { path: "/new-message", element: <NewConversation/>}
     ],
   },
 ];

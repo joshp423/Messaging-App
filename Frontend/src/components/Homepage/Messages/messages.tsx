@@ -16,7 +16,7 @@ function Messages() {
     async function getMessages() {
       try {
         const rsp = await fetch(
-          `http://localhost:3000/users/${userId}/conversations`,
+          `http://localhost:3000/conversations`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -42,7 +42,7 @@ function Messages() {
   return (
     <div className="messageLobby">
       <h1>Your Messages</h1>
-      <Link to={`user/${userId}/new-message`}>New Message</Link>
+      <Link to={`/new-message`}>New Message</Link>
       <div className="soloMessages">
         {soloMessages.map((conversation) => (
           <ConversationPreview

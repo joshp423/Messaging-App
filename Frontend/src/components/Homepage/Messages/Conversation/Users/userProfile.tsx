@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import type { User } from "../../../../../types/user";
 import { useParams } from "react-router";
+import { Link } from "react-router";
 
 function UserProfile() {
   const { userId } = useParams();
@@ -31,6 +32,16 @@ function UserProfile() {
     getUserProfile();
   }, [userId]);
 
+  if (selectedUserProfile?.username === sessionStorage.getItem("loggedUsername")) {
+    return (
+      <div className="userProfile">
+        <img src={selectedUserProfile?.pfpUrl} alt="" />
+        <h1>{selectedUserProfile?.username}</h1>
+        <p>{selectedUserProfile?.blurb}</p>
+        <Link to="/editProfile"></Link>
+      </div>
+    );
+  }
   return (
     <div className="userProfile">
       <img src={selectedUserProfile?.pfpUrl} alt="" />

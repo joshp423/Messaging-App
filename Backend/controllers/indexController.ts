@@ -48,7 +48,6 @@ const userEditProfileSchema = z.object({
 });
 
 const userMessageSingleSchema = z.object({
-  senderId: z.number(),
   receiverId: z.number(),
   message: z.string().trim(),
   imageUrl: z.string(),
@@ -74,10 +73,6 @@ const userGroupSchema = z.object({
     .max(25, { message: `Group name: ${lengthErrShort}` }),
 });
 
-const userIdSchema = z.object({
-  id: z.number(),
-});
-
 const userInitialUpdateSchema = z.object({
   email: z.string(),
   pfpUrl: z.string(),
@@ -85,7 +80,6 @@ const userInitialUpdateSchema = z.object({
 });
 
 const userConversationSchema = z.object({
-  userId: z.number(),
   conversationId: z.number(),
 });
 
@@ -223,7 +217,7 @@ export async function initialProfileUpdate(req: Request, res: Response) {
     const { email, pfpUrl, blurb } = userInitialUpdateSchema.parse(req.body);
 
     //use updatedProfile
-    const updatedProfile = await prisma.users.update({
+    await prisma.users.update({
       where: { email },
       data: {
         pfpUrl,
@@ -286,12 +280,13 @@ export const uploadMessageImage = [
   },
 ];
 
-export async function sendMessageSingleRecipient(req: Request, res: Response) {
+export async function sendMessageSingleRecipient(req: AuthRequest, res: Response) {
   //check for existing conversation and add otherwise create new
   try {
-    const { senderId, receiverId, message, imageUrl, conversationId } =
+    const { receiverId, message, imageUrl, conversationId } =
       userMessageSingleSchema.parse(req.body);
     
+      const senderId = req.user?.id
       let newOrExistingConversation = conversationId;
       const existingCheck = await prisma.conversationsSolo.findUnique({
         where: {
@@ -450,9 +445,10 @@ export function verifyToken( // REVIEW THIS
   }
 }
 
-export async function getUserConversations(req: Request, res: Response) {
+export async function getUserConversations(req: AuthRequest, res: Response) {
   try {
-    const { id } = userIdSchema.parse({ id: Number(req.params.userId) });
+
+    const id = req.user?.id
 
     const conversationsSolo = await prisma.conversationsSolo.findMany({
       where: {
@@ -513,9 +509,9 @@ export async function getUserConversations(req: Request, res: Response) {
   }
 }
 
-export async function getUserProfile(req: Request, res: Response) {
+export async function getUserProfile(req: AuthRequest, res: Response) {
   try {
-    const { id } = userIdSchema.parse({ id: Number(req.params.userId) });
+    const id = req.user?.id;
 
     const user = await prisma.users.findUnique({
       where: { id: id },
@@ -529,12 +525,13 @@ export async function getUserProfile(req: Request, res: Response) {
   }
 }
 
-export async function getSoloConversation(req: Request, res: Response) {
+export async function getSoloConversation(req: AuthRequest, res: Response) {
   try {
-    const { userId, conversationId } = userConversationSchema.parse({
-      userId: Number(req.params.userId),
+    const { conversationId } = userConversationSchema.parse({
       conversationId: Number(req.params.conversationId),
     });
+
+    const userId = req.user?.id;
 
     const conversation = await prisma.conversationsSolo.findMany({
       where: {
@@ -568,11 +565,9 @@ export async function getSoloConversation(req: Request, res: Response) {
   }
 }
 
-export async function getGroupConversation(req: Request, res: Response) {
+export async function getGroupConversation(req: AuthRequest, res: Response) {
   try {
-    const { id } = userIdSchema.parse({
-      id: Number(req.params.conversationId),
-    });
+    const id = req.user?.id;
 
     const groups = await prisma.groups.findMany({
       where: {

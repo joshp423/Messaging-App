@@ -9,12 +9,10 @@ function ConversationPreview({
   conversationMessage,
 }: conversationPreviewProps) {
   const navigate = useNavigate();
-
-  const userId = sessionStorage.getItem("loggedUserId");
   const username = sessionStorage.getItem("loggedUsername");
 
   const viewConversation = () => {
-    navigate(`user/${userId}/conversation/${conversationMessage.id}`);
+    navigate(`conversation/${conversationMessage.id}`);
   };
 
   const latestMessage = conversationMessage.messages[0];

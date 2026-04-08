@@ -21,7 +21,7 @@ function Conversation() {
     async function getConversation() {
       try {
         const rsp = await fetch(
-          `http://localhost:3000/users/${userId}/conversations/${conversationId}`,
+          `http://localhost:3000/conversations/${conversationId}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -40,7 +40,7 @@ function Conversation() {
       }
     }
     getConversation();
-  }, [conversationId, userId, newMessageStatus]);
+  }, [conversationId, newMessageStatus]);
 
   return (
     <div className="conversation">
@@ -59,7 +59,6 @@ function Conversation() {
             : selectedConversation?.userA
         }
         conversationId={Number(conversationId)}
-        userId={Number(userId)}
         setNewMessageStatus={setNewMessageStatus}
       />
       <Link to="/">Back</Link>

@@ -4,7 +4,6 @@ type newMessageProps = {
   conversationPartner: string;
   conversationPartnerId: number | undefined;
   conversationId: number | undefined;
-  userId: number | null;
   setNewMessageStatus: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
@@ -12,7 +11,6 @@ function NewMessage({
   conversationPartner,
   conversationPartnerId,
   conversationId,
-  userId,
   setNewMessageStatus,
 }: newMessageProps) {
   const [newMessageText, setNewMessageText] = useState("");
@@ -22,6 +20,7 @@ function NewMessage({
     if (!newMessageImage) return "";
 
     const formData = new FormData();
+
 
     formData.append("uploaded_file", newMessageImage);
 
@@ -51,12 +50,6 @@ function NewMessage({
     e.preventDefault();
 
     try {
-      console.log(
-        userId,
-        conversationPartnerId,
-        newMessageText,
-        conversationId,
-      );
       const uploadedUrl = await uploadImage();
       const rsp = await fetch("http://localhost:3000/send-message-solo", {
         headers: {
@@ -65,7 +58,6 @@ function NewMessage({
         },
         method: "POST",
         body: JSON.stringify({
-          senderId: userId,
           receiverId: conversationPartnerId,
           message: newMessageText,
           imageUrl: uploadedUrl,

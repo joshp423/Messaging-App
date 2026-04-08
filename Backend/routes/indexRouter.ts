@@ -20,7 +20,7 @@ indexRouter.post(
   indexController.sendMessageGroupRecipient,
 );
 indexRouter.get(
-  "/users/:userId/conversations",
+  "/conversations",
   indexController.verifyToken,
   indexController.getUserConversations,
 );
@@ -44,12 +44,12 @@ indexRouter.get(
 indexRouter.post("/uploadPFP", indexController.uploadPFP);
 
 indexRouter.get(
-  "/users/:userId/conversations/:conversationId",
+  "/conversations/:conversationId",
   indexController.verifyToken,
   indexController.getSoloConversation,
 );
 indexRouter.get(
-  "/users/:userId/groupConversations/:conversationId",
+  "/groupConversations/:conversationId",
   indexController.verifyToken,
   indexController.getGroupConversation,
 );

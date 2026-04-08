@@ -7,13 +7,10 @@ type groupPreviewProps = {
 
 function GroupPreview({ conversationMessage }: groupPreviewProps) {
   const navigate = useNavigate();
-
-  const userId = sessionStorage.getItem("loggedUserId");
   const username = sessionStorage.getItem("loggedUsername");
 
-
   const viewConversation = () => {
-    navigate(`users/${userId}/groupConversation/${conversationMessage.id}`);
+    navigate(`groupConversation/${conversationMessage.id}`);
   };
 
   const latestMessage = conversationMessage.messages[0];

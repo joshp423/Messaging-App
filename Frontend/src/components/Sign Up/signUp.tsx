@@ -51,7 +51,7 @@ function SignUp() {
         body: JSON.stringify({ username, email, password }),
       });
 
-      if (rsp.status === 201) {
+      if (rsp.status === 201) { // if sign up successful
         const uploadedUrl = await uploadPFP(); //await other function
         try {
           await fetch("http://localhost:3000/initialProfileUpdate", {
