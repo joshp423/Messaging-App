@@ -79,7 +79,7 @@ function NewConversation () {
     try {
       const uploadedUrl = await uploadImage();
       const receiverId = await getUserId();
-      const userId = sessionStorage.getItem("loggedUserId")
+      const userId = sessionStorage.getItem("loggedUserId");
       const rsp = await fetch("http://localhost:3000/send-message-solo", {
         headers: {
           "Content-Type": "application/json",
@@ -140,6 +140,7 @@ function NewConversation () {
               setNewGroupMessageText={setNewGroupMessageText}
               setNewGroupMessageImage={setNewGroupMessageImage}
               setNewGroupMessageRecipients={setNewGroupMessageRecipients}
+              setNewGroupRecipientsAmount={setNewGroupRecipientsAmount}
               newGroupMessageAPI={newGroupMessageAPI}
             />
             <Link to="/">Back</Link>

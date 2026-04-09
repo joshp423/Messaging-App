@@ -2,15 +2,24 @@ import type { Dispatch, SetStateAction, SubmitEventHandler } from "react";
 
 type NewGroupConversationFormProps = {
     setNewGroupMessageText: Dispatch<SetStateAction<string>>;
-    setGroupNewMessageImage: Dispatch<SetStateAction<File | null>>;
-    setNewMessageRecipient: Dispatch<SetStateAction<string>>;
-    newMessageAPI: SubmitEventHandler<HTMLFormElement>;
+    setNewGroupMessageImage: Dispatch<SetStateAction<File | null>>;
+    setNewGroupMessageRecipients: Dispatch<SetStateAction<[]>>;
+    setNewGroupRecipientsAmount: Dispatch<SetStateAction<number>>;
+    newGroupMessageAPI: SubmitEventHandler<HTMLFormElement>;
 }
 
-function NewGroupConversationForm ({ setNewGroupMessageText, setGroupNewMessageImage, setNewMessageRecipient, newMessageAPI}: NewGroupConversationFormProps,  ) {
+function NewGroupConversationForm ({ setNewGroupMessageText, setNewGroupMessageImage, setNewGroupRecipientsAmount, setNewGroupMessageRecipients, newGroupMessageAPI}: NewGroupConversationFormProps,  ) {
     return (
-        <form onSubmit={newMessageAPI}>
+        <form onSubmit={newGroupMessageAPI}>
             <label htmlFor="newMessageRecipientUsername">Recipient Username: </label>
+            <input
+                type="number"
+                name="newGroupRecipientsAmount"
+                onChange={(e) => {
+                    setNewGroupRecipientsAmount(e.target.valueAsNumber);
+                }}
+            />
+
             <input 
                 type="text" 
                 name="newMessageRecipientUsername"
@@ -22,7 +31,7 @@ function NewGroupConversationForm ({ setNewGroupMessageText, setGroupNewMessageI
                 type="text"
                 name="newMessageText"
                 onChange={(e) => {
-                    setNewMessageText(e.target.value);
+                    setNewGroupMessageText(e.target.value);
                 }}
               />
               <label htmlFor="messageImage">Add Image</label>
@@ -32,7 +41,7 @@ function NewGroupConversationForm ({ setNewGroupMessageText, setGroupNewMessageI
                 name="uploaded_file"
                 id="fileInput"
                 onChange={(e) => {
-                  setNewMessageImage(e.target.files?.[0] || null);
+                  setNewGroupMessageImage(e.target.files?.[0] || null);
                 }}
               />
             <button type="submit">Send</button>
