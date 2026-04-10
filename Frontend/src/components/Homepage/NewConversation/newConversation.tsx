@@ -7,7 +7,6 @@ function NewConversation() {
   const [newMessageText, setNewMessageText] = useState("");
   const [newMessageImage, setNewMessageImage] = useState<File | null>(null);
   const [newMessageRecipient, setNewMessageRecipient] = useState("");
-
   const [newGroupMessageText, setNewGroupMessageText] = useState("");
   const [newGroupMessageImage, setNewGroupMessageImage] = useState<File | null>(
     null,
@@ -83,18 +82,15 @@ function NewConversation() {
       const uploadedUrl = await uploadImage();
       const receiverId = await getUserId();
       const userId = sessionStorage.getItem("loggedUserId");
-      const rsp = await fetch("http://localhost:3000/send-message-solo", {
+      const rsp = await fetch("http://localhost:3000/send-message-group", {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${sessionStorage.getItem("token")}`,
         },
         method: "POST",
         body: JSON.stringify({
-          senderId: userId,
-          receiverId,
           message: newMessageText,
           imageUrl: uploadedUrl,
-          conversationId: 0,
         }),
       });
 
