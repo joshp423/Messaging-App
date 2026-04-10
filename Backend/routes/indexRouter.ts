@@ -55,5 +55,7 @@ indexRouter.get(
 );
 
 indexRouter.post("/getUserId", indexController.verifyToken, indexController.getUserId)
+indexRouter.post("/getUserIds", indexController.verifyToken, indexController.getUserIds)
+
 
 export default indexRouter;

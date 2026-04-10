@@ -1,5 +1,5 @@
 function GroupConversationRecipientInput() {
-  return <input type="text" />;
+  return <input type="text" required/>;
 }
 
 export default GroupConversationRecipientInput;

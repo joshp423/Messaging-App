@@ -9,6 +9,7 @@ type NewGroupConversationFormProps = {
   newGroupMessageAPI: SubmitEventHandler<HTMLFormElement>;
   newGroupRecipientsAmount: number;
   recipientUpdater: (index: number, value: string) => void;
+  setNewGroupName: Dispatch<SetStateAction<string>>;
 };
 
 function NewGroupConversationForm({
@@ -18,6 +19,7 @@ function NewGroupConversationForm({
   newGroupRecipientsAmount,
   setNewGroupMessageRecipients,
   newGroupMessageAPI,
+  setNewGroupName
 }: NewGroupConversationFormProps) {
   return (
     <form onSubmit={newGroupMessageAPI}>
@@ -25,8 +27,8 @@ function NewGroupConversationForm({
       <input
         type="number"
         name="newGroupRecipientsAmount"
-        min={1}
-        defaultValue={1}
+        min={3}
+        defaultValue={3}
         required
         onChange={(e) => {
           const newValue = e.target.valueAsNumber;
@@ -38,7 +40,7 @@ function NewGroupConversationForm({
           });
         }}
       />
-      <label>Group Member Username</label>
+      <label>Group Member Usernames</label>
       <div className="groupMemberInputs">
         {Array.from({ length: newGroupRecipientsAmount }).map(
           (
@@ -66,6 +68,14 @@ function NewGroupConversationForm({
         id="fileInput"
         onChange={(e) => {
           setNewGroupMessageImage(e.target.files?.[0] || null);
+        }}
+      />
+      <label htmlFor="newGroupName">New Group Name: </label>
+      <input 
+        type="text"
+        name="newGroupName"
+        onChange={(e) => {
+          setNewGroupName(e.target.value);
         }}
       />
       <button type="submit">Send</button>

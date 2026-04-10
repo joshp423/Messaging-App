@@ -55,7 +55,6 @@ const userMessageSingleSchema = z.object({
 });
 
 const userMessageGroupSchema = z.object({
-  senderId: z.number(),
   groupId: z.number(),
   message: z.string().trim(),
   imageUrl: z.string(),
@@ -72,6 +71,10 @@ const userGroupSchema = z.object({
     .trim()
     .max(25, { message: `Group name: ${lengthErrShort}` }),
 });
+
+const getUserIdsSchema = z.object({
+  usernames: z.array(z.string())
+})
 
 const userInitialUpdateSchema = z.object({
   email: z.string(),
@@ -347,14 +350,40 @@ export async function getUserId(req: Request, res: Response) {
   }
 }
 
+export async function getUserIds(req: Request, res: Response) {
+  try {
+    const { usernames } =
+      getUserIdsSchema.parse(req.body);
+
+    const selectedUserId = await prisma.users.findMany({
+      where: {
+        username: {
+          in: usernames, //in the array
+        },
+      },
+    });
+    return res.status(201).json({ selectedUserId });
+  } catch (error) {
+    if (error instanceof ZodError) {
+      //if error is a zod error send back
+      return res.status(400).json({
+        errors: error.issues,
+      });
+    }
+    return res.status(500).json({ message: error });
+  }
+}
+
 export async function sendMessageGroupRecipient(
-  req: Request,
+  req: AuthRequest,
   res: Response,
   next: NextFunction,
 ) {
   try {
-    const { senderId, groupId, message, imageUrl } =
+    const { groupId, message, imageUrl } =
       userMessageGroupSchema.parse(req.body);
+
+      const senderId = req.user?.id      
 
     await prisma.messagesGroup.create({
       data: {
@@ -384,12 +413,14 @@ export async function createNewGroup(
   try {
     const { userIds, name } = userGroupSchema.parse(req.body);
 
+    //existing checks out of scope for now
+
     await prisma.groups.create({
       // create new group and link it to users by id
       data: {
         name,
         users: {
-          connect: userIds.map((id: number) => ({ id })), // array becomes [{ id: number }] objects - go to users and find id =
+          connect: userIds.map((id: number) => ({ id })), // array becomes [{ id: number }] objects - go to users and find id 
         },
       },
     });
