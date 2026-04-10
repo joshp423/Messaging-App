@@ -13,9 +13,9 @@ function NewConversation() {
     null,
   );
   const [newGroupRecipientsAmount, setNewGroupRecipientsAmount] = useState(0);
-  const [newGroupMessageRecipients, setNewGroupMessageRecipients] = useState<string[]>(
-    [],
-  );
+  const [newGroupMessageRecipients, setNewGroupMessageRecipients] = useState<
+    string[]
+  >([]);
 
   async function uploadImage() {
     if (!newMessageImage) return "";
@@ -106,13 +106,13 @@ function NewConversation() {
     }
   }
 
-  const recipientUpdater = (index:number, value:string) => {
+  const recipientUpdater = (index: number, value: string) => {
     setNewGroupMessageRecipients((prev) => {
       const updated = [...prev]; //copy existing array
       updated[index] = value;
-      return updated
-    })
-  }
+      return updated;
+    });
+  };
 
   async function getUserId() {
     if (!newMessageRecipient) return console.error("No message recipient");

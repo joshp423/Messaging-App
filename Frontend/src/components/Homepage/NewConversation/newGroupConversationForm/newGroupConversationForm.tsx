@@ -4,7 +4,7 @@ import GroupConversationRecipientInput from "./GroupConversationRecipientInput/G
 type NewGroupConversationFormProps = {
   setNewGroupMessageText: Dispatch<SetStateAction<string>>;
   setNewGroupMessageImage: Dispatch<SetStateAction<File | null>>;
-  setNewGroupMessageRecipients: Dispatch<SetStateAction<[]>>;
+  setNewGroupMessageRecipients: Dispatch<SetStateAction<string[]>>;
   setNewGroupRecipientsAmount: Dispatch<SetStateAction<number>>;
   newGroupMessageAPI: SubmitEventHandler<HTMLFormElement>;
   newGroupRecipientsAmount: number;
@@ -19,8 +19,6 @@ function NewGroupConversationForm({
   setNewGroupMessageRecipients,
   newGroupMessageAPI,
 }: NewGroupConversationFormProps) {
-
-
   return (
     <form onSubmit={newGroupMessageAPI}>
       <label htmlFor="newMessageRecipientUsername">Recipient Username: </label>
@@ -31,14 +29,25 @@ function NewGroupConversationForm({
         defaultValue={1}
         required
         onChange={(e) => {
-          setNewGroupRecipientsAmount(e.target.valueAsNumber);
+          const newValue = e.target.valueAsNumber;
+          setNewGroupRecipientsAmount(newValue);
+          setNewGroupMessageRecipients((prev) => {
+            return newValue > prev.length
+              ? [...prev, ...Array(newValue - prev.length).fill("")]
+              : prev.slice(0, newValue);
+          });
         }}
       />
       <label>Group Member Username</label>
       <div className="groupMemberInputs">
-        {Array.from({ length: newGroupRecipientsAmount}).map((_, index) => ( //value, index
-            <GroupConversationRecipientInput key={index}/>
-        ))}
+        {Array.from({ length: newGroupRecipientsAmount }).map(
+          (
+            _,
+            index, //value, index
+          ) => (
+            <GroupConversationRecipientInput key={index} />
+          ),
+        )}
       </div>
       <label htmlFor="newGroupMessageText">Message: </label>
       <input
@@ -48,7 +57,7 @@ function NewGroupConversationForm({
           setNewGroupMessageText(e.target.value);
         }}
       />
-      
+
       <label htmlFor="messageImage">Add Image: </label>
       <input
         type="file"
