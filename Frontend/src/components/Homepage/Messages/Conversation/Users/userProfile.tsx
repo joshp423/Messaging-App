@@ -32,7 +32,9 @@ function UserProfile() {
     getUserProfile();
   }, [userId]);
 
-  if (selectedUserProfile?.username === sessionStorage.getItem("loggedUsername")) {
+  if (
+    selectedUserProfile?.username === sessionStorage.getItem("loggedUsername")
+  ) {
     return (
       <div className="userProfile">
         <img src={selectedUserProfile?.pfpUrl} alt="" />

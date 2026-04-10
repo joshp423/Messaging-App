@@ -21,7 +21,6 @@ function NewMessage({
 
     const formData = new FormData();
 
-
     formData.append("uploaded_file", newMessageImage);
 
     try {

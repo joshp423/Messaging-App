@@ -16,16 +16,13 @@ function Messages() {
   useEffect(() => {
     async function getMessages() {
       try {
-        const rsp = await fetch(
-          `http://localhost:3000/conversations`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${sessionStorage.getItem("token")}`,
-            },
-            method: "GET",
+        const rsp = await fetch(`http://localhost:3000/conversations`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
           },
-        );
+          method: "GET",
+        });
         if (rsp.status === 200) {
           const data = await rsp.json();
           setSoloMessages(data.conversationsSolo);
@@ -45,7 +42,9 @@ function Messages() {
       <h1>Your Messages</h1>
       <div className="smallMenu">
         <Link to={`/new-message`}>New Message</Link>
-        <button onClick={() => setNewMessageStatusTop((prev) => !prev)}>Check for new messages</button>
+        <button onClick={() => setNewMessageStatusTop((prev) => !prev)}>
+          Check for new messages
+        </button>
       </div>
       <div className="soloMessages">
         {soloMessages.map((conversation) => (
