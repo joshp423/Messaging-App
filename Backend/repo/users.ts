@@ -16,11 +16,23 @@ export class UserRepo {
       },
     });
   }
-  async get(email:string) {
+  
+  async get(email: string) {
     return await this.prisma.users.findUnique({
       where: {
         email,
       }, 
     })
+  }
+  
+  async update(id: number, username: string, pfpUrl: string, blurb: string) {
+    return await this.prisma.users.update({
+      where: { id },
+      data: {
+        username,
+        pfpUrl,
+        blurb,
+      },
+    });
   }
 }

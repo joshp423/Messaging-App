@@ -1,17 +1,18 @@
 import z, { ZodError } from "zod";
-import { emailErr, emailLengthErr, lengthErrShort, passwordAlphaNumericErr } from "./indexController";
+import { emailErr, emailLengthErr, lengthErrShort, passwordAlphaNumericErr } from "./indexController.js";
 import bcrypt from "bcryptjs";
 import { type Request, type Response, type NextFunction, Router } from "express";
-import prisma from "../lib/prisma";
+import prisma from "../lib/prisma.js";
 import jwt, { type JwtPayload } from "jsonwebtoken";
 import type { UploadApiResponse } from "cloudinary";
-import cloudinary from "../lib/cloudinary";
+import cloudinary from "../lib/cloudinary.js";
 import multer from "multer";
-import { UserService } from "../service/user";
-import { UserRepo } from "../repo/users";
+import { UserService } from "../service/user.js";
+import { UserRepo } from "../repo/users.js";
+import { config } from "../service/config.js";
 
 const userRepo = new UserRepo(prisma) // need db to create service, as it is a dependancy
-const userService = new UserService(userRepo) // instantiate user service for handlers to call
+const userService = new UserService(userRepo, config) // instantiate user service for handlers to call
 
 const SignUpSchema = z.object({
   //parses the object to the schema, narrowing the types that are allowed
@@ -83,11 +84,6 @@ export async function signUp(req: Request, res: Response) {
 }
 
 export async function logIn(req: Request, res: Response) {
-  const user = {
-    email: req.body["email"],
-    password: req.body["password"],
-  };
-
   const { email, password } = req.body;
 
   const { success, data, error } = LogInSchema.safeParse({
@@ -101,64 +97,49 @@ export async function logIn(req: Request, res: Response) {
     });
   }
 
-  /*
-  try {
-    const parsedUser = LogInSchema.parse(user);
+  const user = await userService.get(data.email);
 
-    if (typeof parsedUser.email != "string") {
-      return res.status(400).json({ message: "Incorrect header" });
-    }
-    const userCheck = await prisma.users.findUnique({
-      where: {
-        email: parsedUser.email,
-      },
-    });
-
-    if (!userCheck) {
-      return res.status(400).json({ message: "Incorrect username" });
-    }
-
-    const match = await bcrypt.compare(parsedUser.password, userCheck.password);
-    if (!match) {
-      return res.status(400).json({ message: "Incorrect password" });
-    }
-
-    const secret = process.env.JWT_SECRET;
-
-    if (!secret) {
-      throw new Error("JWT secret is not defined");
-    }
-
-    jwt.sign(
-      { id: userCheck.id, username: userCheck.username },
-      secret,
-      { expiresIn: "1w" },
-      function (err, token) {
-        if (err || !token) {
-          //need to account for an error or no token
-          return res.status(500).json({ message: "Token generation failed" });
-        }
-        return res.json({
-          message: "Successfully logged in",
-          token,
-        });
-      },
-    );
-  } catch (error) {
-    if (error instanceof ZodError) {
-      //if error is a zod error send back
-      return res.status(400).json({
-        errors: error.issues,
-      });
-    }
-    return res.status(500).json({
-      message: error instanceof Error ? error.message : String(error),
-    });
+  if (!user) {
+    return res.status(403).json({ message: "Login failed" });
   }
-  */
+
+  const token = await userService.login(
+    user.id,
+    user.username,
+    data.password,
+  );
+  
+  if (!token) {
+    return res
+      .status(500)
+      .json({
+        message: "an unexpected error occured"
+      });
+  }
+
+  return res.json({
+    message: "Successfully logged in",
+    token,
+  });
 }
 
 export async function editProfile(req: Request, res: Response) {
+
+  const { id, username, pfpUrl, blurb } = req.body;
+
+  const { success, data, error } = LogInSchema.safeParse({
+    id,
+    username,
+    pfpUrl,
+    blurb,
+  });
+
+  if (!success) {
+    return res.status(400).json({
+      errors: error,
+    });
+  }
+
   try {
     const { id, username, pfpUrl, blurb } = EditProfileSchema.parse(
       req.body,

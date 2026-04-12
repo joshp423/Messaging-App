@@ -1,14 +1,18 @@
 import bcrypt from "bcryptjs";
-import prisma from "../lib/prisma";
 import type { UserRepo } from "../repo/users";
+import jwt, { type JwtPayload } from "jsonwebtoken";
+import type { configSchema } from "./config";
+
 
 export type User = { username: string; password: string; email: string };
 
 export class UserService {
+  private config: configSchema;
   private userRepo: UserRepo;
 
-  constructor(userRepo: UserRepo) {
+  constructor(userRepo: UserRepo, config: configSchema) {
     this.userRepo = userRepo;
+    this.config = config;
   }
 
   async create({ username, password, email }: User) {
@@ -19,4 +23,28 @@ export class UserService {
   async get(email: string) {
     return this.userRepo.get(email);
   }
+
+  async login(
+    id: number,
+    username: string,
+    hashedPassword: string,
+  ) {
+    if (await bcrypt.compare(hashedPassword, username)) {
+      return null;
+    }
+
+    const token = jwt.sign({ id, username }, this.config.JWT_SECRET, { expiresIn: "1w" });
+
+    return token;
+  }
+
+  async edit(
+    id: number,
+    username: string,
+    pfpUrl: string,
+  ) {
+    return this.userRepo.update
+  }
+
 }
+
