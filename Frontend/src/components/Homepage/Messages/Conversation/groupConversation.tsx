@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import type { ConversationObject } from "../../../../types/conversationObject";
 import Message from "./Message/message";
-import NewMessage from "./NewMessage/newMessage";
+import NewGroupMessage from "./NewMessage/newGroupMessage";
 import { useParams } from "react-router";
 import { Link } from "react-router";
 
@@ -13,15 +13,16 @@ function GroupConversation() {
 
   const userId = sessionStorage.getItem("loggedUserId");
 
-  const username = sessionStorage.getItem("loggedUsername");
-
   const [newMessageStatus, setNewMessageStatus] = useState(false);
+
+  const [groupName, setGroupName] = useState("")
+  
 
   useEffect(() => {
     async function getConversation() {
       try {
         const rsp = await fetch(
-          `http://localhost:3000/users/${userId}/groupConversations/${groupConversationId}`,
+          `http://localhost:3000/groupConversations/${groupConversationId}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -32,7 +33,8 @@ function GroupConversation() {
         );
         if (rsp.status === 200) {
           const data = await rsp.json();
-          setSelectedConversation(data.conversation[0]);
+          setSelectedConversation(data.groups[0]);
+          setGroupName(data.groups[0].id)
           console.log(data.conversation);
         }
       } catch (error) {
@@ -40,27 +42,17 @@ function GroupConversation() {
       }
     }
     getConversation();
-  }, [groupConversationId, userId, newMessageStatus]);
+  }, [groupConversationId, userId, newMessageStatus, groupName]);
 
   return (
     <div className="conversation">
       {selectedConversation?.messages.map((message) => (
         <Message key={message.id} message={message} />
       ))}
-      <NewMessage
-        conversationPartner={
-          selectedConversation?.messages[0].receiver.username === username
-            ? username
-            : selectedConversation?.messages[0].receiver.username || ""
-        }
-        conversationPartnerId={
-          selectedConversation?.userA === Number(userId)
-            ? selectedConversation?.userB
-            : selectedConversation?.userA
-        }
-        conversationId={Number(groupConversationId)}
-        setNewMessageStatus={setNewMessageStatus}
-      />
+    <NewGroupMessage />
+      groupName={groupName}
+      groupConversationId={groupConversationId}
+      setNewMessageStatus={setNewMessageStatus}
       <Link to="/">Back</Link>
     </div>
   );
