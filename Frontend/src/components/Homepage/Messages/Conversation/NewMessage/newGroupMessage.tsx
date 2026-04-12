@@ -1,4 +1,5 @@
 import React, { useState, type SyntheticEvent } from "react";
+import { useNavigate } from "react-router";
 
 type newMessageProps = {
   groupName: string;
@@ -13,6 +14,8 @@ function NewGroupMessage({
 }: newMessageProps) {
   const [newMessageText, setNewMessageText] = useState("");
   const [newMessageImage, setNewMessageImage] = useState<File | null>(null);
+  const navigate = useNavigate();
+
 
   async function uploadImage(newMessageImage:File | null) {
     if (!newMessageImage) return "";
@@ -48,9 +51,7 @@ function NewGroupMessage({
 
     try {
 
-      const uploadedUrl = await uploadImage(newGroupMessageImage);
-      const receiverIds = await getUserIds();
-      const newGroupId = await createNewGroup(receiverIds)
+      const uploadedUrl = await uploadImage(newMessageImage);
       
       const rsp = await fetch("http://localhost:3000/send-message-group", {
         headers: {
@@ -59,9 +60,9 @@ function NewGroupMessage({
         },
         method: "POST",
         body: JSON.stringify({
-          message: newGroupMessageText,
+          message: newMessageText,
           imageUrl: uploadedUrl,
-          groupId: newGroupId
+          groupId: groupConversationId
         }),
       });
 
@@ -75,8 +76,8 @@ function NewGroupMessage({
 
   return (
     <div className="newMessage">
-      <form onSubmit={newMessageAPI}>
-        <h3>New Message to {conversationPartner}: </h3>
+      <form onSubmit={newGroupMessageAPI}>
+        <h3>New Message to {groupName}: </h3>
         <input
           type="text"
           onChange={(e) => {
