@@ -415,7 +415,7 @@ export async function createNewGroup(
 
     //existing checks out of scope for now
 
-    await prisma.groups.create({
+    const newGroup = await prisma.groups.create({
       // create new group and link it to users by id
       data: {
         name,
@@ -425,7 +425,7 @@ export async function createNewGroup(
       },
     });
 
-    return res.status(201).json({ message: "Message sent successfully" });
+    return res.status(201).json({ newGroup });
   } catch (error) {
     if (error instanceof ZodError) {
       //if error is a zod error send back

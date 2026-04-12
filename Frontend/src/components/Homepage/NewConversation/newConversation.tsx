@@ -3,6 +3,7 @@ import { Link } from "react-router";
 import NewSingleConversationForm from "./newSingleConversationForm/newSingleConversationForm";
 import NewGroupConversationForm from "./newGroupConversationForm/newGroupConversationForm";
 import type { User } from "../../../types/user";
+import { useNavigate } from "react-router";
 
 function NewConversation() {
   const [newMessageText, setNewMessageText] = useState("");
@@ -17,6 +18,7 @@ function NewConversation() {
     string[]
   >([]);
   const [newGroupName, setNewGroupName] = useState<string>("")
+  const navigate = useNavigate();
 
   async function uploadImage(newMessageImage:File | null) {
     if (!newMessageImage) return "";
@@ -68,7 +70,7 @@ function NewConversation() {
       });
 
       if (rsp.status === 201) {
-        return;
+        navigate("/")
       }
     } catch (error) {
       console.error("Upload message error:", error);
@@ -82,7 +84,7 @@ function NewConversation() {
 
       const uploadedUrl = await uploadImage(newGroupMessageImage);
       const receiverIds = await getUserIds();
-      await createNewGroup(receiverIds)
+      const newGroupId = await createNewGroup(receiverIds)
       
       const rsp = await fetch("http://localhost:3000/send-message-group", {
         headers: {
@@ -93,11 +95,12 @@ function NewConversation() {
         body: JSON.stringify({
           message: newGroupMessageText,
           imageUrl: uploadedUrl,
+          groupId: newGroupId
         }),
       });
 
       if (rsp.status === 201) {
-        return;
+        navigate("/");
       }
     } catch (error) {
       console.error("Upload message error:", error);
@@ -173,7 +176,7 @@ function NewConversation() {
           "Content-Type": "application/json",
           Authorization: `Bearer ${sessionStorage.getItem("token")}`,
         },
-        method: "POST",
+        method: "PUT",
         body: JSON.stringify({
           userIds: receiverIds,
           name: newGroupName
@@ -181,7 +184,7 @@ function NewConversation() {
       });
       if (rsp.status === 201) {
         const data = await rsp.json();
-        return data.selectedUserId;
+        return data.newGroup.id;
       }
     } catch (error) {
       console.error("User not found:", error);
