@@ -1,13 +1,14 @@
 import { Router } from "express";
 import * as indexController from "../controllers/indexController.js";
+import { signUp, logIn, editProfile, getUserId, getUserIds, initialProfileUpdate, uploadPFP } from "../controllers/userController.js";
 const indexRouter = Router();
 
-indexRouter.post("/sign-up", indexController.signUp);
-indexRouter.post("/log-in", indexController.logIn);
+indexRouter.post("/sign-up", signUp);
+indexRouter.post("/log-in", logIn);
 indexRouter.put(
   "/edit-profile",
   indexController.verifyToken,
-  indexController.editProfile,
+  editProfile,
 );
 indexRouter.post(
   "/send-message-solo",
@@ -29,8 +30,8 @@ indexRouter.put(
   indexController.verifyToken,
   indexController.createNewGroup,
 );
-indexRouter.put("/initialProfileUpdate", indexController.initialProfileUpdate);
-indexRouter.post("/uploadPFP", indexController.uploadPFP);
+indexRouter.put("/initialProfileUpdate", initialProfileUpdate);
+indexRouter.post("/uploadPFP", uploadPFP);
 indexRouter.post(
   "/uploadMessageImage",
   indexController.verifyToken,
@@ -41,7 +42,7 @@ indexRouter.get(
   indexController.verifyToken,
   indexController.getUserProfile,
 );
-indexRouter.post("/uploadPFP", indexController.uploadPFP);
+
 
 indexRouter.get(
   "/conversations/:conversationId",
@@ -54,8 +55,8 @@ indexRouter.get(
   indexController.getGroupConversation,
 );
 
-indexRouter.post("/getUserId", indexController.verifyToken, indexController.getUserId)
-indexRouter.post("/getUserIds", indexController.verifyToken, indexController.getUserIds)
+indexRouter.post("/getUserId", indexController.verifyToken, getUserId)
+indexRouter.post("/getUserIds", indexController.verifyToken, getUserIds)
 
 
 export default indexRouter;

@@ -49,10 +49,11 @@ function GroupConversation() {
       {selectedConversation?.messages.map((message) => (
         <Message key={message.id} message={message} />
       ))}
-    <NewGroupMessage />
+    <NewGroupMessage
       groupName={groupName}
-      groupConversationId={groupConversationId}
+      groupConversationId={Number(groupConversationId)}
       setNewMessageStatus={setNewMessageStatus}
+      />
       <Link to="/">Back</Link>
     </div>
   );

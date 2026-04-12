@@ -1,10 +1,10 @@
-import React, { useState, type SyntheticEvent } from "react";
+import React, { useState, type Dispatch, type SyntheticEvent } from "react";
 import { useNavigate } from "react-router";
 
 type newMessageProps = {
   groupName: string;
-  groupConversationId: number | undefined;
-  setNewMessageStatus: React.Dispatch<React.SetStateAction<boolean>>;
+  groupConversationId: number;
+  setNewMessageStatus: Dispatch<React.SetStateAction<boolean>>;
 };
 
 function NewGroupMessage({
@@ -67,6 +67,7 @@ function NewGroupMessage({
       });
 
       if (rsp.status === 201) {
+        setNewMessageStatus((prev) => !prev)
         navigate("/");
       }
     } catch (error) {

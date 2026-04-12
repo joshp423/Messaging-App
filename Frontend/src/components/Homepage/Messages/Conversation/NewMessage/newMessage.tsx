@@ -3,7 +3,7 @@ import React, { useState, type SyntheticEvent } from "react";
 type newMessageProps = {
   conversationPartner: string;
   conversationPartnerId: number | undefined;
-  conversationId: number | undefined;
+  conversationId: number;
   setNewMessageStatus: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
@@ -36,9 +36,10 @@ function NewMessage({
 
       if (rsp.status === 201) {
         return data.imageUrl;
-      } else {
-        return "";
       }
+      
+      return "";
+
     } catch (error) {
       console.error("Upload error:", error);
       return "";
