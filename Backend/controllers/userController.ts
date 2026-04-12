@@ -127,7 +127,7 @@ export async function editProfile(req: Request, res: Response) {
 
   const { id, username, pfpUrl, blurb } = req.body;
 
-  const { success, data, error } = LogInSchema.safeParse({
+  const { success, data, error } = EditProfileSchema.safeParse({
     id,
     username,
     pfpUrl,
@@ -140,25 +140,22 @@ export async function editProfile(req: Request, res: Response) {
     });
   }
 
-  try {
-    const { id, username, pfpUrl, blurb } = EditProfileSchema.parse(
-      req.body,
-    );
+  const updatedUser = await userService.edit(
+    data.id,
+    data.username,
+    data.pfpUrl,
+    data.blurb
+  )
 
-    //use updatedProfile
-    const updatedProfile = await prisma.users.update({
-      where: { id },
-      data: {
-        username,
-        pfpUrl,
-        blurb,
-      },
-    });
-
-    return res.status(201).json({ message: "successfully updated profile" });
-  } catch (error) {
-    return res.status(500).json({ error });
+  if (!updatedUser) {
+    return res
+      .status(500)
+      .json({
+        message: "an unexpected error occured"
+      });
   }
+
+  return res.status(201).json({ message: "successfully updated profile" });
 }
 
 export async function getUserId(req: Request, res: Response) {

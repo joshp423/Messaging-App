@@ -42,8 +42,9 @@ export class UserService {
     id: number,
     username: string,
     pfpUrl: string,
+    blurb: string
   ) {
-    return this.userRepo.update
+    return this.userRepo.update(id, username, pfpUrl, blurb)
   }
 
 }
