@@ -159,68 +159,87 @@ export async function editProfile(req: Request, res: Response) {
 }
 
 export async function getUserId(req: Request, res: Response) {
-  try {
-    const { selectedUsername } =
-      GetUserIdSchema.parse(req.body);
 
-    const selectedUserId = await prisma.users.findUnique({
-      where: {
-        username: selectedUsername
-      },
+  const { selectedUsername } = req.body;
+
+  const { success, data, error } = GetUserIdSchema.safeParse({
+    selectedUsername
+  })
+
+  if (!success) {
+    return res.status(400).json({
+      errors: error,
     });
-    return res.status(201).json({ selectedUserId });
-  } catch (error) {
-    if (error instanceof ZodError) {
-      //if error is a zod error send back
-      return res.status(400).json({
-        errors: error.issues,
-      });
-    }
-    return res.status(500).json({ message: error });
   }
+
+  const selectedUserId = await userService.getId(data.selectedUsername);
+
+  if (!selectedUserId) {
+    return res
+      .status(500)
+      .json({
+        message: "an unexpected error occured"
+      });
+  }
+
+  return res.status(200).json({ selectedUserId });
 }
 
 export async function getUserIds(req: Request, res: Response) {
-  try {
-    const { usernames } =
-      GetUserIdsSchema.parse(req.body);
 
-    const selectedUserId = await prisma.users.findMany({
-      where: {
-        username: {
-          in: usernames, //in the array
-        },
-      },
+  const { usernames } = req.body;
+
+  const { success, data, error } = GetUserIdsSchema.safeParse({
+    usernames
+  })
+
+  if (!success) {
+    return res.status(400).json({
+      errors: error,
     });
-    return res.status(201).json({ selectedUserId });
-  } catch (error) {
-    if (error instanceof ZodError) {
-      //if error is a zod error send back
-      return res.status(400).json({
-        errors: error.issues,
-      });
-    }
-    return res.status(500).json({ message: error });
   }
+
+  const selectedUserIds = await userService.getIds(data.usernames);
+
+  if (!selectedUserIds) {
+    return res
+      .status(500)
+      .json({
+        message: "an unexpected error occured"
+      });
+  }
+
+  return res.status(200).json({ selectedUserIds });
 }
 
 export async function initialProfileUpdate(req: Request, res: Response) {
-  try {
-    const { email, pfpUrl, blurb } = userInitialUpdateSchema.parse(req.body);
 
-    //use updatedProfile
-    await prisma.users.update({
-      where: { email },
-      data: {
-        pfpUrl,
-        blurb,
-      },
+  const { email, pfpUrl, blurb } = req.body;
+
+  const { success, data, error } = userInitialUpdateSchema.safeParse({
+    email,
+    pfpUrl,
+    blurb,
+  })
+
+  if (!success) {
+    return res.status(400).json({
+      errors: error,
     });
-
-    return res.status(201).json({ message: "successfully updated profile" });
-  } catch (error) {
-    return res.status(500).json({ error });
   }
+
+  const initialUpdate = await userService.initialUpdateEdit(data.email, data.pfpUrl, data.blurb);
+
+  if (!initialUpdate) {
+    return res
+      .status(500)
+      .json({
+        message: "an unexpected error occured"
+      });
+  }
+
+  return res.status(201);
+  
 }
 
 const storage = multer.memoryStorage();

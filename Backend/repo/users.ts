@@ -35,4 +35,37 @@ export class UserRepo {
       },
     });
   }
+
+  async getId(username: string) {
+    return await this.prisma.users.findUnique({
+      where: {
+        username
+      },
+    })
+  }
+
+  async getIds(usernames: string[]) {
+    return await this.prisma.users.findMany({
+      where: {
+        username: {
+          in: usernames, //in the array
+        },
+      },
+    })
+  }
+
+  async initialUpdate(email: string, pfpUrl: string, blurb: string) {
+    return await this.prisma.users.update({
+      where: { email },
+      data: {
+        pfpUrl,
+        blurb,
+      },
+    });
+  }
+
+  
+
 }
+
+

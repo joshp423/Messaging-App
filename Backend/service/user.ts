@@ -44,8 +44,20 @@ export class UserService {
     pfpUrl: string,
     blurb: string
   ) {
-    return this.userRepo.update(id, username, pfpUrl, blurb)
+    return this.userRepo.update(id, username, pfpUrl, blurb);
   }
 
-}
+  async getId(username: string) {
+    return this.userRepo.getId(username);
+  }
 
+  async getIds(usernames: string[]) {
+    return this.userRepo.getIds(usernames);
+  }
+
+  async initialUpdateEdit(email: string, pfpUrl: string, blurb: string) {
+    return this.userRepo.initialUpdate(email, pfpUrl, blurb);
+  }
+
+
+}
