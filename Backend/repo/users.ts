@@ -16,15 +16,15 @@ export class UserRepo {
       },
     });
   }
-  
+
   async get(email: string) {
     return await this.prisma.users.findUnique({
       where: {
         email,
-      }, 
-    })
+      },
+    });
   }
-  
+
   async update(id: number, username: string, pfpUrl: string, blurb: string) {
     return await this.prisma.users.update({
       where: { id },
@@ -39,9 +39,9 @@ export class UserRepo {
   async getId(username: string) {
     return await this.prisma.users.findUnique({
       where: {
-        username
+        username,
       },
-    })
+    });
   }
 
   async getIds(usernames: string[]) {
@@ -51,7 +51,7 @@ export class UserRepo {
           in: usernames, //in the array
         },
       },
-    })
+    });
   }
 
   async initialUpdate(email: string, pfpUrl: string, blurb: string) {
@@ -63,9 +63,4 @@ export class UserRepo {
       },
     });
   }
-
-  
-
 }
-
-

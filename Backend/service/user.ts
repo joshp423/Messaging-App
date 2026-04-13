@@ -3,7 +3,6 @@ import type { UserRepo } from "../repo/users";
 import jwt, { type JwtPayload } from "jsonwebtoken";
 import type { configSchema } from "./config";
 
-
 export type User = { username: string; password: string; email: string };
 
 export class UserService {
@@ -24,26 +23,19 @@ export class UserService {
     return this.userRepo.get(email);
   }
 
-  async login(
-    id: number,
-    username: string,
-    hashedPassword: string,
-  ) {
+  async login(id: number, username: string, hashedPassword: string) {
     if (await bcrypt.compare(hashedPassword, username)) {
       return null;
     }
 
-    const token = jwt.sign({ id, username }, this.config.JWT_SECRET, { expiresIn: "1w" });
+    const token = jwt.sign({ id, username }, this.config.JWT_SECRET, {
+      expiresIn: "1w",
+    });
 
     return token;
   }
 
-  async edit(
-    id: number,
-    username: string,
-    pfpUrl: string,
-    blurb: string
-  ) {
+  async edit(id: number, username: string, pfpUrl: string, blurb: string) {
     return this.userRepo.update(id, username, pfpUrl, blurb);
   }
 
@@ -58,6 +50,4 @@ export class UserService {
   async initialUpdateEdit(email: string, pfpUrl: string, blurb: string) {
     return this.userRepo.initialUpdate(email, pfpUrl, blurb);
   }
-
-
 }
