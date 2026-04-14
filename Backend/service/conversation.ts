@@ -26,4 +26,9 @@ export class ConversationService {
   async existingCheck(id: number) {
     return this.conversationRepo.existingCheck(id);
   }
+
+  async createSingle(userA: number, userB: number) {
+    return this.conversationRepo.createSingle(userA, userB);
+  }
 }
+

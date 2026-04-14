@@ -15,6 +15,15 @@ export class ConversationRepo {
     });
   }
 
+  async createSingle(userA: number, userB: number) {
+    return await this.prisma.conversationsSolo.create({
+      data: {
+        userA,
+        userB,
+      }
+    });
+  }
+
   
 
 

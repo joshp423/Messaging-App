@@ -9,11 +9,13 @@ import { MessageRepo } from "../repo/messages.js";
 import prisma from "../lib/prisma.js";
 import { config } from "../service/config.js";
 import { ConversationService } from "../service/conversation.js";
+import { ConversationRepo } from "../repo/conversations.js";
 
 
 const messageRepo = new MessageRepo(prisma); // need db to create service, as it is a dependancy
 const messageService = new MessageService(messageRepo, config); // instantiate user service for handlers to call
-
+const conversationRepo = new ConversationRepo(prisma)
+const conversationService = new ConversationService(conversationRepo, config)
 
 const userMessageSingleSchema = z.object({
   senderId: z.number(),
@@ -70,7 +72,7 @@ export async function sendMessageSingleRecipient(req: AuthRequest, res: Response
   
   const senderId = req.user?.id
 
-  const { success, data, error } = userMessageSingleSchema.safeParse({
+  let { success, data, error } = userMessageSingleSchema.safeParse({
     senderId,
     receiverId,
     message,
@@ -84,58 +86,24 @@ export async function sendMessageSingleRecipient(req: AuthRequest, res: Response
     });
   }
 
+  const existingCheck = await conversationService.existingCheck(data.conversationId)
 
-  let newOrExistingConversation = data.conversationId;
-
-  const existingCheck = await ConversationService
-
+  if (!existingCheck) {
+    const newConversation = await conversationService.createSingle(data.senderId, data.receiverId);
+    data.conversationId = newConversation.id;
+  }
   const newMessageSolo = await messageService.create(data);
 
-
-
-
-  try {
-    const { receiverId, message, imageUrl, conversationId } =
-      userMessageSingleSchema.parse(req.body);
-    
-      const senderId = req.user?.id
-      let newOrExistingConversation = conversationId;
-      const existingCheck = await prisma.conversationsSolo.findUnique({
-        where: {
-          id: conversationId
-        }
-      })
-
-      if (!existingCheck) {
-        const newConversation = await prisma.conversationsSolo.create({
-          data: {
-            userA: senderId,
-            userB: receiverId,
-          }
-        })
-        newOrExistingConversation = newConversation.id;
-      }
-
-    await prisma.messagesSolo.create({
-      data: {
-        senderId,
-        receiverId,
-        message,
-        imageUrl,
-        conversationId: newOrExistingConversation,
-      },
+  if (!newMessageSolo) {
+    return res.status(500).json({
+      message: "an unexpected error occured",
     });
-    return res.status(201).json({ message: "Message sent successfully" });
-  } catch (error) {
-    if (error instanceof ZodError) {
-      //if error is a zod error send back
-      return res.status(400).json({
-        errors: error.issues,
-      });
-    }
-    return res.status(500).json({ message: error });
   }
+
+  return res.status(201).json({ message: "Message sent successfully" });
+
 }
+
 
 export async function sendMessageGroupRecipient(
   req: AuthRequest,
