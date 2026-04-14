@@ -8,10 +8,12 @@ import { MessageService } from "../service/message.js";
 import { MessageRepo } from "../repo/messages.js";
 import prisma from "../lib/prisma.js";
 import { config } from "../service/config.js";
+import { ConversationService } from "../service/conversation.js";
 
 
 const messageRepo = new MessageRepo(prisma); // need db to create service, as it is a dependancy
 const messageService = new MessageService(messageRepo, config); // instantiate user service for handlers to call
+
 
 const userMessageSingleSchema = z.object({
   senderId: z.number(),
@@ -85,7 +87,7 @@ export async function sendMessageSingleRecipient(req: AuthRequest, res: Response
 
   let newOrExistingConversation = data.conversationId;
 
-  const existingCheck = 
+  const existingCheck = await ConversationService
 
   const newMessageSolo = await messageService.create(data);
 

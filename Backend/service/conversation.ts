@@ -1,11 +1,18 @@
 import { ConversationRepo } from "../repo/conversations";
 import type { configSchema } from "./config";
+import type { User } from "./user";
 
 export type SingleConversation = {
   id: number;
   userA: number;
   userB: number;
 };
+
+export type Group = {
+  id: number;
+  users: User[];
+  name: string;
+}
 
 export class ConversationService {
   private config: configSchema;
@@ -16,7 +23,7 @@ export class ConversationService {
     this.config = config;
   }
 
-  async existingCheck({id}: SingleConversation) {
+  async existingCheck(id: number) {
     return this.conversationRepo.existingCheck(id);
   }
 }
