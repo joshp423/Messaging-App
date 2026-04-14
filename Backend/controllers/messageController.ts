@@ -110,11 +110,24 @@ export async function sendMessageGroupRecipient(
   res: Response,
   next: NextFunction,
 ) {
+
+  const { groupId, message, imageUrl } = req.body;
+
+  const senderId = req.user?.id
+
+  const { success, data, error } = userMessageGroupSchema.safeParse({
+    groupId,
+    message,
+    imageUrl,
+  })
+
+  const newGroupMessage = 
+
   try {
     const { groupId, message, imageUrl } =
       userMessageGroupSchema.parse(req.body);
 
-      const senderId = req.user?.id      
+      const senderId = req.user?.id;
 
     await prisma.messagesGroup.create({
       data: {
