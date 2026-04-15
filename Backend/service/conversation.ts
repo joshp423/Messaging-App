@@ -30,5 +30,7 @@ export class ConversationService {
   async createSingle(userA: number, userB: number) {
     return this.conversationRepo.createSingle(userA, userB);
   }
+
+  async create
 }
 

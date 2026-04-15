@@ -33,4 +33,8 @@ export class MessageService {
       conversationId,
     );
   }
+
+  async createGroupMessage({
+    
+  })
 }

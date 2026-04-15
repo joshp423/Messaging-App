@@ -72,7 +72,7 @@ export async function sendMessageSingleRecipient(req: AuthRequest, res: Response
   
   const senderId = req.user?.id
 
-  let { success, data, error } = userMessageSingleSchema.safeParse({
+  const { success, data, error } = userMessageSingleSchema.safeParse({
     senderId,
     receiverId,
     message,

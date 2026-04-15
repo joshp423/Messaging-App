@@ -26,8 +26,20 @@ export class MessageRepo {
   }
 
   async createGroupMessage(
-    
-  )
+    senderId: number,
+    groupId: number,
+    message: string,
+    imageUrl: string,
+  ) {
+    return await this.prisma.messagesGroup.create({
+      data: {
+        senderId,
+        groupId,
+        message,
+        imageUrl,
+      },
+    })
+  } 
 
   
 
