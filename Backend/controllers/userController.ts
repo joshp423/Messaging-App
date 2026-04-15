@@ -4,6 +4,7 @@ import {
   emailLengthErr,
   lengthErrShort,
   passwordAlphaNumericErr,
+  type AuthRequest,
 } from "./indexController.js";
 import { type Request, type Response } from "express";
 import prisma from "../lib/prisma.js";
@@ -67,7 +68,7 @@ const UserInitialUpdateSchema = z.object({
 });
 
 const GetUserProfile = z.object({
-  id: z.number(),
+  userId: z.coerce.number(),
 });
 
 export async function signUp(req: Request, res: Response) {
@@ -124,8 +125,10 @@ export async function logIn(req: Request, res: Response) {
   });
 }
 
-export async function editProfile(req: Request, res: Response) {
-  const { id, username, pfpUrl, blurb } = req.body;
+export async function editProfile(req: AuthRequest, res: Response) {
+  const { username, pfpUrl, blurb } = req.body;
+
+  const id = req.user?.id;
 
   const { success, data, error } = EditProfileSchema.safeParse({
     id,
@@ -270,10 +273,10 @@ export const uploadPFP = [
 ];
 
 export async function getUserProfile(req: Request, res: Response) {
-  const id = req.params;
+  const { userId } = req.params;
 
   const { success, data, error } = GetUserProfile.safeParse({
-    id,
+    userId,
   });
 
   if (!success) {
@@ -282,11 +285,11 @@ export async function getUserProfile(req: Request, res: Response) {
     });
   }
 
-  const user = await userService.getProfile(data.id);
+  const user = await userService.getProfile(data.userId);
 
   if (!user) {
-    return res.status(500).json({
-      message: "an unexpected error occured",
+    return res.status(404).json({
+      message: "User not found",
     });
   }
 

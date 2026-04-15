@@ -21,7 +21,10 @@ function Nav({ loginStatus, setLoginStatus }: NavProps) {
             <Link to="/">Home</Link>
           </h3>
           <h3>
-            <button onClick={logOut}>LogOut</button>
+            <button onClick={logOut}>Logout</button>
+          </h3>
+          <h3>
+            <Link to="edit-profile">Edit Profile</Link>
           </h3>
         </div>
       </div>

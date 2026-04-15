@@ -1,15 +1,14 @@
 import { useEffect, useState, type SyntheticEvent } from "react";
 import type { User } from "../../../types/user";
+import { useNavigate } from "react-router";
 
 function EditProfile() {
 
-    
-
-    const userId  = sessionStorage.getItem("loggedUsername")
-    const [editedProfile, setEditedProfile] = useState<User | null>(null)
+    const userId  = Number(sessionStorage.getItem("loggedUserId"));
+    const [editedProfile, setEditedProfile] = useState<User | null>(null);
     const [pfp, setPfp] = useState<File | null>(null);
     const [blurb, setProfileBlurb] = useState("");
-
+    const navigate = useNavigate();
 
     useEffect(() => {
         async function getUserProfile() {
@@ -62,9 +61,20 @@ function EditProfile() {
         e.preventDefault();
 
         const uploadedUrl = await uploadPFP();
-
-        
-
+      
+        try {
+          await fetch("http://localhost:3000/edit-profile", {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+            },
+            method: "PUT",
+            body: JSON.stringify({  username: editedProfile?.username, pfpUrl: uploadedUrl, blurb }),
+          });
+          navigate(`/user/${sessionStorage.getItem("loggedUserId")}`);
+        } catch (error) {
+          console.error(error);
+        }
     }
 
     return (
@@ -86,11 +96,12 @@ function EditProfile() {
                 <input
                     type="text"
                     name="profileBlurb"
-                    value={editedProfile?.blurb}
+                    defaultValue={editedProfile?.blurb}
                     onChange={(e) => {
                         setProfileBlurb(e.target.value);
                     }}
                 />
+                <button type="submit">Save</button>
             </form>
         </div>
     )

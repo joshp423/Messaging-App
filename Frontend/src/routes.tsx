@@ -6,6 +6,7 @@ import Conversation from "./components/Homepage/Messages/Conversation/conversati
 import UserProfile from "./components/Homepage/Messages/Conversation/Users/userProfile";
 import NewConversation from "./components/Homepage/NewConversation/newConversation";
 import GroupConversation from "./components/Homepage/Messages/Conversation/groupConversation";
+import EditProfile from "./components/Nav/EditProfile/editProfile";
 const routes = [
   {
     path: "/",
@@ -24,6 +25,7 @@ const routes = [
       },
       { path: "/user/:userId", element: <UserProfile /> },
       { path: "/new-message", element: <NewConversation /> },
+      { path: "/edit-profile", element: <EditProfile />}
     ],
   },
 ];
