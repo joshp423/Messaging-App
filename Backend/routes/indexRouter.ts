@@ -8,7 +8,19 @@ import {
   getUserIds,
   initialProfileUpdate,
   uploadPFP,
+  getUserProfile,
 } from "../controllers/userController.js";
+import {
+  uploadMessageImage,
+  sendMessageSingleRecipient,
+  sendMessageGroupRecipient,
+} from "../controllers/messageController.js";
+import {
+  getUserConversations,
+  getSoloConversation,
+  getGroupConversation,
+  createNewGroup,
+} from "../controllers/conversationController.js";
 const indexRouter = Router();
 
 indexRouter.post("/sign-up", signUp);
@@ -17,45 +29,37 @@ indexRouter.put("/edit-profile", indexController.verifyToken, editProfile);
 indexRouter.post(
   "/send-message-solo",
   indexController.verifyToken,
-  indexController.sendMessageSingleRecipient,
+  sendMessageSingleRecipient,
 );
 indexRouter.post(
   "/send-message-group",
   indexController.verifyToken,
-  indexController.sendMessageGroupRecipient,
+  sendMessageGroupRecipient,
 );
 indexRouter.get(
   "/conversations",
   indexController.verifyToken,
-  indexController.getUserConversations,
+  getUserConversations,
 );
-indexRouter.put(
-  "/create-group",
-  indexController.verifyToken,
-  indexController.createNewGroup,
-);
+indexRouter.put("/create-group", indexController.verifyToken, createNewGroup);
 indexRouter.put("/initialProfileUpdate", initialProfileUpdate);
 indexRouter.post("/uploadPFP", uploadPFP);
 indexRouter.post(
   "/uploadMessageImage",
   indexController.verifyToken,
-  indexController.uploadMessageImage,
+  uploadMessageImage,
 );
-indexRouter.get(
-  "/users/:userId",
-  indexController.verifyToken,
-  indexController.getUserProfile,
-);
+indexRouter.get("/users/:userId", indexController.verifyToken, getUserProfile);
 
 indexRouter.get(
   "/conversations/:conversationId",
   indexController.verifyToken,
-  indexController.getSoloConversation,
+  getSoloConversation,
 );
 indexRouter.get(
   "/groupConversations/:conversationId",
   indexController.verifyToken,
-  indexController.getGroupConversation,
+  getGroupConversation,
 );
 
 indexRouter.post("/getUserId", indexController.verifyToken, getUserId);

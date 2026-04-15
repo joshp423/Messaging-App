@@ -50,4 +50,8 @@ export class UserService {
   async initialUpdateEdit(email: string, pfpUrl: string, blurb: string) {
     return this.userRepo.initialUpdate(email, pfpUrl, blurb);
   }
+
+  async getProfile(id: number) {
+    return this.userRepo.getUserProfile(id);
+  }
 }

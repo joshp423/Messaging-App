@@ -63,4 +63,17 @@ export class UserRepo {
       },
     });
   }
+
+  async getUserProfile(id: number) {
+    return await this.prisma.users.findUnique({
+      where: {
+        id,
+      },
+      select: {
+        username: true,
+        pfpUrl: true,
+        blurb: true,
+      },
+    });
+  }
 }

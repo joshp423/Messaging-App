@@ -60,10 +60,14 @@ const GetUserIdsSchema = z.object({
   usernames: z.array(z.string()),
 });
 
-const userInitialUpdateSchema = z.object({
+const UserInitialUpdateSchema = z.object({
   email: z.string(),
   pfpUrl: z.string(),
   blurb: z.string(),
+});
+
+const GetUserProfile = z.object({
+  id: z.number(),
 });
 
 export async function signUp(req: Request, res: Response) {
@@ -203,7 +207,7 @@ export async function getUserIds(req: Request, res: Response) {
 export async function initialProfileUpdate(req: Request, res: Response) {
   const { email, pfpUrl, blurb } = req.body;
 
-  const { success, data, error } = userInitialUpdateSchema.safeParse({
+  const { success, data, error } = UserInitialUpdateSchema.safeParse({
     email,
     pfpUrl,
     blurb,
@@ -265,18 +269,26 @@ export const uploadPFP = [
   },
 ];
 
-export async function getUserProfile(req: AuthRequest, res: Response) {
-  try {
-    const id = req.user?.id;
+export async function getUserProfile(req: Request, res: Response) {
+  const id = req.params;
 
-    const user = await prisma.users.findUnique({
-      where: { id: id },
-      //include less info
+  const { success, data, error } = GetUserProfile.safeParse({
+    id,
+  });
+
+  if (!success) {
+    return res.status(400).json({
+      errors: error,
     });
-    return res.status(200).json({
-      user,
-    });
-  } catch (error) {
-    return res.status(500).json({ error });
   }
+
+  const user = await userService.getProfile(data.id);
+
+  if (!user) {
+    return res.status(500).json({
+      message: "an unexpected error occured",
+    });
+  }
+
+  return res.status(200).json({ user });
 }
