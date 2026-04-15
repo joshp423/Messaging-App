@@ -1,6 +1,5 @@
-import { ConversationRepo } from "../repo/conversations";
-import type { configSchema } from "./config";
-import type { User } from "./user";
+import { ConversationRepo } from "../repo/conversations.js";
+import type { configSchema } from "./config.js";
 
 export type SingleConversation = {
   userA: number;

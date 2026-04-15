@@ -1,5 +1,5 @@
-import type { MessageRepo } from "../repo/messages";
-import type { configSchema } from "./config";
+import type { MessageRepo } from "../repo/messages.js";
+import type { configSchema } from "./config.js";
 
 export type SingleMessage = {
   senderId: number;

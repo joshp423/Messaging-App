@@ -3,9 +3,8 @@ import prisma from "../lib/prisma.js";
 import { ConversationService } from "../service/conversation.js";
 import { ConversationRepo } from "../repo/conversations.js";
 import { config } from "../service/config.js";
-import { lengthErrShort } from "./indexController";
-import { type AuthRequest } from "./indexController";
-import type { Request, Response, NextFunction } from "express";
+import { lengthErrShort, type AuthRequest } from "./indexController.js";
+import type { Request, Response } from "express";
 
 const conversationRepo = new ConversationRepo(prisma);
 const conversationService = new ConversationService(conversationRepo, config);

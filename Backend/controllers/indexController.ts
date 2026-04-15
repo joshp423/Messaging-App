@@ -1,11 +1,5 @@
-import bcrypt from "bcryptjs";
-import { z, ZodError } from "zod";
 import jwt, { type JwtPayload } from "jsonwebtoken";
 import type { Request, Response, NextFunction } from "express";
-import prisma from "../lib/prisma.js";
-import multer from "multer";
-import cloudinary from "../lib/cloudinary.js";
-import { type UploadApiResponse } from "cloudinary";
 
 export const emailLengthErr = "must be between 1 and 254 characters";
 export const lengthErrShort = "must be between 1 and 25 characters";

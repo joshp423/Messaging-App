@@ -1,7 +1,7 @@
 import bcrypt from "bcryptjs";
-import type { UserRepo } from "../repo/users";
-import jwt, { type JwtPayload } from "jsonwebtoken";
-import type { configSchema } from "./config";
+import type { UserRepo } from "../repo/users.js";
+import jwt from "jsonwebtoken";
+import type { configSchema } from "./config.js";
 
 export type User = { username: string; password: string; email: string };
 

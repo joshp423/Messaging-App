@@ -3,7 +3,7 @@ import multer from "multer";
 import cloudinary from "../lib/cloudinary.js";
 import { type UploadApiResponse } from "cloudinary";
 import type { Request, Response, NextFunction } from "express";
-import { type AuthRequest } from "./indexController";
+import { type AuthRequest } from "./indexController.js";
 import { MessageService } from "../service/message.js";
 import { MessageRepo } from "../repo/messages.js";
 import prisma from "../lib/prisma.js";
