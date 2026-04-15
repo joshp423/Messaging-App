@@ -18,13 +18,16 @@ function Nav({ loginStatus, setLoginStatus }: NavProps) {
         </h1>
         <div className="navLinks">
           <h3>
+            <Link to={`users/${sessionStorage.getItem("loggedUserId")}`}>{sessionStorage.getItem("loggedUsername") || "User"}</Link>
+          </h3>
+          <h3>
             <Link to="/">Home</Link>
           </h3>
           <h3>
             <button onClick={logOut}>Logout</button>
           </h3>
           <h3>
-            <Link to="edit-profile">Edit Profile</Link>
+            <Link to="edit-profile">Edit My Profile</Link>
           </h3>
         </div>
       </div>
