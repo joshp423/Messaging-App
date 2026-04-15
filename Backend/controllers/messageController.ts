@@ -26,6 +26,7 @@ const userMessageSingleSchema = z.object({
 });
 
 const userMessageGroupSchema = z.object({
+  senderId: z.number(),
   groupId: z.number(),
   message: z.string().trim(),
   imageUrl: z.string(),
@@ -116,36 +117,27 @@ export async function sendMessageGroupRecipient(
   const senderId = req.user?.id
 
   const { success, data, error } = userMessageGroupSchema.safeParse({
+    senderId,
     groupId,
     message,
     imageUrl,
   })
 
-  const newGroupMessage = 
-
-  try {
-    const { groupId, message, imageUrl } =
-      userMessageGroupSchema.parse(req.body);
-
-      const senderId = req.user?.id;
-
-    await prisma.messagesGroup.create({
-      data: {
-        senderId,
-        groupId,
-        message,
-        imageUrl,
-      },
+  if (!success) {
+    return res.status(400).json({
+      errors: error,
     });
-    return res.status(201).json({ message: "Message sent successfully" });
-  } catch (error) {
-    if (error instanceof ZodError) {
-      //if error is a zod error send back
-      return res.status(400).json({
-        errors: error.issues,
-      });
-    }
-    next(error);
   }
+
+  const newGroupMessage = await messageService.createGroupMessage(data);
+
+  if (!newGroupMessage) {
+    return res.status(500).json({
+      message: "an unexpected error occured",
+    });
+  }
+
+  return res.status(201).json({ message: "Message sent successfully" });
+
 }
 

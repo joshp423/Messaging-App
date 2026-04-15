@@ -9,6 +9,13 @@ export type SingleMessage = {
   conversationId: number;
 };
 
+export type GroupMessage = {
+  senderId: number;
+  groupId: number;
+  message: string;
+  imageUrl: string;
+}
+
 export class MessageService {
   private config: configSchema;
   private messageRepo: MessageRepo;
@@ -35,6 +42,16 @@ export class MessageService {
   }
 
   async createGroupMessage({
-    
-  })
+    senderId,
+    groupId,
+    message,
+    imageUrl,
+  }: GroupMessage) {
+    return this.messageRepo.createGroupMessage(
+      senderId,
+      groupId,
+      message,
+      imageUrl,
+    )
+  }
 }
