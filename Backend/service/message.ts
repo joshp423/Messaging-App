@@ -14,7 +14,7 @@ export type GroupMessage = {
   groupId: number;
   message: string;
   imageUrl: string;
-}
+};
 
 export class MessageService {
   private config: configSchema;
@@ -52,6 +52,6 @@ export class MessageService {
       groupId,
       message,
       imageUrl,
-    )
+    );
   }
 }

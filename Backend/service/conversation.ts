@@ -3,16 +3,14 @@ import type { configSchema } from "./config";
 import type { User } from "./user";
 
 export type SingleConversation = {
-  id: number;
   userA: number;
   userB: number;
 };
 
 export type Group = {
-  id: number;
-  users: User[];
+  userIds: number[];
   name: string;
-}
+};
 
 export class ConversationService {
   private config: configSchema;
@@ -27,10 +25,27 @@ export class ConversationService {
     return this.conversationRepo.existingCheck(id);
   }
 
-  async createSingle(userA: number, userB: number) {
-    return this.conversationRepo.createSingle(userA, userB);
+  async createSolo(userA: number, userB: number) {
+    return this.conversationRepo.createSolo(userA, userB);
   }
 
-  async create
-}
+  async createGroup({ userIds, name }: Group) {
+    return this.conversationRepo.createGroup(userIds, name);
+  }
 
+  async getAllSolo(id: number) {
+    return this.conversationRepo.getAllSolo(id);
+  }
+
+  async getAllGroups(id: number) {
+    return this.conversationRepo.getAllGroups(id);
+  }
+
+  async getSelectedSolo(userId: number, conversationId: number) {
+    return this.conversationRepo.getSelectedSolo(userId, conversationId);
+  }
+
+  async getSelectedGroup(userId: number, groupId: number) {
+    return this.conversationRepo.getSelectedGroup(userId, groupId);
+  }
+}

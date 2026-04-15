@@ -1,4 +1,4 @@
-import { z, ZodError } from "zod";
+import { z } from "zod";
 import multer from "multer";
 import cloudinary from "../lib/cloudinary.js";
 import { type UploadApiResponse } from "cloudinary";
@@ -11,11 +11,10 @@ import { config } from "../service/config.js";
 import { ConversationService } from "../service/conversation.js";
 import { ConversationRepo } from "../repo/conversations.js";
 
-
-const messageRepo = new MessageRepo(prisma); // need db to create service, as it is a dependancy
-const messageService = new MessageService(messageRepo, config); // instantiate user service for handlers to call
-const conversationRepo = new ConversationRepo(prisma)
-const conversationService = new ConversationService(conversationRepo, config)
+const messageRepo = new MessageRepo(prisma);
+const messageService = new MessageService(messageRepo, config);
+const conversationRepo = new ConversationRepo(prisma);
+const conversationService = new ConversationService(conversationRepo, config);
 
 const userMessageSingleSchema = z.object({
   senderId: z.number(),
@@ -66,12 +65,15 @@ export const uploadMessageImage = [
   },
 ];
 
-export async function sendMessageSingleRecipient(req: AuthRequest, res: Response) {
+export async function sendMessageSingleRecipient(
+  req: AuthRequest,
+  res: Response,
+) {
   //check for existing conversation and add otherwise create new
 
   const { receiverId, message, imageUrl, conversationId } = req.body;
-  
-  const senderId = req.user?.id
+
+  const senderId = req.user?.id;
 
   const { success, data, error } = userMessageSingleSchema.safeParse({
     senderId,
@@ -79,7 +81,7 @@ export async function sendMessageSingleRecipient(req: AuthRequest, res: Response
     message,
     imageUrl,
     conversationId,
-  })
+  });
 
   if (!success) {
     return res.status(400).json({
@@ -87,10 +89,15 @@ export async function sendMessageSingleRecipient(req: AuthRequest, res: Response
     });
   }
 
-  const existingCheck = await conversationService.existingCheck(data.conversationId)
+  const existingCheck = await conversationService.existingCheck(
+    data.conversationId,
+  );
 
   if (!existingCheck) {
-    const newConversation = await conversationService.createSingle(data.senderId, data.receiverId);
+    const newConversation = await conversationService.createSolo(
+      data.senderId,
+      data.receiverId,
+    );
     data.conversationId = newConversation.id;
   }
   const newMessageSolo = await messageService.create(data);
@@ -102,26 +109,23 @@ export async function sendMessageSingleRecipient(req: AuthRequest, res: Response
   }
 
   return res.status(201).json({ message: "Message sent successfully" });
-
 }
-
 
 export async function sendMessageGroupRecipient(
   req: AuthRequest,
   res: Response,
   next: NextFunction,
 ) {
-
   const { groupId, message, imageUrl } = req.body;
 
-  const senderId = req.user?.id
+  const senderId = req.user?.id;
 
   const { success, data, error } = userMessageGroupSchema.safeParse({
     senderId,
     groupId,
     message,
     imageUrl,
-  })
+  });
 
   if (!success) {
     return res.status(400).json({
@@ -138,6 +142,4 @@ export async function sendMessageGroupRecipient(
   }
 
   return res.status(201).json({ message: "Message sent successfully" });
-
 }
-

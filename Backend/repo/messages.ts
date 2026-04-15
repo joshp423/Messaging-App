@@ -38,9 +38,6 @@ export class MessageRepo {
         message,
         imageUrl,
       },
-    })
-  } 
-
-  
-
+    });
+  }
 }

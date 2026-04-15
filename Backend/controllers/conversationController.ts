@@ -1,6 +1,14 @@
+import { z } from "zod";
+import prisma from "../lib/prisma.js";
+import { ConversationService } from "../service/conversation.js";
+import { ConversationRepo } from "../repo/conversations.js";
+import { config } from "../service/config.js";
+import { lengthErrShort } from "./indexController";
+import { type AuthRequest } from "./indexController";
+import type { Request, Response, NextFunction } from "express";
 
-
-
+const conversationRepo = new ConversationRepo(prisma);
+const conversationService = new ConversationService(conversationRepo, config);
 
 const userGroupSchema = z.object({
   userIds: z.array(z.number()),
@@ -11,177 +19,107 @@ const userGroupSchema = z.object({
 });
 
 const userConversationSchema = z.object({
+  userId: z.number(),
   conversationId: z.number(),
 });
 
 export async function getUserConversations(req: AuthRequest, res: Response) {
-  try {
-    const id = req.user?.id;
+  const id = req.user?.id;
 
-    const conversationsSolo = await prisma.conversationsSolo.findMany({
-      where: {
-        OR: [{ userA: id }, { userB: id }],
-      },
-      include: {
-        messages: {
-          take: 1, //just one message for preview
-          orderBy: { timeSent: "desc" }, // latest message first
-          include: {
-            sender: {
-              select: {
-                username: true,
-              },
-            },
-            receiver: {
-              select: {
-                username: true,
-              },
-            },
-          },
-        },
-      },
-    });
+  const conversationsSolo = await conversationService.getAllSolo(id);
+  const groups = await conversationService.getAllGroups(id);
 
-    const groups = await prisma.groups.findMany({
-      where: {
-        users: {
-          some: {
-            id,
-          },
-        },
-      },
-      include: {
-        messages: {
-          take: 1,
-          orderBy: {
-            timeSent: "desc",
-          },
-          include: {
-            sender: {
-              select: {
-                username: true,
-              },
-            },
-          },
-        },
-      },
+  if (!conversationsSolo && !groups) {
+    return res.status(500).json({
+      message: "an unexpected error occured",
     });
-
-    return res.status(200).json({
-      conversationsSolo,
-      groups,
-    });
-  } catch (error) {
-    console.error("getUserConversations error:", error);
-    return res.status(500).json({ error });
   }
+
+  return res.status(200).json({
+    conversationsSolo,
+    groups,
+  });
 }
 
 export async function getSoloConversation(req: AuthRequest, res: Response) {
-  try {
-    const { conversationId } = userConversationSchema.parse({
-      conversationId: Number(req.params.conversationId),
-    });
+  const userId = req.user?.id;
+  const { conversationId } = req.body;
 
-    const userId = req.user?.id;
+  const { success, data, error } = userConversationSchema.safeParse({
+    userId,
+    conversationId,
+  });
 
-    const conversation = await prisma.conversationsSolo.findMany({
-      where: {
-        OR: [{ userA: userId }, { userB: userId }],
-        AND: { id: conversationId },
-      },
-      include: {
-        messages: {
-          orderBy: { timeSent: "asc" },
-          include: {
-            sender: {
-              select: {
-                username: true,
-                pfpUrl: true,
-              },
-            },
-            receiver: {
-              select: { username: true },
-            },
-          },
-        },
-      },
+  if (!success) {
+    return res.status(400).json({
+      errors: error,
     });
-
-    return res.status(200).json({
-      conversation,
-    });
-  } catch (error) {
-    console.error("getUserConversations error:", error);
-    return res.status(500).json({ error });
   }
+
+  const conversation = await conversationService.getSelectedSolo(
+    data.userId,
+    data.conversationId,
+  );
+
+  if (!conversation) {
+    return res.status(500).json({
+      message: "an unexpected error occured",
+    });
+  }
+
+  return res.status(200).json({ conversation });
 }
 
 export async function getGroupConversation(req: AuthRequest, res: Response) {
-  try {
-    const id = req.user?.id;
+  const userId = req.user?.id;
+  const { conversationId } = req.body;
 
-    const groups = await prisma.groups.findMany({
-      where: {
-        users: {
-          some: {
-            id,
-          },
-        },
-      },
-      include: {
-        messages: {
-          orderBy: {
-            timeSent: "asc",
-          },
-          include: {
-            sender: {
-              select: {
-                username: true,
-              },
-            },
-          },
-        },
-      },
-    });
+  const { success, data, error } = userConversationSchema.safeParse({
+    userId,
+    conversationId,
+  });
 
-    return res.status(200).json({
-      groups,
+  if (!success) {
+    return res.status(400).json({
+      errors: error,
     });
-  } catch (error) {
-    console.error("getUserConversations error:", error);
-    return res.status(500).json({ error });
   }
+
+  const group = await conversationService.getSelectedGroup(
+    data.userId,
+    data.conversationId,
+  );
+
+  if (!group) {
+    return res.status(500).json({
+      message: "an unexpected error occured",
+    });
+  }
+
+  return res.status(200).json({ group });
 }
 
-export async function createNewGroup(
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) {
-  try {
-    const { userIds, name } = userGroupSchema.parse(req.body);
+export async function createNewGroup(req: Request, res: Response) {
+  const { userIds, name } = req.body;
 
-    //existing checks out of scope for now
+  const { success, data, error } = userGroupSchema.safeParse({
+    userIds,
+    name,
+  });
 
-    const newGroup = await prisma.groups.create({
-      // create new group and link it to users by id
-      data: {
-        name,
-        users: {
-          connect: userIds.map((id: number) => ({ id })), // array becomes [{ id: number }] objects - go to users and find id
-        },
-      },
+  if (!success) {
+    return res.status(400).json({
+      errors: error,
     });
-
-    return res.status(201).json({ newGroup });
-  } catch (error) {
-    if (error instanceof ZodError) {
-      //if error is a zod error send back
-      return res.status(400).json({
-        errors: error.issues,
-      });
-    }
-    next(error);
   }
+
+  const newGroup = await conversationService.createGroup(data);
+
+  if (!newGroup) {
+    return res.status(500).json({
+      message: "an unexpected error occured",
+    });
+  }
+
+  return res.status(201).json({ newGroup });
 }
