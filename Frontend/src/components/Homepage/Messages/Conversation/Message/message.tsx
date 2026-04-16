@@ -6,18 +6,22 @@ type messageProps = {
 };
 
 function Message({ message }: messageProps) {
+
+  const timeSent = new Date(message.timeSent).toLocaleString();
+  const user = sessionStorage.getItem("loggedUsername")
+  console.log(message)
   if (message.imageUrl) {
     return (
       <div className="message">
         <h3>
           <img src={message.sender.pfpUrl} alt="" />
-          <Link to={`/user/${message.senderId}`}>
-            {message.sender.username}
+          <Link to={user === message.sender.username ? `/user/${message.senderId}` : ""}>
+            {user === message.sender.username ? "" : `${message.sender.username}: `}
           </Link>
-          : {message.message}
+          {message.message}
         </h3>
         <img src={message.imageUrl} alt="message image" />
-        <p>{message.timeSent}</p>
+        <p>{timeSent}</p>
       </div>
     );
   }
@@ -25,11 +29,12 @@ function Message({ message }: messageProps) {
     <div className="message">
       <h3>
         <img src={message.sender.pfpUrl} alt="" />
-        <Link to={`/user/${message.senderId}`}>
-          {message.sender.username}
-        </Link>: {message.message}
+        <Link to={user === message.sender.username ? `/user/${message.senderId}` : ""}>
+            {user === message.sender.username ? "" : `${message.sender.username}: `}
+          </Link>
+          {message.message}
       </h3>
-      <p>{message.timeSent}</p>
+      <p>{timeSent}</p>
     </div>
   );
 }

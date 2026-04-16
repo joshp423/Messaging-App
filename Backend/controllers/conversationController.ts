@@ -19,7 +19,7 @@ const userGroupSchema = z.object({
 
 const userConversationSchema = z.object({
   userId: z.number(),
-  conversationId: z.number(),
+  conversationId: z.coerce.number(),
 });
 
 export async function getUserConversations(req: AuthRequest, res: Response) {
@@ -42,7 +42,7 @@ export async function getUserConversations(req: AuthRequest, res: Response) {
 
 export async function getSoloConversation(req: AuthRequest, res: Response) {
   const userId = req.user?.id;
-  const { conversationId } = req.body;
+  const { conversationId } = req.params;
 
   const { success, data, error } = userConversationSchema.safeParse({
     userId,
@@ -71,7 +71,7 @@ export async function getSoloConversation(req: AuthRequest, res: Response) {
 
 export async function getGroupConversation(req: AuthRequest, res: Response) {
   const userId = req.user?.id;
-  const { conversationId } = req.body;
+  const { conversationId } = req.params;
 
   const { success, data, error } = userConversationSchema.safeParse({
     userId,

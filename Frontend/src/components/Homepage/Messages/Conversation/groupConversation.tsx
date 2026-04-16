@@ -33,9 +33,9 @@ function GroupConversation() {
         );
         if (rsp.status === 200) {
           const data = await rsp.json();
-          setSelectedConversation(data.groups[0]);
-          setGroupName(data.groups[0].id)
-          console.log(data.conversation);
+          setSelectedConversation(data.group);
+          setGroupName(data.group.name)
+          console.log(data.group);
         }
       } catch (error) {
         console.error(error);
@@ -46,6 +46,7 @@ function GroupConversation() {
 
   return (
     <div className="conversation">
+      <h2>{groupName}</h2>
       {selectedConversation?.messages.map((message) => (
         <Message key={message.id} message={message} />
       ))}

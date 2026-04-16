@@ -20,7 +20,7 @@ const routes = [
         element: <Conversation />,
       },
       {
-        path: "/groupConversation/:conversationId",
+        path: "/groupConversation/:groupConversationId",
         element: <GroupConversation />,
       },
       { path: "/user/:userId", element: <UserProfile /> },
