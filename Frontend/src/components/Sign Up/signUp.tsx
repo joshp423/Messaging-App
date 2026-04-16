@@ -32,6 +32,9 @@ function SignUp() {
         return "";
       }
     } catch (error) {
+      navigate("/error", {
+        state: { error: "Profile picture upload failed" },
+      } )
       console.error("Upload error:", error);
       return "";
     }
@@ -51,24 +54,44 @@ function SignUp() {
         body: JSON.stringify({ username, email, password }),
       });
 
-      if (rsp.status === 201) {
-        // if sign up successful
-        const uploadedUrl = await uploadPFP(); //await other function
-        try {
-          await fetch("http://localhost:3000/initialProfileUpdate", {
-            headers: {
-              "Content-Type": "application/json",
-            },
-            method: "PUT",
-            body: JSON.stringify({ email, pfpUrl: uploadedUrl, blurb }),
-          });
-          navigate("/");
-        } catch (error) {
-          console.error(error);
-        }
+      switch (rsp.status) {
+        case 201:
+            // if sign up successful
+            const uploadedUrl = await uploadPFP(); //await other function
+            try {
+              await fetch("http://localhost:3000/initialProfileUpdate", {
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                method: "PUT",
+                body: JSON.stringify({ email, pfpUrl: uploadedUrl, blurb }),
+              });
+              navigate("/");
+            } catch (error) {
+              navigate("/error", {
+                state: { error: "Profile picture upload failed" },
+              } )
+              console.error(error);
+            }
+          break;
+          
+        case 400:
+          // on page feedback error based on input
+          break;
+
+        case 403:
+          // on page feedback error
+          break;
+
+        case 500:
+          navigate("/error");
+          break;
+        
       }
+      
+
     } catch (error) {
-      console.error(error);
+      navigate("/error")
     }
 
     // if (rsp.status != 201) {

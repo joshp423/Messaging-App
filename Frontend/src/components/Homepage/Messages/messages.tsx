@@ -4,6 +4,7 @@ import type { ConversationPreviewObject } from "../../../types/conversationPrevi
 import GroupPreview from "./Conversation/groupPreview";
 import type { GroupPreviewObject } from "../../../types/groupPreviewObject";
 import { Link } from "react-router";
+import { useNavigate } from "react-router";
 
 function Messages() {
   const [soloMessages, setSoloMessages] = useState<ConversationPreviewObject[]>(
@@ -12,6 +13,7 @@ function Messages() {
   const [groupMessages, setGroupMessages] = useState<GroupPreviewObject[]>([]);
   const userId = sessionStorage.getItem("loggedUserId");
   const [newMessageStatusTop, setNewMessageStatusTop] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function getMessages() {
@@ -29,6 +31,7 @@ function Messages() {
           setGroupMessages(data.groups);
         }
       } catch (error) {
+        navigate("/error")
         console.error(error);
       }
     }

@@ -7,6 +7,7 @@ import UserProfile from "./components/Homepage/Messages/Conversation/Users/userP
 import NewConversation from "./components/Homepage/NewConversation/newConversation";
 import GroupConversation from "./components/Homepage/Messages/Conversation/groupConversation";
 import EditProfile from "./components/Nav/EditProfile/editProfile";
+import ErrorPage from "./components/ErrorPage/errorPage";
 const routes = [
   {
     path: "/",
@@ -25,7 +26,8 @@ const routes = [
       },
       { path: "/user/:userId", element: <UserProfile /> },
       { path: "/new-message", element: <NewConversation /> },
-      { path: "/edit-profile", element: <EditProfile />}
+      { path: "/edit-profile", element: <EditProfile /> },
+      { path: "/error", element: <ErrorPage  /> }
     ],
   },
 ];

@@ -86,7 +86,13 @@ export async function signUp(req: Request, res: Response) {
     });
   }
 
-  await userService.create(data);
+  const newUser = await userService.create(data);
+
+  if (!newUser) {
+    return res.status(403).json({
+      message: "an unexpected error occured",
+    });
+  }
 
   return res.status(201).json({ message: "Successful Sign-Up" });
 }
