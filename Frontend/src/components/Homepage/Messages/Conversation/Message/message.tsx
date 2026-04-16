@@ -9,7 +9,6 @@ function Message({ message }: messageProps) {
 
   const timeSent = new Date(message.timeSent).toLocaleString();
   const user = sessionStorage.getItem("loggedUsername")
-  console.log(message)
   if (message.imageUrl) {
     return (
       <div className="message">

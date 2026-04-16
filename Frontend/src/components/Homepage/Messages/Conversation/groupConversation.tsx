@@ -35,7 +35,6 @@ function GroupConversation() {
           const data = await rsp.json();
           setSelectedConversation(data.group);
           setGroupName(data.group.name)
-          console.log(data.group);
         }
       } catch (error) {
         console.error(error);

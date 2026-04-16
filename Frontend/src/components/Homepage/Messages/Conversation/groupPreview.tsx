@@ -8,7 +8,6 @@ type groupPreviewProps = {
 function GroupPreview({ conversationMessage }: groupPreviewProps) {
   const navigate = useNavigate();
   const username = sessionStorage.getItem("loggedUsername");
-  console.log(conversationMessage)
 
   const viewConversation = () => {
     navigate(`groupConversation/${conversationMessage.id}`);

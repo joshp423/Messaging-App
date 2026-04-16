@@ -27,7 +27,6 @@ function Messages() {
           const data = await rsp.json();
           setSoloMessages(data.conversationsSolo);
           setGroupMessages(data.groups);
-          console.log(data.conversationsSolo, data.groups);
         }
       } catch (error) {
         console.error(error);
