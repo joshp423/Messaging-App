@@ -41,16 +41,32 @@ function Login() {
 
       const data = await rsp.json();
 
-      if (data.message === "Successfully logged in") {
-        const decoded = jwtDecode<JwtPayload>(data.token);
-        sessionStorage.setItem("token", data.token);
-        sessionStorage.setItem("loggedUsername", decoded.username);
-        sessionStorage.setItem("loggedUserId", String(decoded.id));
-        setLoginStatus(true);
+      switch (rsp.status) {
+
+        case 200:
+          const decoded = jwtDecode<JwtPayload>(data.token);
+          sessionStorage.setItem("token", data.token);
+          sessionStorage.setItem("loggedUsername", decoded.username);
+          sessionStorage.setItem("loggedUserId", String(decoded.id));
+          setLoginStatus(true);
+          navigate("/")
+          break;
+
+        case 400:
+          //pass back error on form
+          break;
+
+        case 403:
+          //pass back error on form
+          break;
+
+        case 500:
+          navigate("/error");
+          break;
       }
 
-      navigate("/");
     } catch (err) {
+      navigate("/error");
       console.error(err);
     }
   };

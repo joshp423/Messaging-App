@@ -125,7 +125,7 @@ export async function logIn(req: Request, res: Response) {
     });
   }
 
-  return res.json({
+  return res.status(200).json({
     message: "Successfully logged in",
     token,
   });

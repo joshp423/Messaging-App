@@ -91,7 +91,9 @@ function SignUp() {
       
 
     } catch (error) {
-      navigate("/error")
+      navigate("/error", {
+        state: { error: `${error}` },
+      });
     }
 
     // if (rsp.status != 201) {
