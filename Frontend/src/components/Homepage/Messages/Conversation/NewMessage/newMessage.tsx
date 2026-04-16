@@ -77,13 +77,16 @@ function NewMessage({
     <div className="newMessage">
       <form onSubmit={newMessageAPI}>
         <h3>New Message to {conversationPartner}: </h3>
+        <label htmlFor="messageText">Message Text: </label>
         <input
           type="text"
+          id="messageText"
+          required
           onChange={(e) => {
             setNewMessageText(e.target.value);
           }}
         />
-        <label htmlFor="messageImage">Add Image</label>
+        <label htmlFor="messageImage">Add Image: </label>
         <input
           type="file"
           className="form-control-file"
@@ -93,7 +96,7 @@ function NewMessage({
             setNewMessageImage(e.target.files?.[0] || null);
           }}
         />
-        <button>Send</button>
+        <button type="submit">Send</button>
       </form>
     </div>
   );

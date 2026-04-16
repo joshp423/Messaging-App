@@ -47,4 +47,5 @@ export class ConversationService {
   async getSelectedGroup(userId: number, groupId: number) {
     return this.conversationRepo.getSelectedGroup(userId, groupId);
   }
+  
 }

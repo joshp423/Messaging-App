@@ -55,6 +55,7 @@ function GroupConversation() {
       setNewMessageStatus={setNewMessageStatus}
       />
       <Link to="/">Back</Link>
+      <button onClick={() => setNewMessageStatus((prev) => !prev)}>Refresh Messages</button>
     </div>
   );
 }

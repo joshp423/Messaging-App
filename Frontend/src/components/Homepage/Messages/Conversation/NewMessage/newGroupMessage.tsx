@@ -81,6 +81,7 @@ function NewGroupMessage({
         <h3>New Message to {groupName}: </h3>
         <input
           type="text"
+          required
           onChange={(e) => {
             setNewMessageText(e.target.value);
           }}
@@ -95,8 +96,9 @@ function NewGroupMessage({
             setNewMessageImage(e.target.files?.[0] || null);
           }}
         />
-        <button>Send</button>
+        <button type="submit">Send</button>
       </form>
+      
     </div>
   );
 }

@@ -86,18 +86,21 @@ function SignUp() {
         <input
           name="username"
           type="text"
+          required
           onChange={(e) => setUsername(e.target.value)}
         />
         <label htmlFor="username">Email: </label>
         <input
           name="email"
           type="text"
+          required
           onChange={(e) => setEmail(e.target.value)}
         />
         <label htmlFor="username"> Password: </label>
         <input
           name="password"
           type="password"
+          required
           onChange={(e) => setPassword(e.target.value)}
         />
         <label htmlFor="uploaded_file">Upload profile picture: </label>
