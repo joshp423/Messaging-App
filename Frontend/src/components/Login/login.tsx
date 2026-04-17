@@ -53,10 +53,12 @@ function Login() {
           break;
 
         case 400:
+          console.log(data.errors)
           //pass back error on form
           break;
 
         case 403:
+          console.log(data.errors)
           //pass back error on form
           break;
 
