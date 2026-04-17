@@ -55,6 +55,7 @@ function NewGroupConversationForm({
       <input
         type="text"
         name="newGroupMessageText"
+        required
         onChange={(e) => {
           setNewGroupMessageText(e.target.value);
         }}
@@ -74,6 +75,7 @@ function NewGroupConversationForm({
       <input 
         type="text"
         name="newGroupName"
+        required
         onChange={(e) => {
           setNewGroupName(e.target.value);
         }}

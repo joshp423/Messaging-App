@@ -19,6 +19,7 @@ function NewSingleConversationForm({
       <input
         type="text"
         name="newMessageRecipientUsername"
+        required
         onChange={(e) => {
           setNewMessageRecipient(e.target.value);
         }}
@@ -27,6 +28,7 @@ function NewSingleConversationForm({
       <input
         type="text"
         name="newMessageText"
+        required
         onChange={(e) => {
           setNewMessageText(e.target.value);
         }}

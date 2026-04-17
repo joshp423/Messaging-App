@@ -10,6 +10,7 @@ import prisma from "../lib/prisma.js";
 import { config } from "../service/config.js";
 import { ConversationService } from "../service/conversation.js";
 import { ConversationRepo } from "../repo/conversations.js";
+import { lengthErrShort } from "./indexController.js";
 
 const messageRepo = new MessageRepo(prisma);
 const messageService = new MessageService(messageRepo, config);
@@ -19,7 +20,7 @@ const conversationService = new ConversationService(conversationRepo, config);
 const userMessageSingleSchema = z.object({
   senderId: z.number(),
   receiverId: z.number(),
-  message: z.string().trim(),
+  message: z.string().trim().min(1, { message: lengthErrShort }),
   imageUrl: z.string(),
   conversationId: z.number(),
 });
@@ -27,7 +28,7 @@ const userMessageSingleSchema = z.object({
 const userMessageGroupSchema = z.object({
   senderId: z.number(),
   groupId: z.number(),
-  message: z.string().trim(),
+  message: z.string().trim().min(1, { message: lengthErrShort }),
   imageUrl: z.string(),
 });
 

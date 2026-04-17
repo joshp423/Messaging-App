@@ -14,7 +14,7 @@ const userGroupSchema = z.object({
   name: z
     .string()
     .trim()
-    .max(25, { message: `Group name: ${lengthErrShort}` }),
+    .max(25, { message: `Group name: ${lengthErrShort}` }).min(1, { message: lengthErrShort }),
 });
 
 const userConversationSchema = z.object({

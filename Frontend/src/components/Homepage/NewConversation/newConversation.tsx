@@ -44,7 +44,9 @@ function NewConversation() {
         return "";
       }
     } catch (error) {
-      console.error("Upload error:", error);
+      navigate("/error", {
+        state: { error: "Profile picture upload failed" },
+      })
       return "";
     }
   }
@@ -73,7 +75,9 @@ function NewConversation() {
         navigate("/")
       }
     } catch (error) {
-      console.error("Upload message error:", error);
+      navigate("/error", {
+        state: { error: `${error}` },
+      });
     }
   }
 
@@ -116,7 +120,9 @@ function NewConversation() {
   };
 
   async function getUserId() {
-    if (!newMessageRecipient) return [console.error("No message recipient")]
+    if (!newMessageRecipient) return navigate("/error", {
+      state: { error: "No message recipient" },
+    })
 
     try {
       const rsp = await fetch("http://localhost:3000/getUserId", {
@@ -134,7 +140,9 @@ function NewConversation() {
         return data.selectedUserId;
       }
     } catch (error) {
-      console.error("User not found:", error);
+      navigate("/error", {
+        state: { error: "User not found" },
+      } )
     }
   }
 
@@ -161,13 +169,17 @@ function NewConversation() {
       }
       throw new Error("User/s not found")
     } catch (error) {
-      console.error("User/s not found:", error);
+      navigate("/error", {
+        state: { error: "User/s not found" },
+      })
       throw error
     }
   }
   
   async function createNewGroup(receiverIds:number[]) {
-    if (!receiverIds[0]) return console.error("No group members");
+    if (!receiverIds[0]) navigate("/error", {
+        state: { error: "No group members" },
+      });
 
     try {
 
@@ -187,7 +199,9 @@ function NewConversation() {
         return data.newGroup.id;
       }
     } catch (error) {
-      console.error("User not found:", error);
+      navigate("/error", {
+        state: { error: "User/s not found" },
+      })
     }
   }
 

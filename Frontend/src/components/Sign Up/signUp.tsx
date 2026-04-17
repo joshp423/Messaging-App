@@ -34,8 +34,7 @@ function SignUp() {
     } catch (error) {
       navigate("/error", {
         state: { error: "Profile picture upload failed" },
-      } )
-      console.error("Upload error:", error);
+      })
       return "";
     }
   }
@@ -93,7 +92,7 @@ function SignUp() {
     } catch (error) {
       navigate("/error", {
         state: { error: `${error}` },
-      });
+      });  
     }
 
     // if (rsp.status != 201) {
