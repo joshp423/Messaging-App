@@ -54,7 +54,7 @@ function SignUp() {
       });
 
       switch (rsp.status) {
-        case 201:
+        case 201: {
             // if sign up successful
             const uploadedUrl = await uploadPFP(); //await other function
             try {
@@ -73,6 +73,7 @@ function SignUp() {
               console.error(error);
             }
           break;
+        }
           
         case 400:
           // on page feedback error based on input

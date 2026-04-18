@@ -19,6 +19,7 @@ type LoginProps = {
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState<string>("")
 
   const { setLoginStatus } = useOutletContext<LoginProps>();
 
@@ -27,7 +28,6 @@ function Login() {
   const login = async (e: SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    try {
       const rsp = await fetch("http://localhost:3000/log-in", {
         headers: {
           "Content-Type": "application/json",
@@ -40,10 +40,10 @@ function Login() {
       });
 
       const data = await rsp.json();
-
+      
       switch (rsp.status) {
 
-        case 200:
+        case 200: {
           const decoded = jwtDecode<JwtPayload>(data.token);
           sessionStorage.setItem("token", data.token);
           sessionStorage.setItem("loggedUsername", decoded.username);
@@ -51,26 +51,17 @@ function Login() {
           setLoginStatus(true);
           navigate("/")
           break;
+        }
 
         case 400:
-          console.log(data.errors)
-          //pass back error on form
-          break;
-
         case 403:
-          console.log(data.errors)
-          //pass back error on form
-          break;
-
         case 500:
-          navigate("/error");
+          setError("Incorrect email or password");
+          console.log(error)
           break;
       }
+      console.log(error)
 
-    } catch (err) {
-      navigate("/error");
-      console.error(err);
-    }
   };
 
   const backHome = () => {
@@ -80,6 +71,9 @@ function Login() {
   return (
     <div className="login">
       <form action="" onSubmit={login}>
+        <div className="errorHandling">
+          <h3>{error}</h3>
+        </div>
         <label htmlFor="email">Email: </label>
         <input
           type="text"

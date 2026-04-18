@@ -117,7 +117,7 @@ export async function logIn(req: Request, res: Response) {
     return res.status(403).json({ message: "Login failed" });
   }
 
-  const token = await userService.login(user.id, user.username, data.password);
+  const token = await userService.login(user.id, user.username, data.password, user.password);
 
   if (!token) {
     return res.status(500).json({

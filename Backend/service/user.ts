@@ -23,8 +23,8 @@ export class UserService {
     return this.userRepo.get(email);
   }
 
-  async login(id: number, username: string, hashedPassword: string) {
-    if (await bcrypt.compare(hashedPassword, username)) {
+  async login(id: number, username: string, password: string, hashedPassword: string) {
+    if (!await bcrypt.compare(password, hashedPassword)) {
       return null;
     }
 
