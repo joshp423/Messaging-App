@@ -3,108 +3,111 @@ import type { User } from "../../../types/user";
 import { useNavigate } from "react-router";
 
 function EditProfile() {
+  const userId = Number(sessionStorage.getItem("loggedUserId"));
+  const [editedProfile, setEditedProfile] = useState<User | null>(null);
+  const [pfp, setPfp] = useState<File | null>(null);
+  const [blurb, setProfileBlurb] = useState("");
+  const navigate = useNavigate();
 
-    const userId  = Number(sessionStorage.getItem("loggedUserId"));
-    const [editedProfile, setEditedProfile] = useState<User | null>(null);
-    const [pfp, setPfp] = useState<File | null>(null);
-    const [blurb, setProfileBlurb] = useState("");
-    const navigate = useNavigate();
-
-    useEffect(() => {
-        async function getUserProfile() {
-          try {
-            const rsp = await fetch(`http://localhost:3000/users/${userId}`, {
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${sessionStorage.getItem("token")}`,
-              },
-              method: "GET",
-            });
-            if (rsp.status === 200) {
-              const data = await rsp.json();
-              setEditedProfile(data.user);
-            }
-          } catch (error) {
-            console.error(error);
-          }
-        }
-        getUserProfile();
-    }, [userId]);
-
-    async function uploadPFP() {
-        if (!pfp) return "";
-
-        const formData = new FormData();
-
-        formData.append("uploaded_file", pfp);
-
-        try {
-        const rsp = await fetch("http://localhost:3000/uploadPFP", {
-            method: "POST",
-            body: formData,
+  useEffect(() => {
+    async function getUserProfile() {
+      try {
+        const rsp = await fetch(`http://localhost:3000/users/${userId}`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+          },
+          method: "GET",
         });
-
-        const data = await rsp.json();
-
-        if (rsp.status === 201) {
-            return data.pfpUrl;
-        } else {
-            return "";
+        if (rsp.status === 200) {
+          const data = await rsp.json();
+          setEditedProfile(data.user);
         }
-        } catch (error) {
-        console.error("Upload error:", error);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    getUserProfile();
+  }, [userId]);
+
+  async function uploadPFP() {
+    if (!pfp) return "";
+
+    const formData = new FormData();
+
+    formData.append("uploaded_file", pfp);
+
+    try {
+      const rsp = await fetch("http://localhost:3000/uploadPFP", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await rsp.json();
+
+      if (rsp.status === 201) {
+        return data.pfpUrl;
+      } else {
         return "";
-        }
+      }
+    } catch (error) {
+      console.error("Upload error:", error);
+      return "";
     }
+  }
 
-    async function updateProfile(e: SyntheticEvent<HTMLFormElement>) {
-        e.preventDefault();
+  async function updateProfile(e: SyntheticEvent<HTMLFormElement>) {
+    e.preventDefault();
 
-        const uploadedUrl = await uploadPFP();
-      
-        try {
-          await fetch("http://localhost:3000/edit-profile", {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${sessionStorage.getItem("token")}`,
-            },
-            method: "PUT",
-            body: JSON.stringify({  username: editedProfile?.username, pfpUrl: uploadedUrl, blurb }),
-          });
-          navigate(`/user/${sessionStorage.getItem("loggedUserId")}`);
-        } catch (error) {
-          console.error(error);
-        }
+    const uploadedUrl = await uploadPFP();
+
+    try {
+      await fetch("http://localhost:3000/edit-profile", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+        },
+        method: "PUT",
+        body: JSON.stringify({
+          username: editedProfile?.username,
+          pfpUrl: uploadedUrl,
+          blurb,
+        }),
+      });
+      navigate(`/user/${sessionStorage.getItem("loggedUserId")}`);
+    } catch (error) {
+      console.error(error);
     }
+  }
 
-    return (
-        <div className="editProfile">
-            <h1>Edit Profile</h1>
-            <form onSubmit={updateProfile}>
-                <img src={editedProfile?.pfpUrl} alt="user profile picture" />
-                <label htmlFor="uploaded_file">Change profile picture: </label>
-                <input
-                    type="file"
-                    className="form-control-file"
-                    name="uploaded_file"
-                    id="fileInput"
-                    onChange={(e) => {
-                        setPfp(e.target.files?.[0] || null);
-                    }}
-                />
-                <label htmlFor="profileBlurb">Edit Profile: </label>
-                <input
-                    type="text"
-                    name="profileBlurb"
-                    defaultValue={editedProfile?.blurb}
-                    onChange={(e) => {
-                        setProfileBlurb(e.target.value);
-                    }}
-                />
-                <button type="submit">Save</button>
-            </form>
-        </div>
-    )
+  return (
+    <div className="editProfile">
+      <h1>Edit Profile</h1>
+      <form onSubmit={updateProfile}>
+        <img src={editedProfile?.pfpUrl} alt="user profile picture" />
+        <label htmlFor="uploaded_file">Change profile picture: </label>
+        <input
+          type="file"
+          className="form-control-file"
+          name="uploaded_file"
+          id="fileInput"
+          onChange={(e) => {
+            setPfp(e.target.files?.[0] || null);
+          }}
+        />
+        <label htmlFor="profileBlurb">Edit Profile: </label>
+        <input
+          type="text"
+          name="profileBlurb"
+          defaultValue={editedProfile?.blurb}
+          onChange={(e) => {
+            setProfileBlurb(e.target.value);
+          }}
+        />
+        <button type="submit">Save</button>
+      </form>
+    </div>
+  );
 }
 
-export default EditProfile
+export default EditProfile;

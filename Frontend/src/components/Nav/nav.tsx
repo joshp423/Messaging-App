@@ -18,7 +18,9 @@ function Nav({ loginStatus, setLoginStatus }: NavProps) {
         </h1>
         <div className="navLinks">
           <h3>
-            <Link to={`users/${sessionStorage.getItem("loggedUserId")}`}>{sessionStorage.getItem("loggedUsername") || "User"}</Link>
+            <Link to={`users/${sessionStorage.getItem("loggedUserId")}`}>
+              {sessionStorage.getItem("loggedUsername") || "User"}
+            </Link>
           </h3>
           <h3>
             <Link to="/">Home</Link>

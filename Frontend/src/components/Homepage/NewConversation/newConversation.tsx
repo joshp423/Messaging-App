@@ -17,10 +17,10 @@ function NewConversation() {
   const [newGroupMessageRecipients, setNewGroupMessageRecipients] = useState<
     string[]
   >([]);
-  const [newGroupName, setNewGroupName] = useState<string>("")
+  const [newGroupName, setNewGroupName] = useState<string>("");
   const navigate = useNavigate();
 
-  async function uploadImage(newMessageImage:File | null) {
+  async function uploadImage(newMessageImage: File | null) {
     if (!newMessageImage) return "";
 
     const formData = new FormData();
@@ -46,7 +46,7 @@ function NewConversation() {
     } catch (error) {
       navigate("/error", {
         state: { error: "Profile picture upload failed" },
-      })
+      });
       return "";
     }
   }
@@ -72,7 +72,7 @@ function NewConversation() {
       });
 
       if (rsp.status === 201) {
-        navigate("/")
+        navigate("/");
       }
     } catch (error) {
       navigate("/error", {
@@ -85,11 +85,10 @@ function NewConversation() {
     e.preventDefault();
 
     try {
-
       const uploadedUrl = await uploadImage(newGroupMessageImage);
       const receiverIds = await getUserIds();
-      const newGroupId = await createNewGroup(receiverIds)
-      
+      const newGroupId = await createNewGroup(receiverIds);
+
       const rsp = await fetch("http://localhost:3000/send-message-group", {
         headers: {
           "Content-Type": "application/json",
@@ -99,7 +98,7 @@ function NewConversation() {
         body: JSON.stringify({
           message: newGroupMessageText,
           imageUrl: uploadedUrl,
-          groupId: newGroupId
+          groupId: newGroupId,
         }),
       });
 
@@ -120,9 +119,10 @@ function NewConversation() {
   };
 
   async function getUserId() {
-    if (!newMessageRecipient) return navigate("/error", {
-      state: { error: "No message recipient" },
-    })
+    if (!newMessageRecipient)
+      return navigate("/error", {
+        state: { error: "No message recipient" },
+      });
 
     try {
       const rsp = await fetch("http://localhost:3000/getUserId", {
@@ -142,7 +142,7 @@ function NewConversation() {
     } catch (error) {
       navigate("/error", {
         state: { error: "User not found" },
-      } )
+      });
     }
   }
 
@@ -158,31 +158,30 @@ function NewConversation() {
         method: "POST",
         body: JSON.stringify({
           usernames: newGroupMessageRecipients,
-
         }),
       });
       if (rsp.status === 201) {
         const data = await rsp.json();
-        const users:User[] = data.selectedUserId
-        const selectedIds = users.map(user => user.id) //loop and pull id
+        const users: User[] = data.selectedUserId;
+        const selectedIds = users.map((user) => user.id); //loop and pull id
         return selectedIds;
       }
-      throw new Error("User/s not found")
+      throw new Error("User/s not found");
     } catch (error) {
       navigate("/error", {
         state: { error: "User/s not found" },
-      })
-      throw error
+      });
+      throw error;
     }
   }
-  
-  async function createNewGroup(receiverIds:number[]) {
-    if (!receiverIds[0]) navigate("/error", {
+
+  async function createNewGroup(receiverIds: number[]) {
+    if (!receiverIds[0])
+      navigate("/error", {
         state: { error: "No group members" },
       });
 
     try {
-
       const rsp = await fetch("http://localhost:3000/create-group", {
         headers: {
           "Content-Type": "application/json",
@@ -191,7 +190,7 @@ function NewConversation() {
         method: "PUT",
         body: JSON.stringify({
           userIds: receiverIds,
-          name: newGroupName
+          name: newGroupName,
         }),
       });
       if (rsp.status === 201) {
@@ -201,7 +200,7 @@ function NewConversation() {
     } catch (error) {
       navigate("/error", {
         state: { error: "User/s not found" },
-      })
+      });
     }
   }
 

@@ -27,7 +27,7 @@ const routes = [
       { path: "/user/:userId", element: <UserProfile /> },
       { path: "/new-message", element: <NewConversation /> },
       { path: "/edit-profile", element: <EditProfile /> },
-      { path: "/error", element: <ErrorPage  /> }
+      { path: "/error", element: <ErrorPage /> },
     ],
   },
 ];

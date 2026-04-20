@@ -19,7 +19,7 @@ type LoginProps = {
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState<string>("")
+  const [error, setError] = useState<string>("");
 
   const { setLoginStatus } = useOutletContext<LoginProps>();
 
@@ -28,40 +28,38 @@ function Login() {
   const login = async (e: SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-      const rsp = await fetch("http://localhost:3000/log-in", {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        method: "POST",
-        body: JSON.stringify({
-          email,
-          password,
-        }),
-      });
+    const rsp = await fetch("http://localhost:3000/log-in", {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+      body: JSON.stringify({
+        email,
+        password,
+      }),
+    });
 
-      const data = await rsp.json();
-      
-      switch (rsp.status) {
+    const data = await rsp.json();
 
-        case 200: {
-          const decoded = jwtDecode<JwtPayload>(data.token);
-          sessionStorage.setItem("token", data.token);
-          sessionStorage.setItem("loggedUsername", decoded.username);
-          sessionStorage.setItem("loggedUserId", String(decoded.id));
-          setLoginStatus(true);
-          navigate("/")
-          break;
-        }
-
-        case 400:
-        case 403:
-        case 500:
-          setError("Incorrect email or password");
-          console.log(error)
-          break;
+    switch (rsp.status) {
+      case 200: {
+        const decoded = jwtDecode<JwtPayload>(data.token);
+        sessionStorage.setItem("token", data.token);
+        sessionStorage.setItem("loggedUsername", decoded.username);
+        sessionStorage.setItem("loggedUserId", String(decoded.id));
+        setLoginStatus(true);
+        navigate("/");
+        break;
       }
-      console.log(error)
 
+      case 400:
+      case 403:
+      case 500:
+        setError("Incorrect email or password");
+        console.log(error);
+        break;
+    }
+    console.log(error);
   };
 
   const backHome = () => {

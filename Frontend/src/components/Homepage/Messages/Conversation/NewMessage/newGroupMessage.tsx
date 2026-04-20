@@ -16,8 +16,7 @@ function NewGroupMessage({
   const [newMessageImage, setNewMessageImage] = useState<File | null>(null);
   const navigate = useNavigate();
 
-
-  async function uploadImage(newMessageImage:File | null) {
+  async function uploadImage(newMessageImage: File | null) {
     if (!newMessageImage) return "";
 
     const formData = new FormData();
@@ -50,9 +49,8 @@ function NewGroupMessage({
     e.preventDefault();
 
     try {
-
       const uploadedUrl = await uploadImage(newMessageImage);
-      
+
       const rsp = await fetch("http://localhost:3000/send-message-group", {
         headers: {
           "Content-Type": "application/json",
@@ -62,12 +60,12 @@ function NewGroupMessage({
         body: JSON.stringify({
           message: newMessageText,
           imageUrl: uploadedUrl,
-          groupId: groupConversationId
+          groupId: groupConversationId,
         }),
       });
 
       if (rsp.status === 201) {
-        setNewMessageStatus((prev) => !prev)
+        setNewMessageStatus((prev) => !prev);
         navigate("/");
       }
     } catch (error) {
@@ -98,7 +96,6 @@ function NewGroupMessage({
         />
         <button type="submit">Send</button>
       </form>
-      
     </div>
   );
 }

@@ -62,7 +62,9 @@ function Conversation() {
         setNewMessageStatus={setNewMessageStatus}
       />
       <Link to="/">Back</Link>
-      <button onClick={() => setNewMessageStatus((prev) => !prev)}>Refresh Messages</button>
+      <button onClick={() => setNewMessageStatus((prev) => !prev)}>
+        Refresh Messages
+      </button>
     </div>
   );
 }

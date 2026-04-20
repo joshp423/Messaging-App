@@ -1,11 +1,11 @@
-import { useLocation }  from "react-router-dom";
+import { useLocation } from "react-router-dom";
 type errorPageState = {
-    error: string
-}
+  error: string;
+};
 
-function ErrorPage(){
-    const location = useLocation() ;
-    const error = location.state as errorPageState | null;
+function ErrorPage() {
+  const location = useLocation();
+  const error = location.state as errorPageState | null;
 
   return (
     <div>
@@ -16,4 +16,4 @@ function ErrorPage(){
   );
 }
 
-export default ErrorPage
+export default ErrorPage;

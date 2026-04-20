@@ -9,6 +9,7 @@ function SignUp() {
   const [password, setPassword] = useState("");
   const [pfp, setPfp] = useState<File | null>(null);
   const [blurb, setProfileBlurb] = useState("");
+  const [errors, setErrors] = useState<string[]>([]);
   // const [loading, setLoading] = useState(false);
 
   async function uploadPFP() {
@@ -34,7 +35,8 @@ function SignUp() {
     } catch (error) {
       navigate("/error", {
         state: { error: "Profile picture upload failed" },
-      })
+      });
+      console.error(error);
       return "";
     }
   }
@@ -44,56 +46,49 @@ function SignUp() {
 
     // try to create new prisma user, checking fields
     // setLoading(true);
-    try {
-      const rsp = await fetch("http://localhost:3000/sign-up", {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        method: "POST",
-        body: JSON.stringify({ username, email, password }),
-      });
+    const rsp = await fetch("http://localhost:3000/sign-up", {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+      body: JSON.stringify({ username, email, password }),
+    });
 
+    if (rsp.status !== 201) {
+      const data = await rsp.json();
       switch (rsp.status) {
-        case 201: {
-            // if sign up successful
-            const uploadedUrl = await uploadPFP(); //await other function
-            try {
-              await fetch("http://localhost:3000/initialProfileUpdate", {
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                method: "PUT",
-                body: JSON.stringify({ email, pfpUrl: uploadedUrl, blurb }),
-              });
-              navigate("/");
-            } catch (error) {
-              navigate("/error", {
-                state: { error: "Profile picture upload failed" },
-              } )
-              console.error(error);
-            }
-          break;
-        }
-          
         case 400:
-          // on page feedback error based on input
+          setErrors(data.errors || []);
           break;
 
         case 403:
-          // on page feedback error
+          setErrors([
+            "Username or Email already exists, these must be unique.",
+          ]);
           break;
-
-        case 500:
-          navigate("/error");
-          break;
-        
       }
-      
+      return;
+    }
 
+    // if sign up successful
+    const uploadedUrl = await uploadPFP(); //await other function
+    setErrors([]);
+    try {
+      await fetch("http://localhost:3000/initialProfileUpdate", {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "PUT",
+        body: JSON.stringify({ email, pfpUrl: uploadedUrl, blurb }),
+      });
+      navigate("/");
     } catch (error) {
       navigate("/error", {
-        state: { error: `${error}` },
-      });  
+        state: {
+          error: "Profile picture upload failed, account still created",
+        },
+      });
+      console.error(error);
     }
 
     // if (rsp.status != 201) {
@@ -107,6 +102,11 @@ function SignUp() {
   return (
     <div>
       <form onSubmit={signupAPI}>
+        <div className="errorHandling">
+          {errors?.map((error) => (
+            <li>{error}</li>
+          ))}
+        </div>
         <label htmlFor="username">Username: </label>
         <input
           name="username"

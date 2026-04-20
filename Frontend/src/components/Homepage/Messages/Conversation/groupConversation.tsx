@@ -15,8 +15,7 @@ function GroupConversation() {
 
   const [newMessageStatus, setNewMessageStatus] = useState(false);
 
-  const [groupName, setGroupName] = useState("")
-  
+  const [groupName, setGroupName] = useState("");
 
   useEffect(() => {
     async function getConversation() {
@@ -34,7 +33,7 @@ function GroupConversation() {
         if (rsp.status === 200) {
           const data = await rsp.json();
           setSelectedConversation(data.group);
-          setGroupName(data.group.name)
+          setGroupName(data.group.name);
         }
       } catch (error) {
         console.error(error);
@@ -49,13 +48,15 @@ function GroupConversation() {
       {selectedConversation?.messages.map((message) => (
         <Message key={message.id} message={message} />
       ))}
-    <NewGroupMessage
-      groupName={groupName}
-      groupConversationId={Number(groupConversationId)}
-      setNewMessageStatus={setNewMessageStatus}
+      <NewGroupMessage
+        groupName={groupName}
+        groupConversationId={Number(groupConversationId)}
+        setNewMessageStatus={setNewMessageStatus}
       />
       <Link to="/">Back</Link>
-      <button onClick={() => setNewMessageStatus((prev) => !prev)}>Refresh Messages</button>
+      <button onClick={() => setNewMessageStatus((prev) => !prev)}>
+        Refresh Messages
+      </button>
     </div>
   );
 }

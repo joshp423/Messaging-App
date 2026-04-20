@@ -31,12 +31,12 @@ function Messages() {
           setGroupMessages(data.groups);
         }
       } catch (error) {
-        navigate("/error")
+        navigate("/error");
         console.error(error);
       }
     }
     getMessages();
-  }, [userId, newMessageStatusTop]);
+  }, [userId, newMessageStatusTop, navigate]);
   // think about if we need userids in groups and conversations might be able to pull usernames anyway with prisma
   // dont think we need to use map here with just one message
   return (

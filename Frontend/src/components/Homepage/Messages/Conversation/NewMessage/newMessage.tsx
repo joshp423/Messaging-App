@@ -37,9 +37,8 @@ function NewMessage({
       if (rsp.status === 201) {
         return data.imageUrl;
       }
-      
-      return "";
 
+      return "";
     } catch (error) {
       console.error("Upload error:", error);
       return "";

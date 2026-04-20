@@ -19,11 +19,13 @@ function NewGroupConversationForm({
   newGroupRecipientsAmount,
   setNewGroupMessageRecipients,
   newGroupMessageAPI,
-  setNewGroupName
+  setNewGroupName,
 }: NewGroupConversationFormProps) {
   return (
     <form onSubmit={newGroupMessageAPI}>
-      <label htmlFor="newMessageRecipientUsername">Amount of New Group Members (min 3): </label>
+      <label htmlFor="newMessageRecipientUsername">
+        Amount of New Group Members (min 3):{" "}
+      </label>
       <input
         type="number"
         name="newGroupRecipientsAmount"
@@ -47,7 +49,11 @@ function NewGroupConversationForm({
             _,
             index, //value, index
           ) => (
-            <GroupConversationRecipientInput key={index} index={index} setNewGroupMessageRecipients={setNewGroupMessageRecipients}/>
+            <GroupConversationRecipientInput
+              key={index}
+              index={index}
+              setNewGroupMessageRecipients={setNewGroupMessageRecipients}
+            />
           ),
         )}
       </div>
@@ -72,7 +78,7 @@ function NewGroupConversationForm({
         }}
       />
       <label htmlFor="newGroupName">New Group Name: </label>
-      <input 
+      <input
         type="text"
         name="newGroupName"
         required

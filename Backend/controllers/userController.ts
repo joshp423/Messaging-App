@@ -24,13 +24,13 @@ const SignUpSchema = z.object({
     .string()
     .trim()
     .max(25, { message: `Username: ${lengthErrShort}` })
-    .min(1, { message: lengthErrShort }),
+    .min(1, { message: `Username ${lengthErrShort }`}),
   password: z
     .string()
     .trim()
     .max(25, { message: `Password: ${lengthErrShort}` })
-    .min(1, { message: lengthErrShort })
-    .regex(/^(?=.*[A-Za-z])(?=.*\d).+$/, { message: passwordAlphaNumericErr }),
+    .min(1, { message: `Password: ${lengthErrShort}` })
+    .regex(/^(?=.*[A-Za-z])(?=.*\d).+$/, { message: `Password ${passwordAlphaNumericErr}` }),
   email: z
     .email({ message: emailErr })
     .max(254, { message: `Email: ${emailLengthErr}` })
@@ -82,19 +82,19 @@ export async function signUp(req: Request, res: Response) {
 
   if (!success) {
     return res.status(400).json({
-      errors: error,
+      errors: error.issues.map(issue => issue.message)
     });
   }
 
-  const newUser = await userService.create(data);
-
-  if (!newUser) {
+  try {
+    await userService.create(data);
+    return res.status(201).json({ message: "Successful Sign-Up" });
+  } catch (err) {
     return res.status(403).json({
       message: "an unexpected error occured",
     });
   }
-
-  return res.status(201).json({ message: "Successful Sign-Up" });
+  
 }
 
 export async function logIn(req: Request, res: Response) {
