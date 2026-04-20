@@ -104,7 +104,7 @@ function SignUp() {
       <form onSubmit={signupAPI}>
         <div className="errorHandling">
           {errors?.map((error) => (
-            <li>{error}</li>
+            <li key={error}>{error}</li>
           ))}
         </div>
         <label htmlFor="username">Username: </label>
