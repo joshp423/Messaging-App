@@ -4,12 +4,11 @@
         display: grid;
         grid-template-columns: 1fr 2fr;
         align-items: center;
-        margin-top: 2%;
+        padding-top: 2%;
     }
 
     .navBar>h1 {
         font-size: 18px;
-        color: white;
         font-weight: 400;
         text-align: center;
         margin-left: 5%;
@@ -17,7 +16,7 @@
     }
 
     .navBar>h1>a {
-        color: black;
+        color: white;
     }
 
     .navLinks {
@@ -34,7 +33,7 @@
     }
 
     .navLinks>h3>a {
-        color: black;
+        color: white;
     }
 
 }
