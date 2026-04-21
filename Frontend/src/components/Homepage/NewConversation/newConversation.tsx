@@ -19,6 +19,7 @@ function NewConversation() {
   >([]);
   const [newGroupName, setNewGroupName] = useState<string>("");
   const navigate = useNavigate();
+  const [errors, setErrors] = useState<string[]>([]);
 
   async function uploadImage(newMessageImage: File | null) {
     if (!newMessageImage) return "";
@@ -27,87 +28,95 @@ function NewConversation() {
 
     formData.append("uploaded_file", newMessageImage);
 
-    try {
-      const rsp = await fetch("http://localhost:3000/uploadMessageImage", {
-        headers: {
-          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
-        },
-        method: "POST",
-        body: formData,
-      });
+    const rsp = await fetch("http://localhost:3000/uploadMessageImage", {
+      headers: {
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+      method: "POST",
+      body: formData,
+    });
 
-      const data = await rsp.json();
+    const data = await rsp.json();
 
-      if (rsp.status === 201) {
-        return data.imageUrl;
-      } else {
-        return "";
-      }
-    } catch (error) {
-      navigate("/error", {
-        state: { error: "Profile picture upload failed" },
-      });
-      return "";
+    if (rsp.status === 201) {
+      return data.imageUrl;
     }
+    navigate("/error", {
+      state: {
+        error: "Picture upload failed, please try again later",
+      },
+    });
+    return;
   }
 
   async function newMessageAPI(e: SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    try {
-      const uploadedUrl = await uploadImage(newMessageImage);
-      const receiverId = await getUserId();
-      const rsp = await fetch("http://localhost:3000/send-message-solo", {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
-        },
-        method: "POST",
-        body: JSON.stringify({
-          receiverId,
-          message: newMessageText,
-          imageUrl: uploadedUrl,
-          conversationId: 0,
-        }),
-      });
-
-      if (rsp.status === 201) {
-        navigate("/");
-      }
-    } catch (error) {
-      navigate("/error", {
-        state: { error: `${error}` },
-      });
+    const uploadedUrl = await uploadImage(newMessageImage);
+    const receiverId = await getUserId();
+    if (!receiverId) {
+      setErrors(["Invalid target users, please ensure usernames are correct."]);
+      return;
     }
+    const rsp = await fetch("http://localhost:3000/send-message-solo", {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+      method: "POST",
+      body: JSON.stringify({
+        receiverId,
+        message: newMessageText,
+        imageUrl: uploadedUrl,
+        conversationId: 0,
+      }),
+    });
+
+    if (rsp.status === 201) {
+      navigate("/");
+      return;
+    }
+
+    navigate("/error", {
+      state: {
+        error: "New message failed, try again later.",
+      },
+    });
   }
 
   async function newGroupMessageAPI(e: SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    try {
-      const uploadedUrl = await uploadImage(newGroupMessageImage);
-      const receiverIds = await getUserIds();
-      const newGroupId = await createNewGroup(receiverIds);
-
-      const rsp = await fetch("http://localhost:3000/send-message-group", {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
-        },
-        method: "POST",
-        body: JSON.stringify({
-          message: newGroupMessageText,
-          imageUrl: uploadedUrl,
-          groupId: newGroupId,
-        }),
-      });
-
-      if (rsp.status === 201) {
-        navigate("/");
-      }
-    } catch (error) {
-      console.error("Upload message error:", error);
+    const uploadedUrl = await uploadImage(newGroupMessageImage);
+    const receiverIds = await getUserIds();
+    if (receiverIds.length < 1) {
+      setErrors(["Invalid target users, please ensure usernames are correct."]);
+      return;
     }
+    const newGroupId = await createNewGroup(receiverIds);
+
+    const rsp = await fetch("http://localhost:3000/send-message-group", {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+      method: "POST",
+      body: JSON.stringify({
+        message: newGroupMessageText,
+        imageUrl: uploadedUrl,
+        groupId: newGroupId,
+      }),
+    });
+
+    if (rsp.status === 201) {
+      navigate("/");
+      return;
+    }
+    navigate("/error", {
+      state: {
+        error: "New group message failed, try again later.",
+      },
+    });
   }
 
   const recipientUpdater = (index: number, value: string) => {
@@ -140,14 +149,13 @@ function NewConversation() {
         return data.selectedUserId;
       }
     } catch (error) {
-      navigate("/error", {
-        state: { error: "User not found" },
-      });
+      console.error(error);
+      return null;
     }
   }
 
   async function getUserIds() {
-    if (!newGroupMessageRecipients[0]) throw new Error("No message recipient");
+    if (!newGroupMessageRecipients[0]) setErrors(["No message recipient"]);
 
     try {
       const rsp = await fetch("http://localhost:3000/getUserIds", {
@@ -201,6 +209,7 @@ function NewConversation() {
       navigate("/error", {
         state: { error: "User/s not found" },
       });
+      throw error;
     }
   }
 
