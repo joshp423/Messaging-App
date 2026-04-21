@@ -1,4 +1,5 @@
 import React, { useState, type SyntheticEvent } from "react";
+import { useNavigate } from "react-router-dom";
 
 type newMessageProps = {
   conversationPartner: string;
@@ -16,60 +17,63 @@ function NewMessage({
   const [newMessageText, setNewMessageText] = useState("");
   const [newMessageImage, setNewMessageImage] = useState<File | null>(null);
 
+  const navigate = useNavigate();
+
   async function uploadImage() {
     if (!newMessageImage) return "";
 
     const formData = new FormData();
 
     formData.append("uploaded_file", newMessageImage);
+    const rsp = await fetch("http://localhost:3000/uploadMessageImage", {
+      headers: {
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+      method: "POST",
+      body: formData,
+    });
 
-    try {
-      const rsp = await fetch("http://localhost:3000/uploadMessageImage", {
-        headers: {
-          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
-        },
-        method: "POST",
-        body: formData,
-      });
+    const data = await rsp.json();
 
-      const data = await rsp.json();
-
-      if (rsp.status === 201) {
-        return data.imageUrl;
-      }
-
-      return "";
-    } catch (error) {
-      console.error("Upload error:", error);
-      return "";
+    if (rsp.status === 201) {
+      return data.imageUrl;
     }
+
+    navigate("/error", {
+      state: {
+        error: "Picture upload failed, please try again later",
+      },
+    });
   }
 
   async function newMessageAPI(e: SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    try {
-      const uploadedUrl = await uploadImage();
-      const rsp = await fetch("http://localhost:3000/send-message-solo", {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
-        },
-        method: "POST",
-        body: JSON.stringify({
-          receiverId: conversationPartnerId,
-          message: newMessageText,
-          imageUrl: uploadedUrl,
-          conversationId,
-        }),
-      });
+    const uploadedUrl = await uploadImage();
+    const rsp = await fetch("http://localhost:3000/send-message-solo", {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+      method: "POST",
+      body: JSON.stringify({
+        receiverId: conversationPartnerId,
+        message: newMessageText,
+        imageUrl: uploadedUrl,
+        conversationId,
+      }),
+    });
 
-      if (rsp.status === 201) {
-        setNewMessageStatus((prev) => !prev); //return not the previous or flip
-      }
-    } catch (error) {
-      console.error("Upload message error:", error);
+    if (rsp.status === 201) {
+      setNewMessageStatus((prev) => !prev); //return not the previous or flip
+      return;
     }
+
+    navigate("/error", {
+      state: {
+        error: "Message Upload Failed",
+      },
+    });
   }
 
   return (
