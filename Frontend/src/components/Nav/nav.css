@@ -1,3 +1,41 @@
-.navBar {
-    display: ;
+@media screen and (max-width: 600px) {
+
+    .navBar{
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        align-items: center;
+        margin-top: 2%;
+    }
+
+    .navBar>h1 {
+        font-size: 18px;
+        color: white;
+        font-weight: 400;
+        text-align: center;
+        margin-left: 5%;
+        font-weight: 600;
+    }
+
+    .navBar>h1>a {
+        color: black;
+    }
+
+    .navLinks {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        margin-left: 5%;
+        margin-right: 5%;
+        justify-items: center;
+    }
+
+    .navLinks>h3 {
+        font-size: 16px;
+        font-weight: 400;
+    }
+
+    .navLinks>h3>a {
+        color: black;
+    }
+
 }
+
