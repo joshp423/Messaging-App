@@ -44,6 +44,7 @@ function NewMessage({
         error: "Picture upload failed, please try again later",
       },
     });
+    return;
   }
 
   async function newMessageAPI(e: SyntheticEvent<HTMLFormElement>) {

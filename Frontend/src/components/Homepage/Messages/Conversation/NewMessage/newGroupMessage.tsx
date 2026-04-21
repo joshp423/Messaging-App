@@ -23,54 +23,55 @@ function NewGroupMessage({
 
     formData.append("uploaded_file", newMessageImage);
 
-    try {
-      const rsp = await fetch("http://localhost:3000/uploadMessageImage", {
-        headers: {
-          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
-        },
-        method: "POST",
-        body: formData,
-      });
+    const rsp = await fetch("http://localhost:3000/uploadMessageImage", {
+      headers: {
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+      method: "POST",
+      body: formData,
+    });
 
-      const data = await rsp.json();
+    const data = await rsp.json();
 
-      if (rsp.status === 201) {
-        return data.imageUrl;
-      } else {
-        return "";
-      }
-    } catch (error) {
-      console.error("Upload error:", error);
-      return "";
+    if (rsp.status === 201) {
+      return data.imageUrl;
     }
+
+    navigate("/error", {
+      state: {
+        error: "Picture upload failed, please try again later",
+      },
+    });
+    return;
   }
 
   async function newGroupMessageAPI(e: SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    try {
-      const uploadedUrl = await uploadImage(newMessageImage);
+    const uploadedUrl = await uploadImage(newMessageImage);
 
-      const rsp = await fetch("http://localhost:3000/send-message-group", {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
-        },
-        method: "POST",
-        body: JSON.stringify({
-          message: newMessageText,
-          imageUrl: uploadedUrl,
-          groupId: groupConversationId,
-        }),
-      });
+    const rsp = await fetch("http://localhost:3000/send-message-group", {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+      method: "POST",
+      body: JSON.stringify({
+        message: newMessageText,
+        imageUrl: uploadedUrl,
+        groupId: groupConversationId,
+      }),
+    });
 
-      if (rsp.status === 201) {
-        setNewMessageStatus((prev) => !prev);
-        navigate("/");
-      }
-    } catch (error) {
-      console.error("Upload message error:", error);
+    if (rsp.status === 201) {
+      setNewMessageStatus((prev) => !prev);
+      navigate("/");
     }
+    navigate("/error", {
+      state: {
+        error: "Message Upload Failed",
+      },
+    });
   }
 
   return (
