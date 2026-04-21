@@ -1,5 +1,6 @@
 import { useOutletContext } from "react-router-dom";
 import Messages from "./Messages/messages";
+import "./homepage.css"
 
 type homepageProps = {
   loginStatus: boolean;
