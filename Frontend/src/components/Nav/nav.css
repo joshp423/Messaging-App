@@ -5,6 +5,7 @@
         grid-template-columns: 1fr 2fr;
         align-items: center;
         padding-top: 2%;
+        background-color: #3C5233;
     }
 
     .navBar>h1 {
@@ -30,6 +31,10 @@
     .navLinks>h3 {
         font-size: 16px;
         font-weight: 400;
+        background-color: rgba(114, 111, 111, 0.302);
+        padding: 2px 5px 2px 5px;
+        border-radius: 24px;
+        border: 1px solid #B38A58
     }
 
     .navLinks>h3>a {
