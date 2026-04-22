@@ -7,9 +7,22 @@
         padding: 5% 5% 0% 5%
     }
 
-    .navBar>h1 {
+    .userLink {
+        display: flex;
+    }
+
+    .userLink>h1 {
         font-size: 18px;
         font-weight: 600;
+        color: white;
+    }
+
+    .userLink>img {
+        max-width: 50%;
+    }
+
+    .userLink>i {
+        color: white;
     }
 
     .navBar>h1>a {

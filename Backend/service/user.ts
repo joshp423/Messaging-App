@@ -23,12 +23,12 @@ export class UserService {
     return this.userRepo.get(email);
   }
 
-  async login(id: number, username: string, password: string, hashedPassword: string) {
+  async login(id: number, username: string, password: string, hashedPassword: string, pfpUrl: string | null) {
     if (!await bcrypt.compare(password, hashedPassword)) {
       return null;
     }
 
-    const token = jwt.sign({ id, username }, this.config.JWT_SECRET, {
+    const token = jwt.sign({ id, username, pfpUrl }, this.config.JWT_SECRET, {
       expiresIn: "1w",
     });
 

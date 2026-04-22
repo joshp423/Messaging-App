@@ -11,6 +11,7 @@ type JwtPayload = {
   username: string;
   iat: number;
   exp: number;
+  pfpUrl: string;
 };
 
 type LoginProps = {
@@ -48,6 +49,7 @@ function Login() {
         sessionStorage.setItem("token", data.token);
         sessionStorage.setItem("loggedUsername", decoded.username);
         sessionStorage.setItem("loggedUserId", String(decoded.id));
+        sessionStorage.setItem("loggedUserPfp", decoded.pfpUrl)
         setLoginStatus(true);
         navigate("/");
         break;

@@ -15,17 +15,15 @@ function Nav({ loginStatus, setLoginStatus }: NavProps) {
   if (loginStatus) {
     return (
       <div className="navBar">
-        <h3>
-          <Link to={`users/${sessionStorage.getItem("loggedUserId")}`}>
-            {sessionStorage.getItem("loggedUsername") || "User"}
-          </Link>
-        </h3>
-        <div className="navLinks">
-          <h3>
+        <div className="userLink">
+          {sessionStorage.getItem("loggedUserPfp") !== "" ? <img src={`${sessionStorage.getItem("loggedUserPfp")}`}/> : <i className="fa-solid fa-user"></i>}
+          <h1>
             <Link to={`users/${sessionStorage.getItem("loggedUserId")}`}>
               {sessionStorage.getItem("loggedUsername") || "User"}
             </Link>
-          </h3>
+          </h1>
+        </div>
+        <div className="navLinks">
           <h3>
             <Link to="/">Home</Link>
           </h3>

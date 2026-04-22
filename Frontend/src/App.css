@@ -2,9 +2,9 @@ body {
   min-height: 100vh;
   height: 100%;
   margin: 0;
-  font-family: Inter, Roboto, 'Helvetica Neue', 'Arial Nova', 'Nimbus Sans', Arial, sans-serif;
-  font-weight: 300;
-  background: #0D1F22;
+  font-family: Optima, Candara, 'Noto Sans', source-sans-pro, sans-serif;
+  font-weight: normal;
+  background: #1E1F23;
 }
 
 #root {
