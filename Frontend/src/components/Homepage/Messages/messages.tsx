@@ -5,6 +5,7 @@ import GroupPreview from "./Conversation/groupPreview";
 import type { GroupPreviewObject } from "../../../types/groupPreviewObject";
 import { Link } from "react-router";
 import { useNavigate } from "react-router";
+import "./messages.css";
 
 function Messages() {
   const [soloMessages, setSoloMessages] = useState<ConversationPreviewObject[]>(

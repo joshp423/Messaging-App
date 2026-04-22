@@ -12,7 +12,7 @@ function Nav({ loginStatus, setLoginStatus }: NavProps) {
     sessionStorage.clear();
   };
 
-  const userPfp = sessionStorage.getItem("loggedUserPfp")
+  const userPfp = sessionStorage.getItem("loggedUserPfp");
   if (loginStatus) {
     return (
       <div className="navBar">
@@ -30,7 +30,9 @@ function Nav({ loginStatus, setLoginStatus }: NavProps) {
         </div>
         <div className="navLinks">
           <h3>
-            <Link to="/"><i className="fa-solid fa-house"></i></Link>
+            <Link to="/">
+              <i className="fa-solid fa-house"></i>
+            </Link>
           </h3>
           <h3>
             <button onClick={logOut}>Logout</button>
