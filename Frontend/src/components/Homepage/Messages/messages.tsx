@@ -42,13 +42,16 @@ function Messages() {
   // dont think we need to use map here with just one message
   return (
     <div className="messageLobby">
-      <h1>Your Messages</h1>
       <div className="smallMenu">
+        <h1>Your Messages</h1>
+        <p>View your conversations below, or write a new message.</p>
         <Link to={`/new-message`}>New Message</Link>
         <button onClick={() => setNewMessageStatusTop((prev) => !prev)}>
           Check for new messages
         </button>
       </div>
+
+      <h2>Messages</h2>
       <div className="soloMessages">
         {soloMessages.map((conversation) => (
           <ConversationPreview

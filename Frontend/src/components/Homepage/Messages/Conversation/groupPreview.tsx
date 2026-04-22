@@ -23,7 +23,7 @@ function GroupPreview({ conversationMessage }: groupPreviewProps) {
           : latestMessage.sender.username}
         : {latestMessage.message}
       </p>
-      <button onClick={viewConversation}>View Conversation</button>
+      <button onClick={viewConversation}><i className="fa-solid fa-arrow-right"></i></button>
     </div>
   );
 }
