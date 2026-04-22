@@ -217,9 +217,9 @@ function NewConversation() {
     <div className="NewConversation">
       <h2>New Conversation</h2>
       <div className="errorHandling">
-          {errors?.map((error) => (
-            <li key={error}>{error}</li>
-          ))}
+        {errors?.map((error) => (
+          <li key={error}>{error}</li>
+        ))}
       </div>
       <NewSingleConversationForm
         setNewMessageText={setNewMessageText}

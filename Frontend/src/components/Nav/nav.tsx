@@ -12,11 +12,16 @@ function Nav({ loginStatus, setLoginStatus }: NavProps) {
     sessionStorage.clear();
   };
 
+  const userPfp = sessionStorage.getItem("loggedUserPfp")
   if (loginStatus) {
     return (
       <div className="navBar">
         <div className="userLink">
-          {sessionStorage.getItem("loggedUserPfp") !== "" ? <img src={`${sessionStorage.getItem("loggedUserPfp")}`}/> : <i className="fa-solid fa-user"></i>}
+          {userPfp !== "" ? (
+            <img src={`${userPfp}`} />
+          ) : (
+            <i className="fa-solid fa-user"></i>
+          )}
           <h1>
             <Link to={`users/${sessionStorage.getItem("loggedUserId")}`}>
               {sessionStorage.getItem("loggedUsername") || "User"}
@@ -25,13 +30,10 @@ function Nav({ loginStatus, setLoginStatus }: NavProps) {
         </div>
         <div className="navLinks">
           <h3>
-            <Link to="/">Home</Link>
+            <Link to="/"><i className="fa-solid fa-house"></i></Link>
           </h3>
           <h3>
             <button onClick={logOut}>Logout</button>
-          </h3>
-          <h3>
-            <Link to="edit-profile">Edit My Profile</Link>
           </h3>
         </div>
       </div>

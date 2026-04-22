@@ -49,7 +49,7 @@ function Login() {
         sessionStorage.setItem("token", data.token);
         sessionStorage.setItem("loggedUsername", decoded.username);
         sessionStorage.setItem("loggedUserId", String(decoded.id));
-        sessionStorage.setItem("loggedUserPfp", decoded.pfpUrl)
+        sessionStorage.setItem("loggedUserPfp", decoded.pfpUrl);
         setLoginStatus(true);
         navigate("/");
         break;
@@ -91,7 +91,7 @@ function Login() {
               setPassword(e.target.value);
             }}
           />
-        </div>  
+        </div>
         <button type="submit">Submit</button>
       </form>
     </div>

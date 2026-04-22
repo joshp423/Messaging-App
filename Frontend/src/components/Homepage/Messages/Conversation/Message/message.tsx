@@ -33,7 +33,11 @@ function Message({ message }: messageProps) {
   }
   return (
     <div className="message">
-      <h3 className={user === message.sender.username ? "sentMessage" : "receivedMessage"}>
+      <h3
+        className={
+          user === message.sender.username ? "sentMessage" : "receivedMessage"
+        }
+      >
         <img src={message.sender.pfpUrl} alt="" />
         <Link
           to={
