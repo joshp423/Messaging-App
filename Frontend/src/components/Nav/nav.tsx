@@ -15,9 +15,11 @@ function Nav({ loginStatus, setLoginStatus }: NavProps) {
   if (loginStatus) {
     return (
       <div className="navBar">
-        <h1>
-          <Link to="/">Messaging-App</Link>
-        </h1>
+        <h3>
+          <Link to={`users/${sessionStorage.getItem("loggedUserId")}`}>
+            {sessionStorage.getItem("loggedUsername") || "User"}
+          </Link>
+        </h3>
         <div className="navLinks">
           <h3>
             <Link to={`users/${sessionStorage.getItem("loggedUserId")}`}>
@@ -44,9 +46,6 @@ function Nav({ loginStatus, setLoginStatus }: NavProps) {
         <Link to="/">Messaging-App</Link>
       </h1>
       <div className="navLinks">
-        <h3>
-          <Link to="/">Home</Link>
-        </h3>
         <h3>
           <Link to="/Log-in">Log In</Link>
         </h3>

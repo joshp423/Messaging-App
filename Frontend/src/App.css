@@ -12,22 +12,6 @@ body {
   height: 100%;
 }
 
-#root::before {
-        content: '';
-        display: block;
-        height: 53%;
-        width: 100%;
-        position: absolute;
-        z-index: -1;
-        top: 0;
-        background: #264027;
-        left: 0;
-        box-shadow: 0px 2px 2px rgb(24, 24, 24);
-        transform: skew(0, -32deg);
-        transform-origin: top left;
-    }
-
-
 h1,
 h2,
 h3,

@@ -3,6 +3,7 @@ import { type SyntheticEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import { useOutletContext } from "react-router-dom";
+import "./login.css";
 
 type JwtPayload = {
   id: number;
@@ -62,35 +63,35 @@ function Login() {
     console.log(error);
   };
 
-  const backHome = () => {
-    navigate("/");
-  };
-
   return (
     <div className="login">
+      <h1>Log In</h1>
       <form action="" onSubmit={login}>
         <div className="errorHandling">
           <h3>{error}</h3>
         </div>
-        <label htmlFor="email">Email: </label>
-        <input
-          type="text"
-          required
-          onChange={(e) => {
-            setEmail(e.target.value);
-          }}
-        />
-        <label htmlFor="password">Password: </label>
-        <input
-          type="password"
-          required
-          onChange={(e) => {
-            setPassword(e.target.value);
-          }}
-        />
+        <div className="emailField">
+          <label htmlFor="email">Email: </label>
+          <input
+            type="text"
+            required
+            onChange={(e) => {
+              setEmail(e.target.value);
+            }}
+          />
+        </div>
+        <div className="passwordField">
+          <label htmlFor="password">Password: </label>
+          <input
+            type="password"
+            required
+            onChange={(e) => {
+              setPassword(e.target.value);
+            }}
+          />
+        </div>  
         <button type="submit">Submit</button>
       </form>
-      <button onClick={backHome}>Back</button>
     </div>
   );
 }

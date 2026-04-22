@@ -1,0 +1,43 @@
+.login {
+    background-color: #264027;
+    display: flex;
+    flex-direction: column;
+    color: white;
+    padding: 5%;
+    margin: 5%;
+    border-radius: 12px;
+    
+}
+
+.login>h1 {
+    font-weight: 300;
+}
+
+.login>form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.emailField, .passwordField {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    align-items: center;
+    font-size: 17px;
+    margin-top: 5%;
+}
+
+.login>form>div>input {
+    border-radius: 12px;
+    padding: 2% 5% 2% 5%;
+}
+
+.login>form>button {
+    background-color: white;
+    color: #3C5233;
+    padding: 2% 5% 2% 5%;
+    border-radius: 12px;
+    font-size: 18px;
+    margin-top: 5%;
+}
+
