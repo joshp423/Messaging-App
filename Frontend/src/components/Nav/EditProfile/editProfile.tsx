@@ -1,6 +1,7 @@
 import { useEffect, useState, type SyntheticEvent } from "react";
 import type { User } from "../../../types/user";
 import { useNavigate } from "react-router";
+import "./editProfile.css"
 
 function EditProfile() {
   const userId = Number(sessionStorage.getItem("loggedUserId"));
@@ -84,7 +85,8 @@ function EditProfile() {
     <div className="editProfile">
       <h1>Edit Profile</h1>
       <form onSubmit={updateProfile}>
-        <img src={editedProfile?.pfpUrl} alt="user profile picture" />
+        {editedProfile?.pfpUrl !== "" ? <img src={editedProfile?.pfpUrl} alt="User Profile Picture" /> : <h3>No Profile Picture</h3>}
+        
         <label htmlFor="uploaded_file">Change profile picture: </label>
         <input
           type="file"
@@ -95,7 +97,7 @@ function EditProfile() {
             setPfp(e.target.files?.[0] || null);
           }}
         />
-        <label htmlFor="profileBlurb">Edit Profile: </label>
+        <label htmlFor="profileBlurb">Edit Profile Description: </label>
         <input
           type="text"
           name="profileBlurb"

@@ -5,6 +5,7 @@
     display: flex;
     flex-direction: column;
     color: white;
+    border-radius: 12px;
 }
 
 .newConversation > h2 {
@@ -21,12 +22,43 @@
 
 .newConversation > form > input { 
     border-radius: 12px;
-  padding: 2% 5% 2% 5%;
-  border: none;
-  outline: none;
+    padding: 2% 5% 2% 5%;
+    border: none;
+    outline: none;
 }
 
 .newConversation > form > button {
-    
+    background-color: white;
+    color: #3c5233;
+    padding: 2% 5% 2% 5%;
+    border-radius: 12px;
+    font-size: 18px;
+    margin-top: 5%;
+    border: none;
+    font-family: Optima, Candara, "Noto Sans", source-sans-pro, sans-serif;
+    font-weight: 600;
+}
 
+.groupMemberInputs {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.groupMemberInputs > input {
+    border-radius: 12px;
+    padding: 2% 5% 2% 5%;
+    border: none;
+    outline: none;
+}
+
+.newConversation > a {
+    font-size: 16px;
+    font-weight: 400;
+    color: white;
+    text-wrap-mode: wrap;
+    align-self: center;
+    border: 1px solid white;
+    border-radius: 12px;
+    padding: 2%;
 }

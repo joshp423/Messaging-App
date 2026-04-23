@@ -1,4 +1,6 @@
 import { useLocation } from "react-router-dom";
+import "./errorPage.css";
+
 type errorPageState = {
   error: string;
 };
@@ -8,7 +10,7 @@ function ErrorPage() {
   const error = location.state as errorPageState | null;
 
   return (
-    <div>
+    <div className="errorPage">
       <h1>Something went wrong</h1>
       <p>{error?.error}</p>
       <p>Please try again later.</p>
