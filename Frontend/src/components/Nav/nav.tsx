@@ -23,7 +23,7 @@ function Nav({ loginStatus, setLoginStatus }: NavProps) {
             <i className="fa-solid fa-user"></i>
           )}
           <h1>
-            <Link to={`users/${sessionStorage.getItem("loggedUserId")}`}>
+            <Link to={`user/${sessionStorage.getItem("loggedUserId")}`}>
               {sessionStorage.getItem("loggedUsername") || "User"}
             </Link>
           </h1>
