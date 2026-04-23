@@ -33,7 +33,7 @@ function NewSingleConversationForm({
           setNewMessageText(e.target.value);
         }}
       />
-      <label htmlFor="messageImage">Add Image</label>
+      <label htmlFor="messageImage">Add Image:</label>
       <input
         type="file"
         className="form-control-file"

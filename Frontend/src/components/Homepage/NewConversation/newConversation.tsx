@@ -4,6 +4,7 @@ import NewSingleConversationForm from "./newSingleConversationForm/newSingleConv
 import NewGroupConversationForm from "./newGroupConversationForm/newGroupConversationForm";
 import type { User } from "../../../types/user";
 import { useNavigate } from "react-router";
+import "./newConversation.css"
 
 function NewConversation() {
   const [newMessageText, setNewMessageText] = useState("");
@@ -214,7 +215,7 @@ function NewConversation() {
   }
 
   return (
-    <div className="NewConversation">
+    <div className="newConversation">
       <h2>New Conversation</h2>
       <div className="errorHandling">
         {errors?.map((error) => (
