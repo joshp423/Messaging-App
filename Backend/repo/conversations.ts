@@ -49,11 +49,13 @@ export class ConversationRepo {
             sender: {
               select: {
                 username: true,
+                pfpUrl: true,
               },
             },
             receiver: {
               select: {
                 username: true,
+                pfpUrl: true,
               },
             },
           },

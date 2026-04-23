@@ -11,6 +11,7 @@ interface MessageSolo {
   };
   receiver: {
     username: string;
+    pfpUrl: string;
   };
 }
 

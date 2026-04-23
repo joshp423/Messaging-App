@@ -16,20 +16,33 @@ function ConversationPreview({
   };
 
   const latestMessage = conversationMessage.messages[0];
+
+  const conversationPartnerProfile = latestMessage.sender.username === username
+    ? latestMessage.receiver
+    : latestMessage.sender
+
   return (
     <div className="conversationPreview">
-      <h3>
-        {latestMessage.sender.username === username
-          ? latestMessage.receiver.username
-          : latestMessage.sender.username}
-      </h3>
+      <div className="conversationPartnerProfile">
+        { conversationPartnerProfile.pfpUrl !== "" ? (
+            <img src={`${conversationPartnerProfile.pfpUrl}`} />
+        ) : (
+          <i className="fa-solid fa-user"></i>
+        )}
+        <h3>
+          {latestMessage.sender.username === username
+            ? latestMessage.receiver.username
+            : latestMessage.sender.username}
+        </h3>
+      </div>
+      <button onClick={viewConversation}><i className="fa-solid fa-arrow-right"></i></button>
       <p>
         {latestMessage.sender.username === username
           ? "You"
           : latestMessage.sender.username}
         : {latestMessage.message}
       </p>
-      <button onClick={viewConversation}><i className="fa-solid fa-arrow-right"></i></button>
+      
     </div>
   );
 }

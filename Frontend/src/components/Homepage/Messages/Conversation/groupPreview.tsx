@@ -17,13 +17,14 @@ function GroupPreview({ conversationMessage }: groupPreviewProps) {
   return (
     <div className="conversationPreview">
       <h3>{conversationMessage.name}</h3>
+      <button onClick={viewConversation}><i className="fa-solid fa-arrow-right"></i></button>
       <p>
         {latestMessage.sender.username === username
           ? "You"
           : latestMessage.sender.username}
         : {latestMessage.message}
       </p>
-      <button onClick={viewConversation}><i className="fa-solid fa-arrow-right"></i></button>
+      
     </div>
   );
 }
