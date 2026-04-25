@@ -1,5 +1,6 @@
 import type { MessageSolo } from "../../../../../types/messageSolo";
 import { Link } from "react-router";
+import "./message.css"
 
 type messageProps = {
   message: MessageSolo;
@@ -10,7 +11,7 @@ function Message({ message }: messageProps) {
   const user = sessionStorage.getItem("loggedUsername");
   if (message.imageUrl) {
     return (
-      <div className="message">
+      <div className={`message ${user === message.sender.username ? "sentMessage" : "receivedMessage"}`}>
         <h3>
           <img src={message.sender.pfpUrl} alt="" />
           <Link
@@ -32,12 +33,8 @@ function Message({ message }: messageProps) {
     );
   }
   return (
-    <div className="message">
-      <h3
-        className={
-          user === message.sender.username ? "sentMessage" : "receivedMessage"
-        }
-      >
+    <div className={`message ${user === message.sender.username ? "sentMessage" : "receivedMessage"}`}>
+      <h3>
         <img src={message.sender.pfpUrl} alt="" />
         <Link
           to={

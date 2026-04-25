@@ -1,0 +1,32 @@
+.message {
+    display: grid;
+    grid-template-rows: repeat(2, 1fr);
+    gap: 5px;
+    color: white;
+    padding: 5%;
+}
+
+.message > h3 {
+    font-size: 1.2em;
+    font-weight: 200;
+}
+
+.message > p {
+    font-size: 0.7em;
+    font-weight: 400;
+    text-align: center;
+}
+
+.receivedMessage {
+    background-color: #3c5233;
+    border-radius: 12px;
+    justify-items: end;
+    margin-left: 25%;
+}
+
+.sentMessage {
+    justify-items: start;
+    background-color: rgba(114, 111, 111, 0.302);
+    margin-right: 25%;
+    border-radius: 12px;
+}

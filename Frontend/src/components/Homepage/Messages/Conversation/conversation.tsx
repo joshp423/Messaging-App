@@ -4,6 +4,7 @@ import Message from "./Message/message";
 import NewMessage from "./NewMessage/newMessage";
 import { useParams } from "react-router";
 import { Link } from "react-router";
+import "./conversation.css";
 
 function Conversation() {
   const [selectedConversation, setSelectedConversation] =
