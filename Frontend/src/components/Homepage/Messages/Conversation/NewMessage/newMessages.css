@@ -1,31 +1,32 @@
-.editProfile {
+.newMessage > form {
   display: flex;
   flex-direction: column;
-  background-color: #3c5233;
-  margin: 5%;
   padding: 5%;
-}
-
-.editProfile > form {
-  display: flex;
-  flex-direction: column;
+  background-color: #b38a58;
+  border-radius: 12px;
+  color: white;
+  margin-top: 10%;
   gap: 5px;
 }
 
-.editProfile > form > input {
+.newMessage > form > h3 {
+  font-size: 1.2em;
+}
+
+.newMessage > form > input {
   border-radius: 12px;
   padding: 2% 5% 2% 5%;
   border: none;
   outline: none;
 }
 
-.editProfile > form > button {
+.newMessage > form > button {
   background-color: white;
   color: #3c5233;
   padding: 2% 5% 2% 5%;
   border-radius: 12px;
   font-size: 18px;
-  margin-top: 5%;
+  margin-top: 2%;
   border: none;
   font-family: Optima, Candara, "Noto Sans", source-sans-pro, sans-serif;
   font-weight: 600;

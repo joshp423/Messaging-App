@@ -1,6 +1,6 @@
 import type { MessageSolo } from "../../../../../types/messageSolo";
 import { Link } from "react-router";
-import "./message.css"
+import "./message.css";
 
 type messageProps = {
   message: MessageSolo;
@@ -11,9 +11,15 @@ function Message({ message }: messageProps) {
   const user = sessionStorage.getItem("loggedUsername");
   if (message.imageUrl) {
     return (
-      <div className={`message ${user === message.sender.username ? "sentMessage" : "receivedMessage"}`}>
+      <div
+        className={`message ${user === message.sender.username ? "sentMessage" : "receivedMessage"}`}
+      >
         <div>
-          {message.sender.pfpUrl === "" ? <i className="fa-solid fa-user"></i> : <img src={message.sender.pfpUrl} alt="" />}
+          {message.sender.pfpUrl === "" ? (
+            <i className="fa-solid fa-user"></i>
+          ) : (
+            <img src={message.sender.pfpUrl} alt="" />
+          )}
           <Link
             to={
               user === message.sender.username
@@ -33,9 +39,15 @@ function Message({ message }: messageProps) {
     );
   }
   return (
-    <div className={`message ${user === message.sender.username ? "sentMessage" : "receivedMessage"}`}>
+    <div
+      className={`message ${user === message.sender.username ? "sentMessage" : "receivedMessage"}`}
+    >
       <div>
-        {message.sender.pfpUrl === "" ? <i className="fa-solid fa-user"></i> : <img src={message.sender.pfpUrl} alt="" />}
+        {message.sender.pfpUrl === "" ? (
+          <i className="fa-solid fa-user"></i>
+        ) : (
+          <img src={message.sender.pfpUrl} alt="" />
+        )}
         <Link
           to={
             user === message.sender.username ? `/user/${message.senderId}` : ""

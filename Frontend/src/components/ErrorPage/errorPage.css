@@ -1,19 +1,19 @@
 .errorPage {
-    display: flex;
-    flex-direction: column;
-    background-color: #3c5233;
-    margin: 5%;
-    padding: 5%;
-    border-radius: 12px;
-    color: white;
-    text-align: center;
-    gap: 5px;
+  display: flex;
+  flex-direction: column;
+  background-color: #3c5233;
+  margin: 5%;
+  padding: 5%;
+  border-radius: 12px;
+  color: white;
+  text-align: center;
+  gap: 5px;
 }
 
 .errorPage > h1 {
-    font-size: 2em;
+  font-size: 2em;
 }
 
 .errorHandling > li {
-    color: red;
+  color: red;
 }

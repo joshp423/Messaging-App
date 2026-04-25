@@ -1,6 +1,22 @@
 .conversation {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin: 5%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 5%;
+}
+
+.conversation > a {
+  
+}
+
+.conversation > button {
+  background-color: white;
+  color: #3c5233;
+  padding: 2% 5% 2% 5%;
+  border-radius: 12px;
+  font-size: 18px;
+  margin-top: 2%;
+  border: none;
+  font-family: Optima, Candara, "Noto Sans", source-sans-pro, sans-serif;
+  font-weight: 600;
 }

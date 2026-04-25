@@ -17,15 +17,16 @@ function ConversationPreview({
 
   const latestMessage = conversationMessage.messages[0];
 
-  const conversationPartnerProfile = latestMessage.sender.username === username
-    ? latestMessage.receiver
-    : latestMessage.sender
+  const conversationPartnerProfile =
+    latestMessage.sender.username === username
+      ? latestMessage.receiver
+      : latestMessage.sender;
 
   return (
     <div className="conversationPreview">
       <div className="conversationPartnerProfile">
-        { conversationPartnerProfile.pfpUrl !== "" ? (
-            <img src={`${conversationPartnerProfile.pfpUrl}`} />
+        {conversationPartnerProfile.pfpUrl !== "" ? (
+          <img src={`${conversationPartnerProfile.pfpUrl}`} />
         ) : (
           <i className="fa-solid fa-user"></i>
         )}
@@ -35,14 +36,15 @@ function ConversationPreview({
             : latestMessage.sender.username}
         </h3>
       </div>
-      <button onClick={viewConversation}><i className="fa-solid fa-arrow-right"></i></button>
+      <button onClick={viewConversation}>
+        <i className="fa-solid fa-arrow-right"></i>
+      </button>
       <p>
         {latestMessage.sender.username === username
           ? "You"
           : latestMessage.sender.username}
         : {latestMessage.message}
       </p>
-      
     </div>
   );
 }

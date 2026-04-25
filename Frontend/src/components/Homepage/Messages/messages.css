@@ -1,6 +1,4 @@
 @media screen and (max-width: 600px) {
-
-  
   .messageLobby {
     display: flex;
     flex-direction: column;
@@ -38,13 +36,12 @@
     border-radius: 12px;
     margin-top: 15px;
     font-size: 1.2em;
-
   }
 
   .smallMenu > button {
     margin-top: 15px;
     border-radius: 12px;
-    font-family: Charter, 'Bitstream Charter', 'Sitka Text', Cambria, serif;
+    font-family: Charter, "Bitstream Charter", "Sitka Text", Cambria, serif;
     font-weight: normal;
     font-size: 1.2em;
     border: none;
@@ -63,7 +60,7 @@
     margin: 2% 0% 2% 0%;
     border-radius: 12px;
     display: grid;
-    grid-template: 1fr 1fr / 4fr 1fr
+    grid-template: 1fr 1fr / 4fr 1fr;
   }
 
   .conversationPreview > h3 {
@@ -82,7 +79,7 @@
 
   .conversationPreview > button {
     border-radius: 12px;
-    font-family: Charter, 'Bitstream Charter', 'Sitka Text', Cambria, serif;
+    font-family: Charter, "Bitstream Charter", "Sitka Text", Cambria, serif;
     font-weight: normal;
     font-size: 1.2em;
     border: none;
@@ -118,6 +115,5 @@
 
   .conversationPartnerProfile > h3 {
     font-size: 1.3em;
-  } 
-
+  }
 }

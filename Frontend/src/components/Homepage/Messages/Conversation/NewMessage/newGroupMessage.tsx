@@ -1,5 +1,6 @@
 import React, { useState, type Dispatch, type SyntheticEvent } from "react";
 import { useNavigate } from "react-router";
+import "./newMessages.css";
 
 type newMessageProps = {
   groupName: string;
@@ -85,7 +86,7 @@ function NewGroupMessage({
             setNewMessageText(e.target.value);
           }}
         />
-        <label htmlFor="messageImage">Add Image</label>
+        <label htmlFor="messageImage">Add Image: </label>
         <input
           type="file"
           className="form-control-file"

@@ -4,7 +4,7 @@ import NewSingleConversationForm from "./newSingleConversationForm/newSingleConv
 import NewGroupConversationForm from "./newGroupConversationForm/newGroupConversationForm";
 import type { User } from "../../../types/user";
 import { useNavigate } from "react-router";
-import "./newConversation.css"
+import "./newConversation.css";
 
 function NewConversation() {
   const [newMessageText, setNewMessageText] = useState("");

@@ -1,5 +1,6 @@
 import React, { useState, type SyntheticEvent } from "react";
 import { useNavigate } from "react-router-dom";
+import "./newMessages.css";
 
 type newMessageProps = {
   conversationPartner: string;
