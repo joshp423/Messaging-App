@@ -1,14 +1,43 @@
 .message {
-    display: grid;
-    grid-template-rows: repeat(2, 1fr);
+    display: flex;
+    flex-direction: column;
     gap: 5px;
     color: white;
     padding: 5%;
 }
 
-.message > h3 {
+.message > div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.message > div > img {
+
+}
+
+.message > div > i {
+    padding: 10px;
+    color: black;
+    background-color: white;
+    border-radius: 12px;
+    margin-right: 5%;
+}
+
+.message > div > a {
     font-size: 1.2em;
+    color: white;
+    margin-right: 2%;
+}
+
+.message > div {
+    font-size: 1.1em;
     font-weight: 200;
+    /* text-wrap-mode: wrap; */
+}
+
+.message > div > h3 {
+    font-size: 0.8em;
 }
 
 .message > p {
@@ -20,13 +49,17 @@
 .receivedMessage {
     background-color: #3c5233;
     border-radius: 12px;
-    justify-items: end;
+    justify-content: end;
     margin-left: 25%;
 }
+.receivedMessage > div > h3 {
+    justify-items: end;
+}
+
 
 .sentMessage {
-    justify-items: start;
+    justify-content: start;
     background-color: rgba(114, 111, 111, 0.302);
-    margin-right: 25%;
+    margin-right: 30%;
     border-radius: 12px;
 }

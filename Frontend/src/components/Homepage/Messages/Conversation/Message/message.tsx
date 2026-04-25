@@ -12,8 +12,8 @@ function Message({ message }: messageProps) {
   if (message.imageUrl) {
     return (
       <div className={`message ${user === message.sender.username ? "sentMessage" : "receivedMessage"}`}>
-        <h3>
-          <img src={message.sender.pfpUrl} alt="" />
+        <div>
+          {message.sender.pfpUrl === "" ? <i className="fa-solid fa-user"></i> : <img src={message.sender.pfpUrl} alt="" />}
           <Link
             to={
               user === message.sender.username
@@ -25,8 +25,8 @@ function Message({ message }: messageProps) {
               ? ""
               : `${message.sender.username}: `}
           </Link>
-          {message.message}
-        </h3>
+          <h3>{message.message}</h3>
+        </div>
         <img src={message.imageUrl} alt="message image" />
         <p>{timeSent}</p>
       </div>
@@ -34,8 +34,8 @@ function Message({ message }: messageProps) {
   }
   return (
     <div className={`message ${user === message.sender.username ? "sentMessage" : "receivedMessage"}`}>
-      <h3>
-        <img src={message.sender.pfpUrl} alt="" />
+      <div>
+        {message.sender.pfpUrl === "" ? <i className="fa-solid fa-user"></i> : <img src={message.sender.pfpUrl} alt="" />}
         <Link
           to={
             user === message.sender.username ? `/user/${message.senderId}` : ""
@@ -45,8 +45,8 @@ function Message({ message }: messageProps) {
             ? ""
             : `${message.sender.username}: `}
         </Link>
-        {message.message}
-      </h3>
+        <h3>{message.message}</h3>
+      </div>
       <p>{timeSent}</p>
     </div>
   );
