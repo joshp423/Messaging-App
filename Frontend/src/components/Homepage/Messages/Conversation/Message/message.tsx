@@ -43,19 +43,17 @@ function Message({ message }: messageProps) {
       className={`message ${user === message.sender.username ? "sentMessage" : "receivedMessage"}`}
     >
       <div>
-        {message.sender.pfpUrl === "" ? (
-          <i className="fa-solid fa-user"></i>
-        ) : (
-          <img src={message.sender.pfpUrl} alt="" />
-        )}
-        <Link
-          to={
-            user === message.sender.username ? `/user/${message.senderId}` : ""
-          }
-        >
-          {user === message.sender.username
-            ? ""
-            : `${message.sender.username}: `}
+        <Link to={`/user/${message.senderId}`}>
+          {message.sender.pfpUrl === "" ? (
+            <i className="fa-solid fa-user"></i>
+          ) : (
+            <img src={message.sender.pfpUrl} alt="" />
+          )}
+          <h3>
+            {user === message.sender.username
+              ? ""
+              : `${message.sender.username}: `}
+          </h3>
         </Link>
         <h3>{message.message}</h3>
       </div>

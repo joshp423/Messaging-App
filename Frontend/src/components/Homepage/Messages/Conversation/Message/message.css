@@ -12,18 +12,22 @@
   align-items: center;
 }
 
-.message > div > i {
+.message > div > a > i {
   padding: 10px;
   color: black;
   background-color: white;
   border-radius: 12px;
-  margin-right: 5%;
+  margin-right: 10%;
 }
 
 .message > div > a {
   font-size: 1.2em;
   color: white;
   margin-right: 2%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-right: 5%;
 }
 
 .message > div {

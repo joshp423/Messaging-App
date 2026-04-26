@@ -1,9 +1,47 @@
 .userProfile {
-    background-color: #3c5233;
-    padding: 5%;
-    margin: 5%;
-    border-radius: 12px;
-    display: grid;
-    color: white;
-    grid-template
+  background-color: #3c5233;
+  padding: 5%;
+  margin: 5%;
+  border-radius: 12px;
+  display: grid;
+  color: white;
+  grid-template-rows: 2fr 1fr 1fr;
+  gap: 30px;
+}
+
+.userProfile > div {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  align-items: center;
+  border-bottom: 1px solid black;
+  padding-bottom: 20px;
+}
+
+.userProfile > div > h1 {
+  font-size: 2em;
+  text-align: center;
+}
+
+.userProfile > div > i {
+  color: black;
+  background-color: white;
+  padding: 10%;
+  border-radius: 24px;
+}
+
+.userProfile > div > img {
+  max-width: 50%;
+  padding: 15%;
+  border-radius: 24px;
+  background-color: white;
+}
+
+#editProfileLink {
+  color: #264027;
+  background-color: white;
+  text-align: center;
+  border-radius: 12px;
+  font-size: 1.2em;
+  align-self: center;
 }

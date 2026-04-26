@@ -52,6 +52,9 @@ function EditProfile() {
         return "";
       }
     } catch (error) {
+      navigate("/error", {
+        state: { error: "Profile picture upload failed" },
+      });
       console.error("Upload error:", error);
       return "";
     }
@@ -77,13 +80,16 @@ function EditProfile() {
       });
       navigate(`/user/${sessionStorage.getItem("loggedUserId")}`);
     } catch (error) {
+      navigate("/error", {
+        state: { error: "Edit Profile Failed" },
+      });
       console.error(error);
     }
   }
 
   return (
     <div className="editProfile">
-      <h1>Edit Profile</h1>
+      <h1>Edit Profile - {editedProfile?.username}</h1>
       <form onSubmit={updateProfile}>
         {editedProfile?.pfpUrl !== "" ? (
           <img src={editedProfile?.pfpUrl} alt="User Profile Picture" />

@@ -32,15 +32,45 @@ function UserProfile() {
     getUserProfile();
   }, [userId]);
 
+  if (userId === sessionStorage.getItem("loggedUserId")) {
+    return (
+      <>
+        <div className="userProfile">
+          <div>
+            {selectedUserProfile?.pfpUrl === "" ? (
+              <i className="fa-solid fa-user"></i>
+            ) : (
+              <img src={selectedUserProfile?.pfpUrl} alt="" />
+            )}
+            <h1>{selectedUserProfile?.username}</h1>
+          </div>
+          <p>
+            {selectedUserProfile?.blurb === ""
+              ? "No user information."
+              : selectedUserProfile?.blurb}
+          </p>
+          <a id="editProfileLink" href="/edit-profile">
+            Edit Profile
+          </a>
+        </div>
+      </>
+    );
+  }
   return (
     <div className="userProfile">
-      {selectedUserProfile?.pfpUrl === "" ? (
-        <i className="fa-solid fa-user"></i>
-      ) : (
-        <img src={selectedUserProfile?.pfpUrl} alt="" />
-      )}
-      <h1>{selectedUserProfile?.username}</h1>
-      <p>{selectedUserProfile?.blurb === "" ? "No user information" : selectedUserProfile?.blurb}</p>
+      <div>
+        {selectedUserProfile?.pfpUrl === "" ? (
+          <i className="fa-solid fa-user"></i>
+        ) : (
+          <img src={selectedUserProfile?.pfpUrl} alt="" />
+        )}
+        <h1>{selectedUserProfile?.username}</h1>
+      </div>
+      <p>
+        {selectedUserProfile?.blurb === ""
+          ? "No user information."
+          : selectedUserProfile?.blurb}
+      </p>
     </div>
   );
 }
