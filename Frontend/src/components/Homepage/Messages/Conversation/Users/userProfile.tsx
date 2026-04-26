@@ -34,9 +34,13 @@ function UserProfile() {
 
   return (
     <div className="userProfile">
-      <img src={selectedUserProfile?.pfpUrl} alt="" />
+      {selectedUserProfile?.pfpUrl === "" ? (
+        <i className="fa-solid fa-user"></i>
+      ) : (
+        <img src={selectedUserProfile?.pfpUrl} alt="" />
+      )}
       <h1>{selectedUserProfile?.username}</h1>
-      <p>{selectedUserProfile?.blurb}</p>
+      <p>{selectedUserProfile?.blurb === "" ? "No user information" : selectedUserProfile?.blurb}</p>
     </div>
   );
 }
