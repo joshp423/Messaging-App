@@ -5,8 +5,10 @@
   margin: 5%;
 }
 
-.conversation > a {
-  
+.conversation > h2 {
+  font-size: 1.2em;
+  text-align: center;
+  color: white;
 }
 
 .conversation > button {

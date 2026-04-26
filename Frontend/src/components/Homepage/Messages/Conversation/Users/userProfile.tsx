@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import type { User } from "../../../../../types/user";
 import { useParams } from "react-router";
+import "./userProfile.css";
 
 function UserProfile() {
   const { userId } = useParams();
