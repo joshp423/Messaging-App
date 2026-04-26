@@ -12,6 +12,11 @@ body {
   height: 100%;
 }
 
+.errorHandling > h3 {
+  color: red;
+  margin-top: 2%;
+}
+
 h1,
 h2,
 h3,

@@ -3,7 +3,6 @@ import type { ConversationObject } from "../../../../types/conversationObject";
 import Message from "./Message/message";
 import NewGroupMessage from "./NewMessage/newGroupMessage";
 import { useParams } from "react-router";
-import { Link } from "react-router";
 
 function GroupConversation() {
   const [selectedConversation, setSelectedConversation] =
@@ -53,7 +52,6 @@ function GroupConversation() {
         groupConversationId={Number(groupConversationId)}
         setNewMessageStatus={setNewMessageStatus}
       />
-      <Link to="/">Back</Link>
       <button onClick={() => setNewMessageStatus((prev) => !prev)}>
         Refresh Messages
       </button>
