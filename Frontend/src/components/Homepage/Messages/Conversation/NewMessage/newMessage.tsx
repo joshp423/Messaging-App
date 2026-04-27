@@ -28,7 +28,7 @@ function NewMessage({
     formData.append("uploaded_file", newMessageImage);
     const rsp = await fetch("http://localhost:3000/uploadMessageImage", {
       headers: {
-        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
       method: "POST",
       body: formData,
@@ -55,7 +55,7 @@ function NewMessage({
     const rsp = await fetch("http://localhost:3000/send-message-solo", {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
       method: "POST",
       body: JSON.stringify({

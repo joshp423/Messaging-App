@@ -4,7 +4,7 @@ import { useNavigate } from "react-router";
 import "./editProfile.css";
 
 function EditProfile() {
-  const userId = Number(sessionStorage.getItem("loggedUserId"));
+  const userId = Number(localStorage.getItem("loggedUserId"));
   const [editedProfile, setEditedProfile] = useState<User | null>(null);
   const [pfp, setPfp] = useState<File | null>(null);
   const [blurb, setProfileBlurb] = useState("");
@@ -16,7 +16,7 @@ function EditProfile() {
         const rsp = await fetch(`http://localhost:3000/users/${userId}`, {
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
           method: "GET",
         });
@@ -69,7 +69,7 @@ function EditProfile() {
       await fetch("http://localhost:3000/edit-profile", {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
         method: "PUT",
         body: JSON.stringify({
@@ -78,7 +78,7 @@ function EditProfile() {
           blurb,
         }),
       });
-      navigate(`/user/${sessionStorage.getItem("loggedUserId")}`);
+      navigate(`/user/${localStorage.getItem("loggedUserId")}`);
     } catch (error) {
       navigate("/error", {
         state: { error: "Edit Profile Failed" },

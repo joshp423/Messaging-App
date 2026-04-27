@@ -12,7 +12,7 @@ function Messages() {
     [],
   );
   const [groupMessages, setGroupMessages] = useState<GroupPreviewObject[]>([]);
-  const userId = sessionStorage.getItem("loggedUserId");
+  const userId = localStorage.getItem("loggedUserId");
   const [newMessageStatusTop, setNewMessageStatusTop] = useState(false);
   const navigate = useNavigate();
 
@@ -22,7 +22,7 @@ function Messages() {
         const rsp = await fetch(`http://localhost:3000/conversations`, {
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
           method: "GET",
         });

@@ -31,7 +31,7 @@ function NewConversation() {
 
     const rsp = await fetch("http://localhost:3000/uploadMessageImage", {
       headers: {
-        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
       method: "POST",
       body: formData,
@@ -62,7 +62,7 @@ function NewConversation() {
     const rsp = await fetch("http://localhost:3000/send-message-solo", {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
       method: "POST",
       body: JSON.stringify({
@@ -99,7 +99,7 @@ function NewConversation() {
     const rsp = await fetch("http://localhost:3000/send-message-group", {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
       method: "POST",
       body: JSON.stringify({
@@ -138,7 +138,7 @@ function NewConversation() {
       const rsp = await fetch("http://localhost:3000/getUserId", {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
         method: "POST",
         body: JSON.stringify({
@@ -162,7 +162,7 @@ function NewConversation() {
       const rsp = await fetch("http://localhost:3000/getUserIds", {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
         method: "POST",
         body: JSON.stringify({
@@ -194,7 +194,7 @@ function NewConversation() {
       const rsp = await fetch("http://localhost:3000/create-group", {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
         method: "PUT",
         body: JSON.stringify({

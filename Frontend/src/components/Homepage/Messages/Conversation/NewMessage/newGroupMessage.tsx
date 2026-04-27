@@ -26,7 +26,7 @@ function NewGroupMessage({
 
     const rsp = await fetch("http://localhost:3000/uploadMessageImage", {
       headers: {
-        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
       method: "POST",
       body: formData,
@@ -54,7 +54,7 @@ function NewGroupMessage({
     const rsp = await fetch("http://localhost:3000/send-message-group", {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
       method: "POST",
       body: JSON.stringify({

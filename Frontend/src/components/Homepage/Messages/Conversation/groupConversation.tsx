@@ -10,7 +10,7 @@ function GroupConversation() {
 
   const { groupConversationId } = useParams();
 
-  const userId = sessionStorage.getItem("loggedUserId");
+  const userId = localStorage.getItem("loggedUserId");
 
   const [newMessageStatus, setNewMessageStatus] = useState(false);
 
@@ -24,7 +24,7 @@ function GroupConversation() {
           {
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
             method: "GET",
           },
