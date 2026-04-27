@@ -30,10 +30,14 @@ function NewGroupConversationForm({
         type="number"
         name="newGroupRecipientsAmount"
         min={3}
-        defaultValue={3}
+        value={newGroupRecipientsAmount}
         required
         onChange={(e) => {
-          const newValue = e.target.valueAsNumber;
+          let newValue = e.target.valueAsNumber;
+
+           if (newValue < 3) { //protect from NAn
+            newValue = 3;
+          }
           setNewGroupRecipientsAmount(newValue);
           setNewGroupMessageRecipients((prev) => {
             return newValue > prev.length

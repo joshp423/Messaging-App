@@ -7,6 +7,10 @@
   color: white;
   margin-top: 10%;
   gap: 5px;
+  border-top: 1px solid white;
+  border-left: 1px solid white;
+  border-right: 1px solid black;
+  border-bottom: 1px solid black;
 }
 
 .newMessage > form > h3 {
@@ -30,4 +34,8 @@
   border: none;
   font-family: Optima, Candara, "Noto Sans", source-sans-pro, sans-serif;
   font-weight: 600;
+  border-top: 1px solid white;
+  border-left: 1px solid white;
+  border-right: 1px solid black;
+  border-bottom: 1px solid black;
 }

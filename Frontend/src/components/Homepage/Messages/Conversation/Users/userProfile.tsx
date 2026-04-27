@@ -23,7 +23,6 @@ function UserProfile() {
         if (rsp.status === 200) {
           const data = await rsp.json();
           setSelectedUserProfile(data.user);
-          console.log(data.conversation);
         }
       } catch (error) {
         console.error(error);

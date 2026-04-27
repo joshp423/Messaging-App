@@ -83,7 +83,6 @@ export class ConversationRepo {
             sender: {
               select: {
                 username: true,
-                pfpUrl: true,
               },
             },
           },
@@ -136,6 +135,7 @@ export class ConversationRepo {
             sender: {
               select: {
                 username: true,
+                pfpUrl: true,
               },
             },
           },

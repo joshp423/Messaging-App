@@ -14,6 +14,10 @@
   .smallMenu {
     background-color: #3c5233;
     display: flex;
+    border-top: 1px solid white;
+    border-left: 1px solid white;
+    border-right: 1px solid black;
+    border-bottom: 1px solid black;
     flex-direction: column;
     padding: 5%;
     border-radius: 12px;
@@ -36,6 +40,7 @@
     border-radius: 12px;
     margin-top: 15px;
     font-size: 1.2em;
+    
   }
 
   .smallMenu > button {
@@ -61,6 +66,10 @@
     border-radius: 12px;
     display: grid;
     grid-template: 1fr 1fr / 4fr 1fr;
+    border-top: 1px solid white;
+    border-left: 1px solid white;
+    border-right: 1px solid black;
+    border-bottom: 1px solid black;
   }
 
   .conversationPreview > h3 {
@@ -116,5 +125,28 @@
 
   .conversationPartnerProfile > h3 {
     font-size: 1.3em;
+  }
+}
+
+.loading {
+  margin: auto;
+  width: 4px;
+  height: 4px;
+  background: #586a6a;
+  border-radius: 50%;
+}
+
+@keyframes load {
+  from {
+    transform: rotate(0deg) translateX(5px);
+  }
+  to {
+    transform: rotate(360deg) translateX(5px);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .loading {
+    animation: load 1000ms linear infinite;
   }
 }

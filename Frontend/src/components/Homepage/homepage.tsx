@@ -1,6 +1,5 @@
 import { useOutletContext } from "react-router-dom";
 import Messages from "./Messages/messages";
-import "./homepage.css";
 import Login from "../Login/login";
 
 type homepageProps = {

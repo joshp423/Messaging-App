@@ -52,6 +52,10 @@
     margin: 0% 2% 0% 2%;
     text-wrap-mode: nowrap;
     border-radius: 12px;
+    border-top: 1px solid white;
+    border-left: 1px solid white;
+    border-right: 1px solid black;
+    border-bottom: 1px solid black;
   }
 
   .navLinks > h3 > a {
