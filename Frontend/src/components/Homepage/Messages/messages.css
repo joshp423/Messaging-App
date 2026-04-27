@@ -1,4 +1,4 @@
-@media screen and (max-width: 600px) {
+
   .messageLobby {
     display: flex;
     flex-direction: column;
@@ -129,30 +129,30 @@
 
   .loadingContainer {
     display: flex;
-
+    align-items: center;
+    justify-items: center;
   }
-}
 
-.loadingPreviews {
-  margin: auto;
-  width: 10px;
-  height: 10px;
-  background: #586a6a;
-  border-radius: 50%;
-}
-
-@keyframes load {
-  from {
-    transform: rotate(0deg) translateX(10px);
-  }
-  to {
-    transform: rotate(360deg) translateX(10px);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
   .loadingPreviews {
-    animation: load 1000ms linear infinite;
+    margin: auto;
+    width: 10px;
+    height: 10px;
+    background: #586a6a;
+    border-radius: 50%;
   }
-}
+
+  @keyframes load {
+    from {
+      transform: rotate(0deg) translateX(10px);
+    }
+    to {
+      transform: rotate(360deg) translateX(10px);
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .loadingPreviews {
+      animation: load 1000ms linear infinite;
+    }
+  }
 

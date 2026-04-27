@@ -45,3 +45,7 @@
     animation: load 1000ms linear infinite;
   }
 }
+
+@media screen and (min-width: 600px) {
+  
+}
