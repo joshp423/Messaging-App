@@ -9,7 +9,6 @@ const App = () => {
     Boolean(localStorage.getItem("token")),
   );
 
-  console.log(loginStatus)
   return (
     <>
       <Nav setLoginStatus={setLoginStatus} loginStatus={loginStatus} />

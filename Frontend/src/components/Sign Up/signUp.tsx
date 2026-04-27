@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useState, type SyntheticEvent } from "react";
+import "./signUp.css";
 
 function SignUp() {
   const navigate = useNavigate();
@@ -73,23 +74,27 @@ function SignUp() {
     // if sign up successful
     const uploadedUrl = await uploadPFP(); //await other function
     setErrors([]);
-    try {
-      await fetch("http://localhost:3000/initialProfileUpdate", {
+    const prfUpdate = await fetch(
+      "http://localhost:3000/initialProfileUpdate",
+      {
         headers: {
           "Content-Type": "application/json",
         },
         method: "PUT",
         body: JSON.stringify({ email, pfpUrl: uploadedUrl, blurb }),
-      });
-      navigate("/");
-    } catch (error) {
+      },
+    );
+
+    if (prfUpdate.status !== 201) {
       navigate("/error", {
         state: {
           error: "Profile picture upload failed, account still created",
         },
       });
-      console.error(error);
+      console.error(errors);
     }
+    
+    navigate("/");
 
     // if (rsp.status != 201) {
     // // setLoading(false);
@@ -100,7 +105,7 @@ function SignUp() {
   }
 
   return (
-    <div>
+    <div className="signUp">
       <form onSubmit={signupAPI}>
         <div className="errorHandling">
           {errors?.map((error) => (
@@ -128,7 +133,9 @@ function SignUp() {
           required
           onChange={(e) => setPassword(e.target.value)}
         />
-        <label htmlFor="uploaded_file">Upload profile picture: </label>
+        <label htmlFor="uploaded_file">
+          Upload profile picture (Optional):{" "}
+        </label>
         <input
           type="file"
           className="form-control-file"
@@ -138,7 +145,7 @@ function SignUp() {
             setPfp(e.target.files?.[0] || null);
           }}
         />
-        <label htmlFor="profileBlurb">Profile Summary: </label>
+        <label htmlFor="profileBlurb">Profile Summary (Optional): </label>
         <input
           type="text"
           name="profileBlurb"
