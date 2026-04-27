@@ -33,7 +33,6 @@ function Conversation() {
         if (rsp.status === 200) {
           const data = await rsp.json();
           setSelectedConversation(data.conversation);
-          console.log(data.conversation);
         }
       } catch (error) {
         console.error(error);

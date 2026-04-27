@@ -83,6 +83,7 @@ export class ConversationRepo {
             sender: {
               select: {
                 username: true,
+                pfpUrl: true,
               },
             },
           },
