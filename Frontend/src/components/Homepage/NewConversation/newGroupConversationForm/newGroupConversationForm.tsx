@@ -42,7 +42,7 @@ function NewGroupConversationForm({
           });
         }}
       />
-      <label>Group Member Usernames: </label>
+      <label>Other Group Member Usernames: </label>
       <div className="groupMemberInputs">
         {Array.from({ length: newGroupRecipientsAmount }).map(
           (
@@ -67,7 +67,7 @@ function NewGroupConversationForm({
         }}
       />
 
-      <label htmlFor="messageImage">Add Image: </label>
+      <label htmlFor="messageImage">Add Image to Message: </label>
       <input
         type="file"
         className="form-control-file"
