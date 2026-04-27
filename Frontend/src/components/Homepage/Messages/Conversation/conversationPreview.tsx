@@ -9,7 +9,7 @@ function ConversationPreview({
   conversationMessage,
 }: conversationPreviewProps) {
   const navigate = useNavigate();
-  const username = sessionStorage.getItem("loggedUsername");
+  const username = localStorage.getItem("loggedUsername");
 
   const viewConversation = () => {
     navigate(`conversation/${conversationMessage.id}`);

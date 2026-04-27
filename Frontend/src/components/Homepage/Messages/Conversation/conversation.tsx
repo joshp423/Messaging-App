@@ -11,9 +11,9 @@ function Conversation() {
 
   const { conversationId } = useParams();
 
-  const userId = sessionStorage.getItem("loggedUserId");
+  const userId = localStorage.getItem("loggedUserId");
 
-  const username = sessionStorage.getItem("loggedUsername");
+  const username = localStorage.getItem("loggedUsername");
 
   const [newMessageStatus, setNewMessageStatus] = useState(false);
 
@@ -25,7 +25,7 @@ function Conversation() {
           {
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
             method: "GET",
           },

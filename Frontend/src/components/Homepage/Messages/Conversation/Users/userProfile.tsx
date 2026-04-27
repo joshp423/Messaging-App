@@ -16,7 +16,7 @@ function UserProfile() {
         const rsp = await fetch(`http://localhost:3000/users/${userId}`, {
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
           method: "GET",
         });
@@ -32,7 +32,7 @@ function UserProfile() {
     getUserProfile();
   }, [userId]);
 
-  if (userId === sessionStorage.getItem("loggedUserId")) {
+  if (userId === localStorage.getItem("loggedUserId")) {
     return (
       <>
         <div className="userProfile">

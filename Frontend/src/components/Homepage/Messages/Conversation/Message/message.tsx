@@ -8,7 +8,7 @@ type messageProps = {
 
 function Message({ message }: messageProps) {
   const timeSent = new Date(message.timeSent).toLocaleString();
-  const user = sessionStorage.getItem("loggedUsername");
+  const user = localStorage.getItem("loggedUsername");
   if (message.imageUrl) {
     return (
       <div

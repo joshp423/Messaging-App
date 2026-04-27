@@ -46,10 +46,10 @@ function Login() {
     switch (rsp.status) {
       case 200: {
         const decoded = jwtDecode<JwtPayload>(data.token);
-        sessionStorage.setItem("token", data.token);
-        sessionStorage.setItem("loggedUsername", decoded.username);
-        sessionStorage.setItem("loggedUserId", String(decoded.id));
-        sessionStorage.setItem("loggedUserPfp", decoded.pfpUrl);
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("loggedUsername", decoded.username);
+        localStorage.setItem("loggedUserId", String(decoded.id));
+        localStorage.setItem("loggedUserPfp", decoded.pfpUrl);
         setLoginStatus(true);
         navigate("/");
         break;
@@ -62,7 +62,6 @@ function Login() {
         console.log(error);
         break;
     }
-    console.log(error);
   };
 
   return (

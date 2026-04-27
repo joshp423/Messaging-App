@@ -9,10 +9,10 @@ type NavProps = {
 function Nav({ loginStatus, setLoginStatus }: NavProps) {
   const logOut = () => {
     setLoginStatus(false);
-    sessionStorage.clear();
+    localStorage.clear();
   };
 
-  const userPfp = sessionStorage.getItem("loggedUserPfp");
+  const userPfp = localStorage.getItem("loggedUserPfp");
   if (loginStatus) {
     return (
       <div className="navBar">
@@ -23,8 +23,8 @@ function Nav({ loginStatus, setLoginStatus }: NavProps) {
             <i className="fa-solid fa-user"></i>
           )}
           <h1>
-            <Link to={`user/${sessionStorage.getItem("loggedUserId")}`}>
-              {sessionStorage.getItem("loggedUsername") || "User"}
+            <Link to={`user/${localStorage.getItem("loggedUserId")}`}>
+              {localStorage.getItem("loggedUsername") || "User"}
             </Link>
           </h1>
         </div>
