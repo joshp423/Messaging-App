@@ -6,6 +6,7 @@ import type { GroupPreviewObject } from "../../../types/groupPreviewObject";
 import { Link } from "react-router";
 import { useNavigate } from "react-router";
 import "./messages.css";
+import MessageLoading from "./messagesLoading";
 
 function Messages() {
   const [soloMessages, setSoloMessages] = useState<ConversationPreviewObject[]>(
@@ -15,9 +16,11 @@ function Messages() {
   const userId = localStorage.getItem("loggedUserId");
   const [newMessageStatusTop, setNewMessageStatusTop] = useState(false);
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     async function getMessages() {
+      setLoading(true);
       try {
         const rsp = await fetch(`http://localhost:3000/conversations`, {
           headers: {
@@ -30,6 +33,7 @@ function Messages() {
           const data = await rsp.json();
           setSoloMessages(data.conversationsSolo);
           setGroupMessages(data.groups);
+          setLoading(false);
         }
       } catch (error) {
         navigate("/error");
@@ -48,8 +52,10 @@ function Messages() {
           Check for new messages
         </button>
       </div>
+      
 
       <h2>Messages</h2>
+      <div className="loadingContainer"><MessageLoading loading={loading} /></div>
       <div className="soloMessages">
         {soloMessages.map((conversation) => (
           <ConversationPreview

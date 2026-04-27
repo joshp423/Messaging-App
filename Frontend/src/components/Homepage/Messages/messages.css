@@ -126,27 +126,33 @@
   .conversationPartnerProfile > h3 {
     font-size: 1.3em;
   }
+
+  .loadingContainer {
+    display: flex;
+
+  }
 }
 
-.loading {
+.loadingPreviews {
   margin: auto;
-  width: 4px;
-  height: 4px;
+  width: 10px;
+  height: 10px;
   background: #586a6a;
   border-radius: 50%;
 }
 
 @keyframes load {
   from {
-    transform: rotate(0deg) translateX(5px);
+    transform: rotate(0deg) translateX(10px);
   }
   to {
-    transform: rotate(360deg) translateX(5px);
+    transform: rotate(360deg) translateX(10px);
   }
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .loading {
+  .loadingPreviews {
     animation: load 1000ms linear infinite;
   }
 }
+

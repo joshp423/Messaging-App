@@ -4,6 +4,7 @@ import Message from "./Message/message";
 import NewMessage from "./NewMessage/newMessage";
 import { useParams } from "react-router";
 import "./conversation.css";
+import MessageLoading from "../messagesLoading";
 
 function Conversation() {
   const [selectedConversation, setSelectedConversation] =
@@ -17,8 +18,11 @@ function Conversation() {
 
   const [newMessageStatus, setNewMessageStatus] = useState(false);
 
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     async function getConversation() {
+      setLoading(true);
       try {
         const rsp = await fetch(
           `http://localhost:3000/conversations/${conversationId}`,
@@ -33,6 +37,7 @@ function Conversation() {
         if (rsp.status === 200) {
           const data = await rsp.json();
           setSelectedConversation(data.conversation);
+          setLoading(false);
         }
       } catch (error) {
         console.error(error);
@@ -43,6 +48,7 @@ function Conversation() {
 
   return (
     <div className="conversation">
+      <div className="loadingContainer"><MessageLoading loading={loading} /></div>
       {selectedConversation?.messages.map((message) => (
         <Message key={message.id} message={message} />
       ))}
