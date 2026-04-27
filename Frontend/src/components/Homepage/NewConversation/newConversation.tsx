@@ -156,7 +156,9 @@ function NewConversation() {
   }
 
   async function getUserIds() {
-    if (!newGroupMessageRecipients[0]) {setErrors(["No message recipient"])};
+    if (!newGroupMessageRecipients[0]) {
+      setErrors(["No message recipient"]);
+    }
 
     try {
       const rsp = await fetch("http://localhost:3000/getUserIds", {

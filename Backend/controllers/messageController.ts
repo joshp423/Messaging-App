@@ -20,7 +20,7 @@ const conversationService = new ConversationService(conversationRepo, config);
 const userMessageSingleSchema = z.object({
   senderId: z.number(),
   receiverId: z.number(),
-  message: z.string().trim().min(1, { message: lengthErrShort }),
+  message: z.string().trim().min(1, { message: lengthErrShort }).max(250),
   imageUrl: z.string(),
   conversationId: z.number(),
 });
@@ -28,7 +28,7 @@ const userMessageSingleSchema = z.object({
 const userMessageGroupSchema = z.object({
   senderId: z.number(),
   groupId: z.number(),
-  message: z.string().trim().min(1, { message: lengthErrShort }),
+  message: z.string().trim().min(1, { message: lengthErrShort }).max(250),
   imageUrl: z.string(),
 });
 

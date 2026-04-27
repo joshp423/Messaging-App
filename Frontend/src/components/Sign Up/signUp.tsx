@@ -93,7 +93,7 @@ function SignUp() {
       });
       console.error(errors);
     }
-    
+
     navigate("/");
 
     // if (rsp.status != 201) {

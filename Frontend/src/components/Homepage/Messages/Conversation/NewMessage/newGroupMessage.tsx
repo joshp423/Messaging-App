@@ -67,6 +67,7 @@ function NewGroupMessage({
     if (rsp.status === 201) {
       setNewMessageStatus((prev) => !prev);
       navigate("/");
+      return;
     }
     navigate("/error", {
       state: {
