@@ -14,20 +14,20 @@ const routes = [
     element: <App />,
     children: [
       { index: true, element: <Homepage /> },
-      { path: "/Log-in", element: <Login /> },
-      { path: "/Sign-up", element: <SignUp /> },
+      { path: "Log-in", element: <Login /> },
+      { path: "Sign-up", element: <SignUp /> },
       {
-        path: "/conversation/:conversationId",
+        path: "conversation/:conversationId",
         element: <Conversation />,
       },
       {
-        path: "/groupConversation/:groupConversationId",
+        path: "groupConversation/:groupConversationId",
         element: <GroupConversation />,
       },
-      { path: "/user/:userId", element: <UserProfile /> },
-      { path: "/new-message", element: <NewConversation /> },
-      { path: "/edit-profile", element: <EditProfile /> },
-      { path: "/error", element: <ErrorPage /> },
+      { path: "user/:userId", element: <UserProfile /> },
+      { path: "new-message", element: <NewConversation /> },
+      { path: "edit-profile", element: <EditProfile /> },
+      { path: "error", element: <ErrorPage /> },
     ],
   },
 ];
