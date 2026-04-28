@@ -35,7 +35,8 @@ function NewGroupConversationForm({
         onChange={(e) => {
           let newValue = e.target.valueAsNumber;
 
-           if (newValue < 3) { //protect from NAn
+          if (newValue < 3) {
+            //protect from NAn
             newValue = 3;
           }
           setNewGroupRecipientsAmount(newValue);

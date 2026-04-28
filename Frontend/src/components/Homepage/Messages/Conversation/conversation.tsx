@@ -48,7 +48,9 @@ function Conversation() {
 
   return (
     <div className="conversation">
-      <div className="loadingContainer"><MessageLoading loading={loading} /></div>
+      <div className="loadingContainer">
+        <MessageLoading loading={loading} />
+      </div>
       {selectedConversation?.messages.map((message) => (
         <Message key={message.id} message={message} />
       ))}

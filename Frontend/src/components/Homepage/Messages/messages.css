@@ -1,158 +1,155 @@
+.messageLobby {
+  display: flex;
+  flex-direction: column;
+  color: white;
+  margin: 5%;
+}
 
-  .messageLobby {
-    display: flex;
-    flex-direction: column;
-    color: white;
-    margin: 5%;
+.messageLobby > h2 {
+  margin: 5% 0% 2% 0%;
+  font-weight: 300;
+}
+
+.smallMenu {
+  background-color: #3c5233;
+  display: flex;
+  border-top: 1px solid white;
+  border-left: 1px solid white;
+  border-right: 1px solid black;
+  border-bottom: 1px solid black;
+  flex-direction: column;
+  padding: 5%;
+  border-radius: 12px;
+}
+
+.smallMenu > h1 {
+  font-size: 1.7em;
+  font-weight: 400;
+}
+
+.smallMenu > p {
+  font-size: 0.8em;
+  font-weight: 200;
+}
+
+.smallMenu > a {
+  color: #264027;
+  background-color: white;
+  text-align: center;
+  border-radius: 12px;
+  margin-top: 15px;
+  font-size: 1.2em;
+}
+
+.smallMenu > button {
+  margin-top: 15px;
+  border-radius: 12px;
+  font-family: Charter, "Bitstream Charter", "Sitka Text", Cambria, serif;
+  font-weight: normal;
+  font-size: 1.2em;
+  border: none;
+  background-color: white;
+  color: #264027;
+}
+
+.soloMessages {
+  display: flex;
+  flex-direction: column;
+}
+
+.conversationPreview {
+  background-color: rgba(114, 111, 111, 0.302);
+  padding: 5% 5% 2% 5%;
+  margin: 2% 0% 2% 0%;
+  border-radius: 12px;
+  display: grid;
+  grid-template: 1fr 1fr / 4fr 1fr;
+  border-top: 1px solid white;
+  border-left: 1px solid white;
+  border-right: 1px solid black;
+  border-bottom: 1px solid black;
+}
+
+.conversationPreview > h3 {
+  font-size: 1.3em;
+  font-weight: 400;
+
+  align-self: center;
+}
+
+.conversationPreview > p {
+  font-size: 0.9em;
+  font-weight: 300;
+  text-align: left;
+  align-content: center;
+}
+
+.conversationPreview > button {
+  border-radius: 12px;
+  font-family: Charter, "Bitstream Charter", "Sitka Text", Cambria, serif;
+  font-weight: normal;
+  font-size: 1.2em;
+  border: none;
+  background-color: white;
+  color: #264027;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+}
+
+.conversationPreview > button > i {
+  color: #264027;
+}
+
+.conversationPartnerProfile {
+  display: flex;
+  gap: 5%;
+  align-items: center;
+}
+
+.conversationPartnerProfile > i {
+  padding: 5%;
+  border-radius: 24px;
+  background-color: white;
+  color: #264027;
+}
+
+.conversationPartnerProfile > img {
+  max-height: 41.25px;
+  width: auto;
+  border-radius: 24px;
+}
+
+.conversationPartnerProfile > h3 {
+  font-size: 1.3em;
+}
+
+.loadingContainer {
+  display: flex;
+  align-items: center;
+  justify-items: center;
+}
+
+.loadingPreviews {
+  margin: auto;
+  width: 10px;
+  height: 10px;
+  background: #586a6a;
+  border-radius: 50%;
+}
+
+@keyframes load {
+  from {
+    transform: rotate(0deg) translateX(10px);
   }
-
-  .messageLobby > h2 {
-    margin: 5% 0% 2% 0%;
-    font-weight: 300;
+  to {
+    transform: rotate(360deg) translateX(10px);
   }
+}
 
-  .smallMenu {
-    background-color: #3c5233;
-    display: flex;
-    border-top: 1px solid white;
-    border-left: 1px solid white;
-    border-right: 1px solid black;
-    border-bottom: 1px solid black;
-    flex-direction: column;
-    padding: 5%;
-    border-radius: 12px;
-  }
-
-  .smallMenu > h1 {
-    font-size: 1.7em;
-    font-weight: 400;
-  }
-
-  .smallMenu > p {
-    font-size: 0.8em;
-    font-weight: 200;
-  }
-
-  .smallMenu > a {
-    color: #264027;
-    background-color: white;
-    text-align: center;
-    border-radius: 12px;
-    margin-top: 15px;
-    font-size: 1.2em;
-    
-  }
-
-  .smallMenu > button {
-    margin-top: 15px;
-    border-radius: 12px;
-    font-family: Charter, "Bitstream Charter", "Sitka Text", Cambria, serif;
-    font-weight: normal;
-    font-size: 1.2em;
-    border: none;
-    background-color: white;
-    color: #264027;
-  }
-
-  .soloMessages {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .conversationPreview {
-    background-color: rgba(114, 111, 111, 0.302);
-    padding: 5% 5% 2% 5%;
-    margin: 2% 0% 2% 0%;
-    border-radius: 12px;
-    display: grid;
-    grid-template: 1fr 1fr / 4fr 1fr;
-    border-top: 1px solid white;
-    border-left: 1px solid white;
-    border-right: 1px solid black;
-    border-bottom: 1px solid black;
-  }
-
-  .conversationPreview > h3 {
-    font-size: 1.3em;
-    font-weight: 400;
-
-    align-self: center;
-  }
-
-  .conversationPreview > p {
-    font-size: 0.9em;
-    font-weight: 300;
-    text-align: left;
-    align-content: center;
-  }
-
-  .conversationPreview > button {
-    border-radius: 12px;
-    font-family: Charter, "Bitstream Charter", "Sitka Text", Cambria, serif;
-    font-weight: normal;
-    font-size: 1.2em;
-    border: none;
-    background-color: white;
-    color: #264027;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 42px;
-  }
-
-  .conversationPreview > button > i {
-    color: #264027;
-  }
-
-  .conversationPartnerProfile {
-    display: flex;
-    gap: 5%;
-    align-items: center;
-  }
-
-  .conversationPartnerProfile > i {
-    padding: 5%;
-    border-radius: 24px;
-    background-color: white;
-    color: #264027;
-  }
-
-  .conversationPartnerProfile > img {
-    max-height: 41.25px;
-    width: auto;
-    border-radius: 24px;
-  }
-
-  .conversationPartnerProfile > h3 {
-    font-size: 1.3em;
-  }
-
-  .loadingContainer {
-    display: flex;
-    align-items: center;
-    justify-items: center;
-  }
-
+@media (prefers-reduced-motion: no-preference) {
   .loadingPreviews {
-    margin: auto;
-    width: 10px;
-    height: 10px;
-    background: #586a6a;
-    border-radius: 50%;
+    animation: load 1000ms linear infinite;
   }
-
-  @keyframes load {
-    from {
-      transform: rotate(0deg) translateX(10px);
-    }
-    to {
-      transform: rotate(360deg) translateX(10px);
-    }
-  }
-
-  @media (prefers-reduced-motion: no-preference) {
-    .loadingPreviews {
-      animation: load 1000ms linear infinite;
-    }
-  }
-
+}

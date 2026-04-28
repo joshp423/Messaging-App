@@ -52,10 +52,11 @@ function Messages() {
           Check for new messages
         </button>
       </div>
-      
 
       <h2>Messages</h2>
-      <div className="loadingContainer"><MessageLoading loading={loading} /></div>
+      <div className="loadingContainer">
+        <MessageLoading loading={loading} />
+      </div>
       <div className="soloMessages">
         {soloMessages.map((conversation) => (
           <ConversationPreview

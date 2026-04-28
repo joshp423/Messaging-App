@@ -86,7 +86,7 @@
     justify-content: center;
   }
 
-  .message >img {
+  .message > img {
     width: 50%;
     align-self: center;
   }
