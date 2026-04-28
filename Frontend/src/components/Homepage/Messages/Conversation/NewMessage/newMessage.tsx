@@ -26,7 +26,7 @@ function NewMessage({
     const formData = new FormData();
 
     formData.append("uploaded_file", newMessageImage);
-    const rsp = await fetch("http://localhost:3000/uploadMessageImage", {
+    const rsp = await fetch("https://messaging-app-be5n.onrender.com/uploadMessageImage", {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
@@ -52,7 +52,7 @@ function NewMessage({
     e.preventDefault();
 
     const uploadedUrl = await uploadImage();
-    const rsp = await fetch("http://localhost:3000/send-message-solo", {
+    const rsp = await fetch("https://messaging-app-be5n.onrender.com/send-message-solo", {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${localStorage.getItem("token")}`,

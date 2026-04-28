@@ -24,7 +24,7 @@ function NewGroupMessage({
 
     formData.append("uploaded_file", newMessageImage);
 
-    const rsp = await fetch("http://localhost:3000/uploadMessageImage", {
+    const rsp = await fetch("https://messaging-app-be5n.onrender.com/uploadMessageImage", {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
@@ -51,7 +51,7 @@ function NewGroupMessage({
 
     const uploadedUrl = await uploadImage(newMessageImage);
 
-    const rsp = await fetch("http://localhost:3000/send-message-group", {
+    const rsp = await fetch("https://messaging-app-be5n.onrender.com/send-message-group", {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${localStorage.getItem("token")}`,

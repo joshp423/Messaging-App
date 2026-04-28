@@ -25,7 +25,7 @@ function Conversation() {
       setLoading(true);
       try {
         const rsp = await fetch(
-          `http://localhost:3000/conversations/${conversationId}`,
+          `https://messaging-app-be5n.onrender.com/conversations/${conversationId}`,
           {
             headers: {
               "Content-Type": "application/json",

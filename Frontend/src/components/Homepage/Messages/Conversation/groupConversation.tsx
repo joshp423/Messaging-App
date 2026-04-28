@@ -20,7 +20,7 @@ function GroupConversation() {
     async function getConversation() {
       try {
         const rsp = await fetch(
-          `http://localhost:3000/groupConversations/${groupConversationId}`,
+          `https://messaging-app-be5n.onrender.com/groupConversations/${groupConversationId}`,
           {
             headers: {
               "Content-Type": "application/json",
