@@ -47,7 +47,7 @@ function NewGroupConversationForm({
           });
         }}
       />
-      <label>Other Group Member Usernames: </label>
+      <label>Group Member Usernames: </label>
       <div className="groupMemberInputs">
         {Array.from({ length: newGroupRecipientsAmount }).map(
           (
