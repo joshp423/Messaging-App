@@ -1,7 +1,7 @@
 import App from "./App";
 import Homepage from "./components/Homepage/homepage";
 import Login from "./components/Login/login";
-import SignUp from "./components/Sign Up/signUp";
+import SignUp from "./components/SignUp/signUp";
 import Conversation from "./components/Homepage/Messages/Conversation/conversation";
 import UserProfile from "./components/Homepage/Messages/Conversation/Users/userProfile";
 import NewConversation from "./components/Homepage/NewConversation/newConversation";
