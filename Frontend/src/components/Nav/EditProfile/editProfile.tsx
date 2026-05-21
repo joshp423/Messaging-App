@@ -13,7 +13,7 @@ function EditProfile() {
   useEffect(() => {
     async function getUserProfile() {
       try {
-        const rsp = await fetch(`http://localhost:3000/users/${userId}`, {
+        const rsp = await fetch(`https://messaging-app-be5n.onrender.com/users/${userId}`, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -39,7 +39,7 @@ function EditProfile() {
     formData.append("uploaded_file", pfp);
 
     try {
-      const rsp = await fetch("http://localhost:3000/uploadPFP", {
+      const rsp = await fetch("https://messaging-app-be5n.onrender.com/uploadPFP", {
         method: "POST",
         body: formData,
       });
@@ -66,7 +66,7 @@ function EditProfile() {
     const uploadedUrl = await uploadPFP();
 
     try {
-      await fetch("http://localhost:3000/edit-profile", {
+      await fetch("https://messaging-app-be5n.onrender.com/edit-profile", {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,

@@ -22,7 +22,7 @@ function Messages() {
     async function getMessages() {
       setLoading(true);
       try {
-        const rsp = await fetch(`http://localhost:3000/conversations`, {
+        const rsp = await fetch(`https://messaging-app-be5n.onrender.com/conversations`, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("token")}`,

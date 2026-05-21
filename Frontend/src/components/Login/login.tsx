@@ -30,7 +30,7 @@ function Login() {
   const login = async (e: SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const rsp = await fetch("http://localhost:3000/log-in", {
+    const rsp = await fetch("https://messaging-app-be5n.onrender.com/log-in", {
       headers: {
         "Content-Type": "application/json",
       },

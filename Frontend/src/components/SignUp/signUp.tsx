@@ -21,7 +21,7 @@ function SignUp() {
     formData.append("uploaded_file", pfp);
 
     try {
-      const rsp = await fetch("http://localhost:3000/uploadPFP", {
+      const rsp = await fetch("https://messaging-app-be5n.onrender.com/uploadPFP", {
         method: "POST",
         body: formData,
       });
@@ -47,7 +47,7 @@ function SignUp() {
 
     // try to create new prisma user, checking fields
     // setLoading(true);
-    const rsp = await fetch("http://localhost:3000/sign-up", {
+    const rsp = await fetch("https://messaging-app-be5n.onrender.com/sign-up", {
       headers: {
         "Content-Type": "application/json",
       },
@@ -75,7 +75,7 @@ function SignUp() {
     const uploadedUrl = await uploadPFP(); //await other function
     setErrors([]);
     const prfUpdate = await fetch(
-      "http://localhost:3000/initialProfileUpdate",
+      "https://messaging-app-be5n.onrender.com/initialProfileUpdate",
       {
         headers: {
           "Content-Type": "application/json",

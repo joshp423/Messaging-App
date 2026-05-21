@@ -13,7 +13,7 @@ function UserProfile() {
   useEffect(() => {
     async function getUserProfile() {
       try {
-        const rsp = await fetch(`http://localhost:3000/users/${userId}`, {
+        const rsp = await fetch(`https://messaging-app-be5n.onrender.com/users/${userId}`, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("token")}`,

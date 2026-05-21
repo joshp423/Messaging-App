@@ -29,7 +29,7 @@ function NewConversation() {
 
     formData.append("uploaded_file", newMessageImage);
 
-    const rsp = await fetch("http://localhost:3000/uploadMessageImage", {
+    const rsp = await fetch("https://messaging-app-be5n.onrender.com/uploadMessageImage", {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
@@ -59,7 +59,7 @@ function NewConversation() {
       setErrors(["Invalid target users, please ensure usernames are correct."]);
       return;
     }
-    const rsp = await fetch("http://localhost:3000/send-message-solo", {
+    const rsp = await fetch("https://messaging-app-be5n.onrender.com/send-message-solo", {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -96,7 +96,7 @@ function NewConversation() {
     }
     const newGroupId = await createNewGroup(receiverIds);
 
-    const rsp = await fetch("http://localhost:3000/send-message-group", {
+    const rsp = await fetch("https://messaging-app-be5n.onrender.com/send-message-group", {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -135,7 +135,7 @@ function NewConversation() {
       });
 
     try {
-      const rsp = await fetch("http://localhost:3000/getUserId", {
+      const rsp = await fetch("https://messaging-app-be5n.onrender.com/getUserId", {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -161,7 +161,7 @@ function NewConversation() {
     }
 
     try {
-      const rsp = await fetch("http://localhost:3000/getUserIds", {
+      const rsp = await fetch("https://messaging-app-be5n.onrender.com/getUserIds", {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -193,7 +193,7 @@ function NewConversation() {
       });
 
     try {
-      const rsp = await fetch("http://localhost:3000/create-group", {
+      const rsp = await fetch("https://messaging-app-be5n.onrender.com/create-group", {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
