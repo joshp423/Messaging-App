@@ -57,7 +57,7 @@ function Conversation() {
       <NewMessage
         conversationPartner={
           selectedConversation?.messages[0].receiver.username === username
-            ? selectedConversation?.messages[0].receiver.username || ""
+            ? selectedConversation?.messages[0].sender.username || ""
             : username
         }
         conversationPartnerId={
