@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "./newMessages.css";
 
 type newMessageProps = {
-  conversationPartner: string;
+  conversationPartner: string | null;
   conversationPartnerId: number | undefined;
   conversationId: number;
   setNewMessageStatus: React.Dispatch<React.SetStateAction<boolean>>;
